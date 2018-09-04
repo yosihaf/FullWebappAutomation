@@ -1398,8 +1398,12 @@ namespace FullWebappAutomation
             checkFile(backofficeDriver, "API_Account");
         }
 
+
+        #region home page test
+
+
         /// <summary>
-        /// incomplete
+        /// Creat Byer
         /// </summary>
         /// <param name="webappDriver"></param>
         /// <param name="backofficeDriver"></param>
@@ -1526,6 +1530,8 @@ namespace FullWebappAutomation
 
             ByerWebappDriver.Quit();
         }
+
+
 
         /// <summary>
         /// Upload Image to Home screen webapp
@@ -1910,5 +1916,86 @@ namespace FullWebappAutomation
             Thread.Sleep(5000);
 
         }
+
+
+        public static void Webapp_Sandbox_Online_action_Home_Page(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+
+            FullWebappAutomation.Backoffice.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
+
+            // Add new
+            SafeClick(backofficeDriver, "//div[2]/div/div/div/div[2]");
+
+            // input name
+            SafeSendKeys(backofficeDriver, "//div[@id='GeneralInfo']/table/tbody/tr/td[2]/input[@id='actName']", "Online action automation");
+
+            // input Description
+            SafeSendKeys(backofficeDriver, "//div[@id='GeneralInfo']/table/tbody/tr/td[2]/input[@id='actDescription']", "go to new url");
+
+            // input URL
+            SafeSendKeys(backofficeDriver, "//div[@id='GeneralInfo']/table/tbody/tr[4]/td[2]/input[@id='actURL']", @"https://www.hidabroot.org/");
+
+            // select icon
+            SafeClick(backofficeDriver, "//div[@id='activitiesIconsCont']/div[@id='icon2']");
+
+            // save
+            SafeClick(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[5]/div[3]/div[1]/div[1]");
+
+             
+            FullWebappAutomation.Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+
+            // Edit Rep
+            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div/div[2]/div/span[2]");
+
+
+            int j = 0;
+            for (j = 1; j < 10; j++)
+            {
+                try
+                {
+                    // Find the "Online Add-ons" button and click it
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[3]/div[2]/ul[1]/div[{0}]/div[1]/div[1]", j), "innerHTML") == "Online Add-ons")
+                    {
+                        SafeClick(backofficeDriver, string.Format("//div[1]/div[3]/div[2]/ul[1]/div[{0}]/div[1]", j));
+                        break;
+                    }
+                }
+                catch { }
+            }
+
+
+            // + Online action automation
+            SafeClick(backofficeDriver, string.Format("//div[@class='lb-bank ui-droppable']//div[{0}]//ul[1]//li[1]//div[1]//div[1]",j));
+
+
+            // Save button
+            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
+
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            Thread.Sleep(2000);
+
+
+            // check if exist button in "Online action automation" and click
+            for (int i = 1; ; i++)
+            {
+                if (SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2) == "Online action automation")
+                {
+                    SafeClick(webappDriver, string.Format("//div[@id='mainCont']/app-home-page/footer/div/div[2]/div[{0}]/div", i));
+                    break;
+                }
+            }
+
+            var browserTabs = webappDriver.WindowHandles;
+            webappDriver.SwitchTo().Window(browserTabs[1]);
+
+            bool isOpen = webappDriver.Url == @"https://www.hidabroot.org/";
+
+
+            webappDriver.Close();
+            webappDriver.SwitchTo().Window(browserTabs[0]);
+
+        }
+        #endregion 
     }
 }

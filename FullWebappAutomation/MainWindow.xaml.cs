@@ -68,7 +68,8 @@ namespace FullWebappAutomation
                 "Creat Bayer",
                 "Change title home screen",
                 "Change Title All Home",
-                "Menu of Home screen"
+                "Menu of Home screen",
+                "Online action"
             };
 
             testsToRun = new Dictionary<string, bool>();

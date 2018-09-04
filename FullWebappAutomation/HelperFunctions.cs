@@ -319,9 +319,12 @@ namespace FullWebappAutomation
             SafeClick(driver, "//div[@aria-labelledby='ui-dialog-title-loadERPFileDialog']/div[@class='ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix']/a[1]/span[@class='ui-icon ui-icon-closethick']");
             Thread.Sleep(4000);
         }
-
         
-
+        /// <summary>
+        /// check if stor and all line stor
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="typeFile"></param>
         public static void checkFile(RemoteWebDriver driver,string typeFile)
         {
             // get  Failed Files label
@@ -651,8 +654,6 @@ namespace FullWebappAutomation
             return false;
         }
 
-
-
         /// <summary>
         ///  Help Change Title Home Screen
         /// </summary>
@@ -679,5 +680,8 @@ namespace FullWebappAutomation
             // Save click
             SafeClick(backofficeDriver, "//div[1]/div[4]/div[@class='footer-buttons']/div[@class='save allButtons grnbtn roundCorner  fl']");
         }
+
+
+
     }
 }

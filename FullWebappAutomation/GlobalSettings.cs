@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium.Remote;
+using System;
 using static FullWebappAutomation.HelperFunctions;
 
 namespace FullWebappAutomation
@@ -13,7 +14,15 @@ namespace FullWebappAutomation
         public static string DanUsername;
         public static string DanPassword;
         public static bool isCreat;
-
+        public static void Setting(RemoteWebDriver backofficeDriver)
+        {
+            SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
+            try
+            {
+                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", maxRetry: 4);
+            }
+            catch { }
+        }
         public static void InitLogFiles()
         {
             DateTime dateTime = DateTime.Now;

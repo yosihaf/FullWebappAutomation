@@ -221,6 +221,12 @@ namespace FullWebappAutomation
                 Delegator delegatedFunction = Webapp_Sandbox_Menu_Home_Screen;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
+
+            if (testsToRun["Online action"])
+            {
+                Delegator delegatedFunction = Webapp_Sandbox_Online_action_Home_Page;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
         }
 
         public static void RunTests(string chosenUsername, Dictionary<string, bool> testsToRun)
