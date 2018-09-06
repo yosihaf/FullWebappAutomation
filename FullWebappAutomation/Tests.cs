@@ -1249,6 +1249,7 @@ namespace FullWebappAutomation
 
         }
 
+
         public static void Webapp_Sandbox_Order_By(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             bool flag = false;
@@ -1311,9 +1312,9 @@ namespace FullWebappAutomation
             //Assert of checking 
             Assert(!flag, "The list not Descending");
         }
-    
 
-        public static void Backoffice_Sandbox_Load_File(RemoteWebDriver webappDriver,RemoteWebDriver backofficeDriver)
+
+        public static void Backoffice_Sandbox_Load_File(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
             try
@@ -1376,7 +1377,7 @@ namespace FullWebappAutomation
 
             // UploadFile  API_Item to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Item.csv", "//div[@id='dLoadErpFilesContainer']/div/select/option[@value='API_Item_']");
-            
+
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_Item");
@@ -1384,7 +1385,7 @@ namespace FullWebappAutomation
 
             // UploadFile  API_Item to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Inventory.csv", "//div[@id='dLoadErpFilesContainer']/div/select/option[@value='API_Inventory_']");
-           
+
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_Inventory");
@@ -1392,7 +1393,7 @@ namespace FullWebappAutomation
 
             // UploadFile  API_Account to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Account.csv", "//option[@value='API_Account_']");
-            
+
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_Account");
@@ -1507,11 +1508,11 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//form[1]/div[11]/div[2]/div[1]/div[5]/div[2]");
 
 
-            RemoteWebDriver ByerWebappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), DesiredCapabilities.Chrome(), TimeSpan.FromSeconds(600));
+            RemoteWebDriver BuyerWebappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), DesiredCapabilities.Chrome(), TimeSpan.FromSeconds(600));
 
 
             //login to buyer
-            Webapp_Sandbox_Login(ByerWebappDriver, Buyer["Email"], Buyer["password"]);
+            Webapp_Sandbox_Login(BuyerWebappDriver, Buyer["Email"], Buyer["password"]);
 
 
             Sandbox_Change_Size_All_Case_Home_Screen(webappDriver, "width: 300", "width: 214");
@@ -1528,114 +1529,15 @@ namespace FullWebappAutomation
             Sandbox_Change_Size_All_Case_Home_Screen(webappDriver, "width: 1064", "width: 1170");
 
 
-            ByerWebappDriver.Quit();
+            BuyerWebappDriver.Quit();
         }
 
 
 
-        /// <summary>
-        /// Upload Image to Home screen webapp
-        /// </summary>
-        /// <param name="backofficeDriver"></param>
-        /// <param name="elementXPath"></param>
-        /// <param name="filePath"></param>
-        public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver,string elementXPath,string filePath)
-        {
-            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
 
 
-            //  Change Button 
-            SafeClick(backofficeDriver,elementXPath);
 
 
-            // Upload  Image
-            // Upload to web
-            backofficeDriver.SwitchTo().ActiveElement().SendKeys(filePath);
-            backofficeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            Thread.Sleep(4000);
-
-           
-        }
-
-        /// <summary>
-        /// Change Size All Case Home_Screen
-        /// </summary>
-        /// <param name="webappDriver"></param>
-        /// <param name="sizeImageLandscape"></param>
-        /// <param name="sizeImagePortrait"></param>
-        public static void Sandbox_Change_Size_All_Case_Home_Screen(RemoteWebDriver webappDriver,string sizeImageLandscape, string sizeImagePortrait)
-        {
-
-            Thread.Sleep(3000);
-
-            webappDriver.Manage().Window.Maximize();
-
-
-            // Check if Home page Contains cat image Maximize case
-             var domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/div[1]/app-home-page[1]/div[1]/img[1]"));
-
-
-            // Get Attribute of image  
-            string attributeMaximize = domElement.GetAttribute("style");
-
-
-            // width: 300 is cat image
-            bool imgStor = attributeMaximize.Contains(sizeImageLandscape);
-
-
-            Assert(imgStor, "the cat img Maximize case is  not stor");
-
-
-            // Check if Home page Contains shirt img Middle case
-            webappDriver.Manage().Window.Size = new Size(500, 700);
-            // wait the Middle case
-            Thread.Sleep(2000);
-
-            domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/div[1]/app-home-page[1]/div[1]/img[1]"));
-
-            string attributeMiddle = domElement.GetAttribute("style");
-
-            imgStor = attributeMiddle.Contains(sizeImagePortrait);
-
-            Assert(imgStor, "the shirt img Middle case is not stor");
-
-            webappDriver.Manage().Window.Size = new Size(700, 350);
-            // wait the Minimize case
-            Thread.Sleep(2000);
-
-            domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/div[1]/app-home-page[1]/div[1]/img[1]"));
-            Thread.Sleep(2000);
-            string attributeMinimize = domElement.GetAttribute("style");
-            imgStor = attributeMinimize.Contains(sizeImageLandscape);
-            Assert(imgStor, "the cat img Minimize case is not view");
-
-            webappDriver.Manage().Window.Maximize();
-        }
-
-        /// <summary>
-        /// test to image all case home page
-        /// </summary>
-        /// <param name="webappDriver"></param>
-        /// <param name="backofficeDriver"></param>
-        public static void Sandbox_Minimize_Home_As_Tablet(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
-        {
-           
-
-            Sandbox_Upload_Image(backofficeDriver, "//div[@id='supeRepCont']//tr[1]/td[2]/table[1]/tbody[1]/tr[1]/td[2]/div[1][@id='btnSupeRepLandscape']", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\cat.jpeg");
-
-            Sandbox_Upload_Image(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\shirt.jpeg");
-
-
-            // wait 4 second
-            Thread.Sleep(3000);
-
-
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-            Thread.Sleep(2000);
-
-
-            Sandbox_Change_Size_All_Case_Home_Screen(webappDriver, "width: 300", "width: 214");
-        }
 
         /// <summary>
         /// change sale order to sales order 1
@@ -1652,12 +1554,12 @@ namespace FullWebappAutomation
             Thread.Sleep(1500);
 
             // get value Home button
-            string value= SafeGetValue(webappDriver, "//div[1]/app-home-page[1]/footer[1]/div[@class='container']//div[@class='row ng-star-inserted']/div[1]","innerHTML");
+            string value = SafeGetValue(webappDriver, "//div[1]/app-home-page[1]/footer[1]/div[@class='container']//div[@class='row ng-star-inserted']/div[1]", "innerHTML");
 
             // Assert if change
             Assert(value == "Sales Order 1", "The title no change");
-            
-            
+
+
             // reverse to Sales Order 
             Help_Sandbox_Change_Title_Home_Screen(backofficeDriver, "Sales Order");
 
@@ -1667,7 +1569,7 @@ namespace FullWebappAutomation
             Thread.Sleep(1500);
         }
 
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -1694,29 +1596,29 @@ namespace FullWebappAutomation
             {
                 try
                 {
-                    SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i),maxRetry:2);
+                    SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
 
                 }
-                catch 
+                catch
                 {
                     break;
                 }
                 // sub Available Filds
-                for (int j = 1;; j++)
+                for (int j = 1; ; j++)
                 {
                     try
                     {
-                        value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML",maxRetry:2).ToString().Trim();
-                        if (value.Contains("Catalog")|| value.Contains("Dashboard")) 
+                        value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
+                        if (value.Contains("Catalog") || value.Contains("Dashboard"))
                         {
                             continue;
                         }
-                        SafeClick(backofficeDriver,string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i,j),maxRetry: 2);
+                        SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
                         total++;
                         if (total >= 16)
                             break;
                     }
-                    catch 
+                    catch
                     {
                         break;
                     }
@@ -1741,14 +1643,14 @@ namespace FullWebappAutomation
 
                 try
                 {
-                    SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]",i), "innerHTML", maxRetry: 2);
+                    SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2);
                 }
                 catch
                 {
                     if (i == 17)
                         flag = true;
-                        break;
-                    
+                    break;
+
                 }
             }
 
@@ -1760,7 +1662,7 @@ namespace FullWebappAutomation
             Backoffice_Delete_Layout(backofficeDriver, "Accounts", "Activity List", true);
 
 
-            
+
 
 
             // Save button
@@ -1830,7 +1732,7 @@ namespace FullWebappAutomation
             // Add any 16 button
 
             // Available Filds
-            for ( i = 1; ; i++)
+            for (i = 1; ; i++)
             {
                 try
                 {
@@ -1883,19 +1785,19 @@ namespace FullWebappAutomation
                 SafeClick(webappDriver, "/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/button[1]", maxRetry: 3);
 
             }
-            catch 
+            catch
             {
                 Assert(false, "Although the page is small there is no menu");
             }
-            
+
             try
             {
                 for (i = 1; ; i++)
                 {
-                    SafeGetValue(webappDriver, string.Format("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[3]/ul[1]/li[{0}]", i),"innerHTML", maxRetry: 5);
+                    SafeGetValue(webappDriver, string.Format("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[3]/ul[1]/li[{0}]", i), "innerHTML", maxRetry: 5);
                 }
             }
-            catch 
+            catch
             {
                 Assert(i == 17, "no all menu exist");
             }
@@ -1941,12 +1843,24 @@ namespace FullWebappAutomation
             // save
             SafeClick(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[5]/div[3]/div[1]/div[1]");
 
-             
+
             FullWebappAutomation.Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
 
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div/div[2]/div/span[2]");
-
+            // Edit Admin
+            int k = 2;
+            while (true)
+            {
+                try
+                {
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    {
+                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
+                        break;
+                    }
+                }
+                catch { }
+                k++;
+            }
 
             int j = 0;
             for (j = 1; j < 10; j++)
@@ -1965,7 +1879,7 @@ namespace FullWebappAutomation
 
 
             // + Online action automation
-            SafeClick(backofficeDriver, string.Format("//div[@class='lb-bank ui-droppable']//div[{0}]//ul[1]//li[1]//div[1]//div[1]",j));
+            SafeClick(backofficeDriver, string.Format("//div[@class='lb-bank ui-droppable']//div[{0}]//ul[1]//li[1]//div[1]//div[1]", j));
 
 
             // Save button
@@ -1996,6 +1910,349 @@ namespace FullWebappAutomation
             webappDriver.SwitchTo().Window(browserTabs[0]);
 
         }
-        #endregion 
+        #endregion
+
+
+        #region Images
+
+        /// <summary>
+        /// Upload Image to Home screen webapp Admin
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="elementXPath"></param>
+        /// <param name="filePath"></param>
+        public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver, string elementXPath, string filePath)
+        {
+            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+
+
+            //  Change Button 
+            SafeClick(backofficeDriver, elementXPath);
+
+
+            // Upload  Image
+            // Upload to web
+            backofficeDriver.SwitchTo().ActiveElement().SendKeys(filePath);
+            backofficeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            Thread.Sleep(4000);
+
+
+        }
+
+
+        /// <summary>
+        /// test to image all case home page
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="backofficeDriver"></param>
+        public static void Sandbox_Minimize_Home_As_Tablet(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+
+
+            Sandbox_Upload_Image(backofficeDriver, "//div[@id='supeRepCont']//tr[1]/td[2]/table[1]/tbody[1]/tr[1]/td[2]/div[1][@id='btnSupeRepLandscape']", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\cat.jpeg");
+
+            Sandbox_Upload_Image(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\shirt.jpeg");
+
+
+            // wait 4 second
+            Thread.Sleep(3000);
+
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            Thread.Sleep(2000);
+
+
+            Sandbox_Change_Size_All_Case_Home_Screen(webappDriver, "width: 300", "width: 214");
+        }
+
+
+        /// <summary>
+        /// Change Size All Case Home_Screen
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="sizeImageLandscape"></param>
+        /// <param name="sizeImagePortrait"></param>
+        public static void Sandbox_Change_Size_All_Case_Home_Screen(RemoteWebDriver webappDriver, string sizeImageLandscape, string sizeImagePortrait)
+        {
+
+            Thread.Sleep(3000);
+
+            webappDriver.Manage().Window.Maximize();
+
+
+            // Check if Home page Contains cat image Maximize case
+            var domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/div[1]/app-home-page[1]/div[1]/img[1]"));
+
+
+            // Get Attribute of image  
+            string attributeMaximize = domElement.GetAttribute("style");
+
+
+            // width: 300 is cat image
+            bool imgStor = attributeMaximize.Contains(sizeImageLandscape);
+
+
+            Assert(imgStor, "the cat img Maximize case is  not stor");
+
+
+            // Check if Home page Contains shirt img Middle case
+            webappDriver.Manage().Window.Size = new Size(500, 700);
+            // wait the Middle case
+            Thread.Sleep(2000);
+
+            domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/div[1]/app-home-page[1]/div[1]/img[1]"));
+
+            string attributeMiddle = domElement.GetAttribute("style");
+
+            imgStor = attributeMiddle.Contains(sizeImagePortrait);
+
+            Assert(imgStor, "the shirt img Middle case is not stor");
+
+            webappDriver.Manage().Window.Size = new Size(700, 350);
+            // wait the Minimize case
+            Thread.Sleep(2000);
+
+            domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/div[1]/app-home-page[1]/div[1]/img[1]"));
+            Thread.Sleep(2000);
+            string attributeMinimize = domElement.GetAttribute("style");
+            imgStor = attributeMinimize.Contains(sizeImageLandscape);
+            Assert(imgStor, "the cat img Minimize case is not view");
+
+            webappDriver.Manage().Window.Maximize();
+        }
+
+
+        public static void Sandbox_Branding_Color_Main(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+
+            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+
+            // Edit Main Color
+            SafeClick(backofficeDriver, "//div[6]/div[1]/div[4]/div[2]/div[1]/div[5]/div[1]/div[1]/div[2]");
+
+            //yellow
+            SafeClick(backofficeDriver, "//div[@class='sp-container sp-light']/div/div/div/span[@title='rgb(255, 255, 0)']/span[@style]");
+
+
+            var domElement = backofficeDriver.FindElement(By.XPath("//form[1]/div[4]/div[1]"));
+
+            Thread.Sleep(800);
+
+            // Get Attribute of color  
+            string attributeBO = domElement.GetAttribute("style");
+
+
+
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            Thread.Sleep(4000);
+
+            domElement = webappDriver.FindElement(By.XPath("//app-root[1]/app-menu[1]/div[1]/nav[1]"));
+            string attributeWA = domElement.GetAttribute("style");
+
+            bool isSame = (attributeBO == attributeWA);
+
+            Assert(isSame, "The color Main  home page no change");
+        }
+
+
+        public static void Sandbox_Branding_Color_Secondary(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+
+            // Edit Secondary Color
+            SafeClick(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[5]/div[2]/div[2]");
+
+            //yellow
+            SafeClick(backofficeDriver, "//div[@class='sp-container sp-light']/div[1]/div[1]/div[1]/span[5]/span[1]");
+
+            var domElement = backofficeDriver.FindElement(By.XPath("//form[1]/div[4]/div[2]"));
+
+            Thread.Sleep(800);
+
+            // Get Attribute of color  
+            string attributeBO = domElement.GetAttribute("style");
+
+
+            bool isSame = attributeBO.Contains("rgb(255, 255, 0)");
+
+            Assert(isSame, "The color Secondary home page no change");
+        }
+
+
+        public static void Sandbox_Branding_Logo(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+
+            // Upload_Image logo
+            Sandbox_Upload_Image(backofficeDriver, "//div[@id='content']/div[@id='compLogoCont']/div[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\cow.jpg");
+
+
+            // element of logo image
+            var domElement = webappDriver.FindElement(By.XPath("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[2]/a[1]/img[1]"));
+
+
+            // src of image from webapp
+            string src= domElement.GetAttribute("src");
+
+
+            // open a new tab and set the context
+            webappDriver.ExecuteScript("window.open('_blank', 'tab2');");
+            var browserTabs = webappDriver.WindowHandles;
+            webappDriver.SwitchTo().Window(browserTabs[1]);
+            webappDriver.Navigate().GoToUrl(src);
+
+            string cow = webappDriver.Title;
+           
+
+            webappDriver.Close();
+            webappDriver.SwitchTo().Window(browserTabs[0]);
+
+
+            Assert(cow.Contains("(1024×577)"), "logo no fine webapp");
+        }
+
+
+
+
+
+        #endregion
+
+
+        #region Account
+
+        public static void Webapp_Sandbox_New_List_Account_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+
+            Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
+
+            Var_Sandbox_New_List_Account(DanUsername);
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            // + Create New List
+            SafeClick(backofficeDriver, "//div[@id='btnAddNewAcc']");
+
+
+            //  Input New List Fildes
+            // input name
+            SafeSendKeys(backofficeDriver, "//div[@class='ListName parCont clearfix']/input[@name='name']", "Table");
+
+
+            // input description
+            SafeSendKeys(backofficeDriver, "//div[@class='ListDescription parCont clearfix']/input[@name='description']", "Automation New List Table");
+
+
+            //// Date Range
+            //SafeClick(backofficeDriver, "//div[@id='s2id_autogen17']//a[@class='select2-choice']");
+
+
+            //// Creation Date 
+            //SafeClick(backofficeDriver, "//select[@class='dateApiName ng-untouched ng-valid ng-not-empty ng-dirty ng-valid-parse']//option[@value='CreationDate']");
+
+
+            // Save
+            SafeClick(backofficeDriver, "//md-tabs-content-wrapper[@class='_md']/md-tab-content[@id='tab-content-3']/div[@class='ng-scope ng-isolate-scope']/div[@class='general-info ng-scope']/input[1]");
+
+
+            // Edit (Configuration) List View 
+            SafeClick(backofficeDriver, "//div[@class='ui-widget-content slick-row even']//div[@class='slick-cell l2 r2']");
+
+
+            // Edit Rep 
+            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[@class='editPenIcon fr fl-edit editPenIconDisable']");
+
+
+            #region Add Fields
+            HashSet<string> Fields = new HashSet<string>();
+            // Name
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Name");
+            Fields.Add("Name");
+
+            //  Street
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Street");
+            Fields.Add("Name");
+
+            // City
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "City");
+            Fields.Add("Street");
+
+            // Country
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Country");
+            Fields.Add("Country");
+
+            // Zip code
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Zip code");
+            Fields.Add("Zip code");
+
+            // State
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "State");
+            Fields.Add("State");
+
+            // Phone
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Phone");
+            Fields.Add("Phone");
+
+            // Email
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Email");
+            Fields.Add("Email");
+
+            // Account ID
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Account ID");
+            Fields.Add("Account ID");
+
+            #endregion
+
+
+            // Save
+            SafeClick(backofficeDriver, "//div[@class='save allButtons grnbtn roundCorner  fl']");
+
+
+            // Cancel
+            SafeClick(backofficeDriver, "//div[@class='template-forms formlist']/div/div[@class='cancel allButtons grybtn roundCorner fl']");
+
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            // Permission
+            SafeClick(backofficeDriver, "//md-tab-item[@class='md-tab ng-scope ng-isolate-scope ng-binding md-active']");
+
+
+            // Edit Rep
+            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[@class='editPenIcon fr fl-edit editPenIconDisable']");
+
+
+
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Table");
+
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            int index = 1;
+            while (true)
+            {
+                try
+                {
+                    if (!Fields.Contains(SafeGetValue(backofficeDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML")))
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        Assert(false, "No all fields come to webapp");
+                    }
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+
+
+        }
+
+        #endregion
     }
 }

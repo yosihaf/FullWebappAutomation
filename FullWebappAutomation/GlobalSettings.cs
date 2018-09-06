@@ -27,7 +27,7 @@ namespace FullWebappAutomation
         {
             DateTime dateTime = DateTime.Now;
 
-            isCreat = false;
+            
             successLogFilePath = CreateNewLog("success", "chrome", dateTime);
             performanceLogFilePath = CreateNewLog("performance", "chrome", dateTime);
             finalizedPerformanceLogFilePath = CreateNewLog("finalizedPerformance", "chrome", dateTime);

@@ -681,7 +681,60 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[1]/div[4]/div[@class='footer-buttons']/div[@class='save allButtons grnbtn roundCorner  fl']");
         }
 
+        #region helper to Account
+        /// <summary>
+        ///  Change the log to New List Account
+        /// </summary>
+        /// <param name="userName"></param>
+        public static void Var_Sandbox_New_List_Account(string userName)
+        {
+
+            RemoteWebDriver varDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), DesiredCapabilities.Chrome(), TimeSpan.FromSeconds(600));
 
 
+            // get password
+            string Password = GetUserPassword("var3@pepperi.com");
+
+
+            // login to var
+            Backoffice.GeneralActions.SandboxLogin(varDriver, "var3@pepperi.com", Password);
+
+
+            // Search to user
+            SafeSendKeys(varDriver, "//div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/input[1]", userName);
+
+
+            SafeClick(varDriver, "//div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/a[1]");
+
+
+            Thread.Sleep(3000);
+
+
+            // Select 
+            SafeClick(varDriver, "//div[6]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]");
+
+
+            // Edit
+            SafeClick(varDriver, "//div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/a[1]");
+
+
+            // Enable new account list
+            SafeClick(varDriver, "//input[@id='chkEnableNewAccountList']");
+
+
+            // Save
+            SafeClick(varDriver, "//div[@id='ctl00_MainContent_dDistributorDetailsContainer_dSave']//a[@title='Save']");
+
+
+            varDriver.Quit();
+        }
+
+        public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, string nameField)
+        {
+            SafeSendKeys(backofficeDriver, "//input[@id='txtSearchBankFields']", nameField);
+            SafeClick(backofficeDriver, "//input[@id='txtSearchBankFields']");
+            SafeClear(backofficeDriver, "//input[@id='txtSearchBankFields']");
+        }
+        #endregion
     }
 }

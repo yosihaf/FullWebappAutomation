@@ -167,7 +167,7 @@ namespace FullWebappAutomation
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
                 {
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 }
 
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Branding']");
@@ -177,7 +177,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Settings_CompanyProfile']");
             }
 
@@ -185,7 +185,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Settings_ScheduledSync']");
             }
 
@@ -193,7 +193,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Settings_SMTP']");
             }
 
@@ -201,7 +201,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Settings_PasswordPolicy']");
             }
 
@@ -209,7 +209,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Settings_AppHomePage']");
             }
 
@@ -217,7 +217,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='CompanyProfile']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='0']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Company Profile']/label");
                 SafeClick(backofficeDriver, "//div[@id='CompanyProfile']/p[@id='Settings_FastButton']");
             }
         }
@@ -228,7 +228,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Catalogs']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='1']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Catalogs']/label");
                 SafeClick(backofficeDriver, "//div[@id='Catalogs']/p[@id='AddCatalog']");
             }
 
@@ -236,7 +236,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Catalogs']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='1']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Catalogs']/label");
                 SafeClick(backofficeDriver, "//div[@id='Catalogs']/p[@id='CatalogViewsAndForms']");
             }
 
@@ -244,7 +244,7 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Catalogs']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='1']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Catalogs']/label");
                 SafeClick(backofficeDriver, "//div[@id='Catalogs']/p[@id='SelectCatalogView']");
             }
 
@@ -252,179 +252,166 @@ namespace FullWebappAutomation
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Catalogs']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='1']/label");
+                    SafeClick(backofficeDriver, "//h3[@title='Catalogs']/label");
                 SafeClick(backofficeDriver, "//div[@id='Catalogs']/p[@id='CatalogCustomization']");
             }
         }
 
         internal class Items
         {
-            public static void Order_Center_Thumbnail_Views(RemoteWebDriver backofficeDriver)
+            public static void Item(RemoteWebDriver backofficeDriver)
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[1]");
+                    SafeClick(backofficeDriver, "//h3[@title='Items']/label");
+            }
+            public static void Order_Center_Thumbnail_Views(RemoteWebDriver backofficeDriver)
+            {
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='OrderCenterItemThumbnailView']");
             }
 
             public static void Order_Center_Grid_View(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[2]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='OrderCenterListView']");
             }
 
             public static void Order_Center_Matrix_View(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[3]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='OrderCenterMatrixView']");
             }
 
             public static void Order_Center_Flat_Matrix_View(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[4]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='OrderCenterFlatMatrixView']");
             }
 
             public static void Order_Center_Item_Details_View(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[5]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='OrderCenterItemDetailsView']");
             }
 
             public static void Catalog_Item_View(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[6]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='CatalogView']");
             }
 
             public static void Item_Share_Email_Info(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[7]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='ItemShareInformation']");
             }
 
             public static void Smart_Search(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[8]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='SuperepSmartSearch3']");
             }
 
             public static void Filters(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[9]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='ItemsFilters']");
             }
 
             public static void Automated_Image_Uploader(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[10]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='ImageUploaderSetup']");
+            }
+
+
+            public static void VariantDimensions(RemoteWebDriver backofficeDriver)
+            {
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='Settings_VariantDimensions']");
             }
 
             public static void Fields(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Items']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='2']/label");
-                SafeClick(backofficeDriver, "//div[@id='Items']/p[11]");
+                Item(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Items']/p[@id='ItemsDataCustomization']");
             }
         }
 
         internal class Accounts
         {
+            public static void Account(RemoteWebDriver backofficeDriver)
+            {
+                Setting(backofficeDriver);
+                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
+                    SafeClick(backofficeDriver, "//h3[@title='Accounts']/label");
+            }
+
             public static void Views_And_Forms(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[1]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='Settings_AccountTypes']");
             }
 
             public static void Accounts_Lists(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[2]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='AccountsList']");
             }
 
             public static void Accounts_Lists_New(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[3]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='AccountGenericList']");
             }
 
             public static void Map_View(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[4]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='MapView']");
             }
 
             public static void Card_Layout(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[5]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='AccountCard']");
             }
 
             public static void Account_Dashboard_Layout(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[6]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='AccountDashboardLayout']");
             }
 
             public static void Search(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[7]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='SuperepSmartSearch20']");
             }
 
             public static void Smart_Search(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[8]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='SuperepSmartSearch4']");
             }
 
             public static void Fields(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Accounts']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='3']/label");
-                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[9]");
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='DataCustomization']");
             }
         }
 
         internal class PricingPolicy
         {
+            public static void PricingPolicy_(RemoteWebDriver backofficeDriver)
+            {
+                Setting(backofficeDriver);
+                if (SafeGetValue(backofficeDriver, "//div[@id='Pricing']", "style").ToString().Contains("display: none;"))
+                    SafeClick(backofficeDriver, "//h3[@id='4']/label");
+            }
+
             public static void Pricing_Policy(RemoteWebDriver backofficeDriver)
             {
                 SafeClick(backofficeDriver, "//div[@id='settingCont']/div");

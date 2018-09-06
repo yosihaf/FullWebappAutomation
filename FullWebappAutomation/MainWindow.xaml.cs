@@ -69,7 +69,11 @@ namespace FullWebappAutomation
                 "Change title home screen",
                 "Change Title All Home",
                 "Menu of Home screen",
-                "Online action"
+                "Online action",
+                "Branding color Main",
+                "Branding color Secondary",
+                "Branding image logo",
+                "New_List_Account_Table"
             };
 
             testsToRun = new Dictionary<string, bool>();

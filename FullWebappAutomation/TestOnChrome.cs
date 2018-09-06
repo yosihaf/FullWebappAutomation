@@ -11,7 +11,7 @@ namespace FullWebappAutomation
     {
         public static RemoteWebDriver webappDriver, backofficeDriver;
         public static RemoteWebDriver backofficeDriver2;
-        public static bool isCreatLocal;
+        //public static bool isCreatLocal;
         public static void SetUp()
         {
             DesiredCapabilities capability = DesiredCapabilities.Chrome();
@@ -43,7 +43,7 @@ namespace FullWebappAutomation
         {
             DanUsername = chosenUsername;
             DanPassword = GetUserPassword(DanUsername);
-            //GetApiData()
+          
 
             ////if (isCreatLocal == false)
             ////{
@@ -51,8 +51,6 @@ namespace FullWebappAutomation
             backofficeDriver2.Quit();
             //isCreatLocal = true;
             ////}
-
-
 
 
             // Login
@@ -203,6 +201,7 @@ namespace FullWebappAutomation
                 Delegator delegatedFunction = Backoffice_Sandbox_Creat_Byer;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
+            #region  Home page test 
 
             if (testsToRun["Change title home screen"])
             {
@@ -225,6 +224,31 @@ namespace FullWebappAutomation
             if (testsToRun["Online action"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Online_action_Home_Page;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+            if (testsToRun["Branding color Main"])
+            {
+                Delegator delegatedFunction = Sandbox_Branding_Color_Main;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+            if (testsToRun["Branding color Secondary"])
+            {
+                Delegator delegatedFunction = Sandbox_Branding_Color_Secondary;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+            if (testsToRun["Branding image logo"])
+            {
+                Delegator delegatedFunction = Sandbox_Branding_Logo;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+            #endregion
+
+            if (testsToRun["New_List_Account_Table"])
+            {
+                Delegator delegatedFunction = Webapp_Sandbox_New_List_Account_Table;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
         }
