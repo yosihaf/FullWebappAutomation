@@ -19,7 +19,7 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
             try
             {
-                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", maxRetry: 4);
+                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", maxRetry: 2);
             }
             catch { }
         }

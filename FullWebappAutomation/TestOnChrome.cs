@@ -20,11 +20,10 @@ namespace FullWebappAutomation
             //isCreatLocal = FullWebappAutomation.GlobalSettings.isCreat;
             webappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
             backofficeDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
-            ////if (isCreatLocal == false)
-            ////{
+
             backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
-           
-            ////}
+
+
             GlobalSettings.InitLogFiles();
         }
 
@@ -43,7 +42,7 @@ namespace FullWebappAutomation
         {
             DanUsername = chosenUsername;
             DanPassword = GetUserPassword(DanUsername);
-          
+
 
             ////if (isCreatLocal == false)
             ////{

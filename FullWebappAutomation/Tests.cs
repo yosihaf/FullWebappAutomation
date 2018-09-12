@@ -1412,7 +1412,7 @@ namespace FullWebappAutomation
         {
             Dictionary<string, string> Buyer = new Dictionary<string, string>();
 
-
+            
             // setting button
             SafeClick(backofficeDriver, "//div[@id='settingCont']//div[@class='header']");
 
@@ -2128,6 +2128,8 @@ namespace FullWebappAutomation
 
             Var_Sandbox_New_List_Account(DanUsername);
 
+            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
+
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
@@ -2153,58 +2155,68 @@ namespace FullWebappAutomation
 
 
             // Save
-            SafeClick(backofficeDriver, "//md-tabs-content-wrapper[@class='_md']/md-tab-content[@id='tab-content-3']/div[@class='ng-scope ng-isolate-scope']/div[@class='general-info ng-scope']/input[1]");
+            SafeClick(backofficeDriver, "//div[@class='general-info ng-scope']/input[1]");
 
 
             // Edit (Configuration) List View 
-            SafeClick(backofficeDriver, "//div[@class='ui-widget-content slick-row even']//div[@class='slick-cell l2 r2']");
+            SafeClick(backofficeDriver, "//div[@class='ui-widget-content slick-row even']/div[@class='slick-cell l2 r2']/div[@title='Edit']");
 
 
             // Edit Rep 
-            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[@class='editPenIcon fr fl-edit editPenIconDisable']");
+            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[2]");
 
 
             #region Add Fields
             HashSet<string> Fields = new HashSet<string>();
+            Fields.Add("Name");
+            Fields.Add("City");
+            Fields.Add("Street");
+            Fields.Add("Country");
+            Fields.Add("Zip Code");
+            Fields.Add("State");
+            Fields.Add("Phone");
+            Fields.Add("Email");
+            Fields.Add("Account ID");
+
             // Name
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Name");
-            Fields.Add("Name");
 
-            //  Street
+
+            //Street
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Street");
-            Fields.Add("Name");
+
 
             // City
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "City");
-            Fields.Add("Street");
+
 
             // Country
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Country");
-            Fields.Add("Country");
+
 
             // Zip code
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Zip code");
-            Fields.Add("Zip code");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Zip Code");
+
 
             // State
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "State");
-            Fields.Add("State");
+
 
             // Phone
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Phone");
-            Fields.Add("Phone");
+
 
             // Email
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Email");
-            Fields.Add("Email");
+
 
             // Account ID
             webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Account ID");
-            Fields.Add("Account ID");
+
 
             #endregion
 
-
+            Thread.Sleep(2000);
             // Save
             SafeClick(backofficeDriver, "//div[@class='save allButtons grnbtn roundCorner  fl']");
 
@@ -2217,40 +2229,61 @@ namespace FullWebappAutomation
 
 
             // Permission
-            SafeClick(backofficeDriver, "//md-tab-item[@class='md-tab ng-scope ng-isolate-scope ng-binding md-active']");
+            SafeClick(backofficeDriver, "//md-tab-item[3][@class='md-tab ng-scope ng-isolate-scope ng-binding']");
 
 
             // Edit Rep
-            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[@class='editPenIcon fr fl-edit editPenIconDisable']");
+            SafeClick(backofficeDriver, "//div[4]/div[1]/div[1]/div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[1]/div[2]/div[1]/span[2]");
 
 
+            // Account Lists
+            SafeClick(backofficeDriver, "//div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]");
+            SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[1]/div[1]/div[1]");
 
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Table");
+
+            // Save
+            SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[4]/div[1]/div[1]");
 
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            // Account
+            for (int i = 1; i < 10; i++)
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML") == "Accounts")
+                        SafeClick(webappDriver, "//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[1]/div[1]");
+                    break;
+                }
+                catch { }
+            }
+
+
             int index = 1;
+            string value;
+            bool isContains = true;
+
+            // check if all fields come to webapp
             while (true)
             {
                 try
                 {
-                    if (!Fields.Contains(SafeGetValue(backofficeDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML")))
+                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML",maxRetry: 3);
+                    if (!Fields.Contains(value))
                     {
-                        index++;
+                        isContains = false;
+                        break;
                     }
-                    else
-                    {
-                        Assert(false, "No all fields come to webapp");
-                    }
+                    index++;
                 }
                 catch
                 {
                     break;
                 }
             }
-
-
-
+            Assert(isContains, "No all fields come to webapp");
         }
 
         #endregion

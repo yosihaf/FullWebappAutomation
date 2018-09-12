@@ -725,16 +725,40 @@ namespace FullWebappAutomation
             // Save
             SafeClick(varDriver, "//div[@id='ctl00_MainContent_dDistributorDetailsContainer_dSave']//a[@title='Save']");
 
-
+            Thread.Sleep(4000);
             varDriver.Quit();
         }
 
         public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, string nameField)
         {
-            SafeSendKeys(backofficeDriver, "//input[@id='txtSearchBankFields']", nameField);
-            SafeClick(backofficeDriver, "//input[@id='txtSearchBankFields']");
-            SafeClear(backofficeDriver, "//input[@id='txtSearchBankFields']");
+            string value;
+
+            for (int i = 1; ; i++)
+            {
+                if (SafeGetValue(backofficeDriver, string.Format("//div[1]/div[1]/div[1]/div[3]/div[3]/ul[1]/div[{0}]/ul[1]", i), "style").ToString().Contains("display: none;"))
+                { }
+                for (int j = 1; ; j++)
+                {
+                    try
+                    {
+                        value = SafeGetValue(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//span[2]", i, j), "innerHTML",maxRetry: 3).ToString().Trim();
+                        if (value.ToLower().StartsWith(nameField.ToLower()))
+                        {
+                            SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j));
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            }
         }
-        #endregion
+
+
+
     }
+    #endregion
 }
+

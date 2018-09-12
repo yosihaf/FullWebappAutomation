@@ -114,7 +114,7 @@ namespace FullWebappAutomation
                    
 
                     // Close first popup next
-                    SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']");
+                    SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']",safeWait: 2000,maxRetry: 100);
 
 
                     //  Close last popup next
@@ -405,6 +405,7 @@ namespace FullWebappAutomation
 
         internal class PricingPolicy
         {
+
             public static void PricingPolicy_(RemoteWebDriver backofficeDriver)
             {
                 Setting(backofficeDriver);
@@ -414,174 +415,175 @@ namespace FullWebappAutomation
 
             public static void Pricing_Policy(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Pricing']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='4']/label");
-                SafeClick(backofficeDriver, "//div[@id='Pricing']/p[1]");
+                PricingPolicy_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Pricing']/p[@id='PricingPolicy']");
             }
 
             public static void Price_Level(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Pricing']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='4']/label");
-                SafeClick(backofficeDriver, "//div[@id='Pricing']/p[2]");
+                PricingPolicy_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Pricing']/p[@id='PriceLevel']");
             }
 
             public static void Main_Category_Discount(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Pricing']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='4']/label");
-                SafeClick(backofficeDriver, "//div[@id='Pricing']/p[3]");
+                PricingPolicy_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Pricing']/p[@id='MainCatDiscount']");
             }
 
             public static void Account_Special_Price_List(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Pricing']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='4']/label");
+                PricingPolicy_(backofficeDriver);
                 SafeClick(backofficeDriver, "//div[@id='Pricing']/p[4]");
             }
         }
 
         internal class Users
         {
-            public static void Manage_Users(RemoteWebDriver backofficeDriver)
+            public static void User(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
+                Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[1]");
+            }
+                
+            public static void Manage_Users(RemoteWebDriver backofficeDriver)
+            {
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='allUsers']");
             }
 
             public static void Role_Heirarchy(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[2]");
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='roleHierarchy']");
             }
 
             public static void Profiles(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[3]");
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='userProfile']");
             }
 
             public static void User_Lists(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[4]");
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='UserGenericList']");
             }
 
             public static void Targets_Type(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[5]");
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='TargetsType']");
             }
 
             public static void Manage_Targets(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[6]");
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='ManageTargets']");
             }
 
             public static void Rep_Dashboard_Add_Ons(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Users']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='5']/label");
-                SafeClick(backofficeDriver, "//div[@id='Users']/p[7]");
+                User(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Users']/p[@id='SupeRepAgentDashboardMenu']");
             }
         }
 
         internal class Contacts
         {
-            public static void Contact_Lists(RemoteWebDriver backofficeDriver)
+            public static void Contact(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
+                Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Contacts']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@title='Contacts']/label");
-                SafeClick(backofficeDriver, "//div[@id='Contacts']/p[1]");
             }
+
+            public static void Contact_Lists(RemoteWebDriver backofficeDriver)
+            {
+                Contact(backofficeDriver); 
+                SafeClick(backofficeDriver, "//div[@id='Contacts']/p[@id='ContactPersonGenericList']");
+            }
+
+            public static void Contact_Form(RemoteWebDriver backofficeDriver)
+            {
+                Contact(backofficeDriver); 
+                            SafeClick(backofficeDriver, "//div[@id='Contacts']/p[@id='ContactPersonForm']");
+            }
+
+            public static void Contacts_Fields(RemoteWebDriver backofficeDriver)
+            {
+                Contact(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Contacts']/p[@id='ContactsFields']");
+            }
+
         }
 
         internal class SalesActivities
         {
-            public static void Transaction_Types(RemoteWebDriver backofficeDriver)
+            public static void SalesActivity(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
+                Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='Orders']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@id='7']/label");
-                SafeClick(backofficeDriver, "//div[@id='Orders']/p[1]");
+            }
+
+            public static void Transaction_Types(RemoteWebDriver backofficeDriver)
+            {
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='OrderTypesMenu']");
             }
 
             public static void Activity_Types(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Orders']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='7']/label");
-                SafeClick(backofficeDriver, "//div[@id='Orders']/p[2]");
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='ActivityTypes']");
             }
 
             public static void Sales_Activity_Lists(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Orders']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='7']/label");
-                SafeClick(backofficeDriver, "//div[@id='Orders']/p[3]");
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='ActivityList']");
             }
 
             public static void Activity_List_Display_Options(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Orders']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='7']/label");
-                SafeClick(backofficeDriver, "//div[@id='Orders']/p[4]");
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='ActivityListBar']");
             }
 
             public static void Activities_And_Menu_Setup(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Orders']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='7']/label");
-                SafeClick(backofficeDriver, "//div[@id='Orders']/p[5]");
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='SupeRepActivityMenu']");
             }
 
             public static void Sales_Dashboard_Settings(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='Orders']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='7']/label");
-                SafeClick(backofficeDriver, "//div[@id='Orders']/p[6]");
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='SalesDashboardCust']");
             }
         }
 
         internal class ActivityPlanning
         {
-            public static void Account_Lists(RemoteWebDriver backofficeDriver)
+            public static void ActivityPlanning_(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
+                Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='PlanningActivities']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@id='8']/label");
-                SafeClick(backofficeDriver, "//div[@id='PlanningActivities']/p[1]");
+            }
+
+            public static void Account_Lists(RemoteWebDriver backofficeDriver)
+            {
+                ActivityPlanning_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='PlanningActivities']/p[@id='AccountsGridView']");
             }
 
             public static void Activity_Planning_Display_Options(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='PlanningActivities']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='8']/label");
-                SafeClick(backofficeDriver, "//div[@id='PlanningActivities']/p[2]");
+                ActivityPlanning_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='PlanningActivities']/p[@id='DailyPlanView']");
             }
         }
 

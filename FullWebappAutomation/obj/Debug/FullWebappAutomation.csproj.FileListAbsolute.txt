@@ -47,7 +47,6 @@ C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\bin\Debug\New
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\bin\Debug\WebDriver.dll
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\bin\Debug\WebDriver.Support.dll
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\bin\Debug\WebDriver.Support.xml
-C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\FullWebappAutomation.csprojResolveAssemblyReference.cache
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\MainWindow.g.cs
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\App.g.cs
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\FullWebappAutomation_MarkupCompile.cache
