@@ -57,3 +57,4 @@ C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\Ful
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\FullWebappAutomation.csproj.GenerateResource.Cache
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\FullWebappAutomation.exe
 C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\FullWebappAutomation.pdb
+C:\Users\yosef.h\Desktop\FullWebappAutomation\FullWebappAutomation\obj\Debug\FullWebappAutomation.csprojResolveAssemblyReference.cache

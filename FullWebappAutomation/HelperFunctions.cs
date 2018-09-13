@@ -729,31 +729,14 @@ namespace FullWebappAutomation
             varDriver.Quit();
         }
 
-        public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, string nameField)
-        {
-            string value;
 
-            for (int i = 1; ; i++)
-            {
-                if (SafeGetValue(backofficeDriver, string.Format("//div[1]/div[1]/div[1]/div[3]/div[3]/ul[1]/div[{0}]/ul[1]", i), "style").ToString().Contains("display: none;"))
-                { }
-                for (int j = 1; ; j++)
-                {
-                    try
-                    {
-                        value = SafeGetValue(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//span[2]", i, j), "innerHTML",maxRetry: 3).ToString().Trim();
-                        if (value.ToLower().StartsWith(nameField.ToLower()))
-                        {
-                            SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j));
-                            return;
-                        }
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                }
-            }
+        public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, string nameField,string Li_NAME)
+        {
+            backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(nameField);
+            SafeClick(backofficeDriver, string.Format("//li[@data-id='{0}']//div[@class='fr plusIcon plusIconDisable']",Li_NAME));
+            backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+            SafeClick(backofficeDriver, "//div[3]/div/div/span[@class='fa fa-search']");
+            Thread.Sleep(1000);
         }
 
 

@@ -2123,6 +2123,9 @@ namespace FullWebappAutomation
 
         public static void Webapp_Sandbox_New_List_Account_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+            int index = 1;
+            string value;
+            bool isContains = true;
 
             Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
 
@@ -2131,6 +2134,8 @@ namespace FullWebappAutomation
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+            Creat_TSA_Fields(backofficeDriver);
 
 
             // + Create New List
@@ -2168,50 +2173,56 @@ namespace FullWebappAutomation
 
             #region Add Fields
             HashSet<string> Fields = new HashSet<string>();
+
             Fields.Add("Name");
             Fields.Add("City");
             Fields.Add("Street");
-            Fields.Add("Country");
-            Fields.Add("Zip Code");
-            Fields.Add("State");
-            Fields.Add("Phone");
-            Fields.Add("Email");
+            Fields.Add("Sales Reps");
+            Fields.Add("Price List ExternalID");
+            Fields.Add("Special price list external ID");
             Fields.Add("Account ID");
+            Fields.Add("Email");
+            Fields.Add("Country");
+            Fields.Add("test");
 
             // Name
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Name");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Name", "Name");
 
 
             //Street
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Street");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "City", "City");
 
 
             // City
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "City");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Street", "Street");
 
 
             // Country
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Country");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Sales Reps","Agents");
 
 
             // Zip code
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Zip Code");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Price List ExternalID", "PriceListExternalID");
 
 
             // State
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "State");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Special price list external ID", "SpecialPriceListExternalID");
 
 
             // Phone
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Phone");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Account ID", "ExternalID");
 
 
             // Email
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Email");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Email", "Email");
 
 
             // Account ID
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Account ID");
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Country", "Country");
+
+
+            // TSA fields
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "test", "TSAtest");
 
 
             #endregion
@@ -2244,26 +2255,34 @@ namespace FullWebappAutomation
             // Save
             SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[4]/div[1]/div[1]");
 
+            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
+
+
+
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
+
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            Thread.Sleep(4000);
 
             // Account
             for (int i = 1; i < 10; i++)
             {
                 try
                 {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, "//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[1]/div[1]");
+                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
+                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]",i.ToString()));
                     break;
                 }
                 catch { }
             }
 
 
-            int index = 1;
-            string value;
-            bool isContains = true;
+
+            Thread.Sleep(7000);
+
 
             // check if all fields come to webapp
             while (true)
@@ -2283,8 +2302,39 @@ namespace FullWebappAutomation
                     break;
                 }
             }
-            Assert(isContains, "No all fields come to webapp");
+            Assert(Fields.Count==9&& isContains, "No all fields come to webapp");
         }
+
+        private static void Creat_TSA_Fields(RemoteWebDriver backofficeDriver)
+        {
+
+            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
+
+
+            // Add Custom Fields
+            SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
+
+
+            // Name test
+            SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", "test");
+
+
+            // Description test
+            SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", "test");
+
+
+            //   save 
+            SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+
+            Thread.Sleep(1000);
+        }
+
+        #endregion
+
+        #region Activities 
+
+
+
 
         #endregion
     }
