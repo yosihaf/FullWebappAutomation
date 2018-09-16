@@ -9,6 +9,7 @@ using static FullWebappAutomation.Consts;
 using static FullWebappAutomation.GlobalSettings;
 
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace FullWebappAutomation
 {
@@ -686,7 +687,7 @@ namespace FullWebappAutomation
         ///  Change the log to New List Account
         /// </summary>
         /// <param name="userName"></param>
-        public static void Var_Sandbox_New_List_Account(string userName)
+        public static void Var_Sandbox_Enable_New_List_Account(string userName)
         {
 
             RemoteWebDriver varDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), DesiredCapabilities.Chrome(), TimeSpan.FromSeconds(600));
@@ -730,13 +731,35 @@ namespace FullWebappAutomation
         }
 
 
-        public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, string nameField,string Li_NAME)
+        public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields,string nameList)
         {
-            backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(nameField);
-            SafeClick(backofficeDriver, string.Format("//li[@data-id='{0}']//div[@class='fr plusIcon plusIconDisable']",Li_NAME));
-            backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
-            SafeClick(backofficeDriver, "//div[3]/div/div/span[@class='fa fa-search']");
-            Thread.Sleep(1000);
+
+            //FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            SafeGetValue(backofficeDriver, "//div[@class='ui-widget-content slick-row even']/div[@class='slick-cell l3 r3']/div[@title='Delete']", "");
+
+
+            // Edit (Configuration) List View 
+            SafeClick(backofficeDriver, "//div[@class='ui-widget-content slick-row even']/div[@class='slick-cell l2 r2']/div[@title='Edit']");
+
+
+            // Edit Rep 
+            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[2]");
+
+            foreach (var item in Fields)
+            {
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(item.Key);
+                SafeClick(backofficeDriver, string.Format("//li[@data-id='{0}']//div[@class='fr plusIcon plusIconDisable']", item.Value));
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+                SafeClick(backofficeDriver, "//div[3]/div/div/span[@class='fa fa-search']");
+                Thread.Sleep(1000);
+            }
+
+
+            // Save
+            SafeClick(backofficeDriver, "//div[@class='save allButtons grnbtn roundCorner  fl']");
+
         }
 
 

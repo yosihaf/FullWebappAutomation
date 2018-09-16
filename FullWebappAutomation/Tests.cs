@@ -2123,121 +2123,115 @@ namespace FullWebappAutomation
 
         public static void Webapp_Sandbox_New_List_Account_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+            ///-------------need to add TSA fields----------
+            
+
+
             int index = 1;
             string value;
             bool isContains = true;
 
-            Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
 
-            Var_Sandbox_New_List_Account(DanUsername);
+            // Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
+
+
+            Var_Sandbox_Enable_New_List_Account(DanUsername);
+
 
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
-            Creat_TSA_Fields(backofficeDriver);
+            Dictionary<string, string> TSA_Fields = Creat_TSA_Fields(backofficeDriver);
 
-
-            // + Create New List
-            SafeClick(backofficeDriver, "//div[@id='btnAddNewAcc']");
+            
+            Creat_New_List_Account(backofficeDriver, "Basic_Fields");
 
 
-            //  Input New List Fildes
-            // input name
-            SafeSendKeys(backofficeDriver, "//div[@class='ListName parCont clearfix']/input[@name='name']", "Table");
+            Dictionary<string, string> Fields = Add_Basic_Fields(backofficeDriver);
 
 
-            // input description
-            SafeSendKeys(backofficeDriver, "//div[@class='ListDescription parCont clearfix']/input[@name='description']", "Automation New List Table");
-
-
-            //// Date Range
-            //SafeClick(backofficeDriver, "//div[@id='s2id_autogen17']//a[@class='select2-choice']");
-
-
-            //// Creation Date 
-            //SafeClick(backofficeDriver, "//select[@class='dateApiName ng-untouched ng-valid ng-not-empty ng-dirty ng-valid-parse']//option[@value='CreationDate']");
-
-
-            // Save
-            SafeClick(backofficeDriver, "//div[@class='general-info ng-scope']/input[1]");
-
-
-            // Edit (Configuration) List View 
-            SafeClick(backofficeDriver, "//div[@class='ui-widget-content slick-row even']/div[@class='slick-cell l2 r2']/div[@title='Edit']");
-
-
-            // Edit Rep 
-            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[2]");
-
-
-            #region Add Fields
-            HashSet<string> Fields = new HashSet<string>();
-
-            Fields.Add("Name");
-            Fields.Add("City");
-            Fields.Add("Street");
-            Fields.Add("Sales Reps");
-            Fields.Add("Price List ExternalID");
-            Fields.Add("Special price list external ID");
-            Fields.Add("Account ID");
-            Fields.Add("Email");
-            Fields.Add("Country");
-            Fields.Add("test");
-
-            // Name
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Name", "Name");
-
-
-            //Street
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "City", "City");
-
-
-            // City
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Street", "Street");
-
-
-            // Country
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Sales Reps","Agents");
-
-
-            // Zip code
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Price List ExternalID", "PriceListExternalID");
-
-
-            // State
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Special price list external ID", "SpecialPriceListExternalID");
-
-
-            // Phone
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Account ID", "ExternalID");
-
-
-            // Email
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Email", "Email");
-
-
-            // Account ID
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "Country", "Country");
-
-
-            // TSA fields
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, "test", "TSAtest");
-
-
-            #endregion
+            //  Add fields
+            webapp_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Basic_Fields");
+         
 
             Thread.Sleep(2000);
-            // Save
-            SafeClick(backofficeDriver, "//div[@class='save allButtons grnbtn roundCorner  fl']");
+
+          
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
-            // Cancel
-            SafeClick(backofficeDriver, "//div[@class='template-forms formlist']/div/div[@class='cancel allButtons grybtn roundCorner fl']");
+            Edit_Rep_Permission(backofficeDriver);
 
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+
+
+            Thread.Sleep(7000);
+
+
+            // Account
+            for (int i = 1; i < 10; i++)
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
+                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]",i.ToString()));
+                    break;
+                }
+                catch { }
+            }
+
+
+            Thread.Sleep(7000);
+
+
+            // check if all fields come to webapp
+            while (true)
+            {
+                try
+                {
+                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML",maxRetry: 3);
+                    if (!Fields.Keys.Contains(value))
+                    {
+                        isContains = false;
+                        break;
+                    }
+                    index++;
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            Assert(index == 10 && isContains, "No all fields come to webapp");
+
+
+
+        }
+
+        private static Dictionary<string, string> Add_Basic_Fields(RemoteWebDriver backofficeDriver)
+        {
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+
+            Fields.Add("Name", "Name");
+            Fields.Add("City", "City");
+            Fields.Add("Street", "Street");
+            Fields.Add("Sales Reps", "Agents");
+            Fields.Add("Price List ExternalID", "PriceListExternalID");
+            Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
+            Fields.Add("Account ID", "ExternalID");
+            Fields.Add("Email", "Email");
+            Fields.Add("Country", "Country");
+
+            return Fields;
+        }
+
+        private static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver)
+        {
 
             // Permission
             SafeClick(backofficeDriver, "//md-tab-item[3][@class='md-tab ng-scope ng-isolate-scope ng-binding']");
@@ -2254,79 +2248,100 @@ namespace FullWebappAutomation
 
             // Save
             SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[4]/div[1]/div[1]");
+        }
 
-            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
-
-
-
+        private static void Creat_New_List_Account(RemoteWebDriver backofficeDriver,string nameNewList)
+        {
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
+            // + Create New List
+            SafeClick(backofficeDriver, "//div[@id='btnAddNewAcc']");
 
 
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-            Thread.Sleep(4000);
-
-            // Account
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]",i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            //  Input New List Fildes
+            // input name
+            SafeSendKeys(backofficeDriver, "//div[@class='ListName parCont clearfix']/input[@name='name']", nameNewList);
 
 
+            // input description
+            SafeSendKeys(backofficeDriver, "//div[@class='ListDescription parCont clearfix']/input[@name='description']", "Automation "+nameNewList);
 
-            Thread.Sleep(7000);
+
+            //// Date Range
+            //SafeClick(backofficeDriver, "//div[@id='s2id_autogen17']//a[@class='select2-choice']");
 
 
-            // check if all fields come to webapp
-            while (true)
-            {
-                try
-                {
-                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML",maxRetry: 3);
-                    if (!Fields.Contains(value))
-                    {
-                        isContains = false;
-                        break;
-                    }
-                    index++;
-                }
-                catch
-                {
-                    break;
-                }
-            }
-            Assert(Fields.Count==9&& isContains, "No all fields come to webapp");
+            //// Creation Date 
+            //SafeClick(backofficeDriver, "//select[@class='dateApiName ng-untouched ng-valid ng-not-empty ng-dirty ng-valid-parse']//option[@value='CreationDate']");
+
+
+            // Save
+            SafeClick(backofficeDriver, "//div[@class='general-info ng-scope']/input[1]");
+
+            
         }
 
-        private static void Creat_TSA_Fields(RemoteWebDriver backofficeDriver)
+        private static Dictionary<string, string> Creat_TSA_Fields(RemoteWebDriver backofficeDriver)
         {
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
+
+            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
+            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
+            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
+            TSA_Fields.Add("Date", "TSADate");
+            TSA_Fields.Add("Date + Time", "TSADateTime");
+            TSA_Fields.Add("Duration", "TSADuration");
+            TSA_Fields.Add("Number", "TSANumber");
+            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
+            TSA_Fields.Add("Currency", "TSACurrency");
+            TSA_Fields.Add("Checkbox", "TSACheckbox");
+            TSA_Fields.Add("Dropdown", "TSADropdown");
+            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
+            TSA_Fields.Add("Image", "TSAImage");
+            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
+            TSA_Fields.Add("Phone number", "TSAPhonenumber");
+            TSA_Fields.Add("Link", "TSALink");
+           
+
 
             FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
 
-
-            // Add Custom Fields
-            SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
-
-
-            // Name test
-            SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", "test");
+            foreach (var item in TSA_Fields)
+            {
+                // Add Custom Fields
+                SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
 
 
-            // Description test
-            SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", "test");
+                // Select Type
+                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
 
 
-            //   save 
-            SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+                // Name test
+                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key);
 
-            Thread.Sleep(1000);
+
+                // Description test
+                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key);
+
+                if(item.Key== "Dropdown")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                if (item.Key == "Multi Choice")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+                //   save 
+                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+
+                Thread.Sleep(2000);
+            }
+
+
+            return TSA_Fields;
+
         }
 
         #endregion

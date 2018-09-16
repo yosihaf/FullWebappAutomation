@@ -56,8 +56,10 @@ namespace FullWebappAutomation
             Webapp_Sandbox_Login(webappDriver, DanUsername, DanPassword);
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
 
+            // Load file items /inventory /accounts 
+            Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
 
-            if(testsToRun["Resync"])
+            if (testsToRun["Resync"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Resync;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
@@ -189,11 +191,11 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
-            if (testsToRun["Load items"])
-            {
-                Delegator delegatedFunction = Backoffice_Sandbox_Load_File;
-                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
-            }
+            //if (testsToRun["Load items"])
+            //{
+            //    Delegator delegatedFunction = Backoffice_Sandbox_Load_File;
+            //    BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            //}
 
             if (testsToRun["Creat Bayer"])
             {
@@ -201,49 +203,53 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
             #region  Home page test 
-
+            //1
             if (testsToRun["Change title home screen"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Change_Title_Home_Screen;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
+            //2
             if (testsToRun["Change Title All Home"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Change_All_Home;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
+            //3
             if (testsToRun["Menu of Home screen"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Menu_Home_Screen;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
+            //4
             if (testsToRun["Online action"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Online_action_Home_Page;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
+            //5
             if (testsToRun["Branding color Main"])
             {
                 Delegator delegatedFunction = Sandbox_Branding_Color_Main;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
+            //6
             if (testsToRun["Branding color Secondary"])
             {
                 Delegator delegatedFunction = Sandbox_Branding_Color_Secondary;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
+            //7
             if (testsToRun["Branding image logo"])
             {
                 Delegator delegatedFunction = Sandbox_Branding_Logo;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
+
+
             #endregion
+
+
 
             if (testsToRun["New_List_Account_Table"])
             {

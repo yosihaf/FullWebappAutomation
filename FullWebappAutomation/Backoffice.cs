@@ -38,23 +38,23 @@ namespace FullWebappAutomation
                     // Close popup
                     try
                     {
-                        SafeClick(backofficeDriver, "//div[@id='walkme-balloon-951840']/div/div/div[2]/div/div",safeWait: 500, maxRetry: 3);
+                        SafeClick(backofficeDriver, "//div[@id='walkme-balloon-951840']/div/div/div[2]/div/div",safeWait: 500, maxRetry: 2);
                         Thread.Sleep(3000);
 
                         // Close first popup next
-                        SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 3);
+                        SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 2);
 
 
                         //  Close last popup next
-                        SafeClick(backofficeDriver, "//button[2]/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 3);
+                        SafeClick(backofficeDriver, "//button[2]/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 2);
                     }
                     catch (Exception) { }
 
                     try
                     {
                         // Close  popup next
-                        SafeClick(backofficeDriver, "//div[@class='walkme-custom-balloon-top-div-bottom']/div/button/span", safeWait: 500, maxRetry: 3);
-                        SafeClick(backofficeDriver, "//div[@class='walkme-custom-balloon-top-div-bottom']/div/button[2]/span", safeWait: 500, maxRetry: 3);
+                        SafeClick(backofficeDriver, "//div[@class='walkme-custom-balloon-top-div-bottom']/div/button/span", safeWait: 500, maxRetry: 2);
+                        SafeClick(backofficeDriver, "//div[@class='walkme-custom-balloon-top-div-bottom']/div/button[2]/span", safeWait: 500, maxRetry: 2);
                     }
                     catch { }
 
