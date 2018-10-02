@@ -38,15 +38,19 @@ namespace FullWebappAutomation
                     // Close popup
                     try
                     {
-                        SafeClick(backofficeDriver, "//div[@id='walkme-balloon-951840']/div/div/div[2]/div/div",safeWait: 500, maxRetry: 2);
+                        SafeClick(backofficeDriver, "//div[@id='walkme-balloon-951840']/div/div/div[2]/div/div", safeWait: 500, maxRetry: 5);
                         Thread.Sleep(3000);
+                    }
+                    catch { }
 
-                        // Close first popup next
-                        SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 2);
+                    try
+                    {
+                        // Close first popup next 
+                        SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 5);
 
 
                         //  Close last popup next
-                        SafeClick(backofficeDriver, "//button[2]/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 2);
+                        SafeClick(backofficeDriver, "//button[2]/span[@class='walkme-custom-balloon-button-text']", safeWait: 500, maxRetry: 5);
                     }
                     catch (Exception) { }
 
@@ -58,9 +62,9 @@ namespace FullWebappAutomation
                     }
                     catch { }
 
-                   
-                    
-                  
+
+
+
 
                 }
 
@@ -146,7 +150,7 @@ namespace FullWebappAutomation
                     // Click next in pop up
                     SafeClick(backofficeDriver, "//div/div/div/div/div/button/span",safeWait: 2000, maxRetry: 40);
 
-
+                    Var_Sandbox_Enable_New_List_Account(DanUsername);
                 }
                 catch (Exception e)
                 {
@@ -589,71 +593,69 @@ namespace FullWebappAutomation
 
         internal class ERPIntegration
         {
-            public static void Plugin_Settings(RemoteWebDriver backofficeDriver)
+            public static void ERP_Integration(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
+                Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='ERPIntegration']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@id='9']/label");
-                SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[1]");
+            }
+
+            public static void Plugin_Settings(RemoteWebDriver backofficeDriver)
+            {
+                ERP_Integration(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[@id='Settings_PluginSettings']");
             }
 
             public static void Configuration(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='ERPIntegration']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='9']/label");
-                SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[2]");
+                ERP_Integration(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[@id='ErpSetup']");
             }
 
             public static void File_Uploads_And_Logs(RemoteWebDriver backofficeDriver)
             {
-                SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-                if (SafeGetValue(backofficeDriver, "//div[@id='ERPIntegration']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='9']/label");
-                SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[3]");
+                ERP_Integration(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[@id='ErpFilesDetails']");
             }
         }
 
         internal class ConfigurationFiles
         {
-            public static void Automated_Reports(RemoteWebDriver backofficeDriver)
+            public static void Configuration_Files_(RemoteWebDriver backofficeDriver)
             {
                 Setting(backofficeDriver);
                 if (SafeGetValue(backofficeDriver, "//div[@id='ConfigurationFiles']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@id='10']/label");
-                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[1]");
+            }
+
+            public static void Automated_Reports(RemoteWebDriver backofficeDriver)
+            {
+                Configuration_Files_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[@id='AutomatedMail']");
             }
 
             public static void Configuration_Files(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='ConfigurationFiles']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='10']/label");
-                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[2]");
+                Configuration_Files_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[@id='ConfigurationFiles']");
             }
 
             public static void Translation_Files(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='ConfigurationFiles']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='10']/label");
-                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[3]");
+                Configuration_Files_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[@id='TranslationFiles']");
             }
 
             public static void Online_Add_Ons(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='ConfigurationFiles']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='10']/label");
-                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[4]");
+                Configuration_Files_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[@id='OnlineActions']");
             }
 
             public static void User_Defined_Tables(RemoteWebDriver backofficeDriver)
             {
-                Setting(backofficeDriver);
-                if (SafeGetValue(backofficeDriver, "//div[@id='ConfigurationFiles']", "style").ToString().Contains("display: none;"))
-                    SafeClick(backofficeDriver, "//h3[@id='10']/label");
-                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[5]");
+                Configuration_Files_(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[@id='MapData']");
             }
         }
     }

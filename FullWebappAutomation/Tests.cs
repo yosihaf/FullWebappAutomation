@@ -108,6 +108,7 @@ namespace FullWebappAutomation
                 // Login button
                 SafeClick(webappDriver, "//button[@type='submit']");
 
+
             }
             catch (Exception e)
             {
@@ -1182,53 +1183,7 @@ namespace FullWebappAutomation
             Assert(Double.TryParse(duplicatedQty, out result) == Double.TryParse(originalQty, out result2) && duplicatedRemark == originalRemark, "Duplicated data doesn't match original");
         }
 
-        public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
-        {
-            // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
-
-            // Get name of last account
-            String name = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[4]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title").ToString();
-
-            // Click search button
-            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
-
-            // Input name
-            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
-            SafeSendKeys(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input", name);
-
-            // Click search button
-            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
-            Thread.Sleep(bufferTime);
-
-
-            String foundName = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title").ToString();
-
-            Assert(serach(name, foundName), "Account search failed (found name doesn't match expected)");
-            /* bool Compar = false;
-             StringComparison comp = StringComparison.OrdinalIgnoreCase;
-             Compar= foundName.Contains(name,comp);*/
-
-            //public static bool serach();
-
-            string temp = null;
-            int index = 0;
-            while (index != -1)
-            {
-                index = name.IndexOf(" ");
-                if (index > -1)
-                    temp = name.Substring(0, index);
-                else
-                    temp = name;
-                //foundName.Contains(temp);
-                Assert(foundName.Contains(temp), "Account search failed (found name doesn't match expected)");
-                name = name.Remove(0, index + 1);
-            }
-
-
-
-            // Assert(name == foundName, "Account search failed (found name doesn't match expected)");
-        }
+       
 
         public static void Webapp_Sandbox_Mandatory_Fields(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -1316,37 +1271,9 @@ namespace FullWebappAutomation
 
         public static void Backoffice_Sandbox_Load_File(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-            try
-            {
-                // Close first popup next
-                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", maxRetry: 5);
-
-
-                //  Close last popup next
-                SafeClick(backofficeDriver, "//button[2]/span[@class='walkme-custom-balloon-button-text']");
-            }
-            catch (Exception) { }
-
-
-            // setting button
-            SafeClick(backofficeDriver, "//div[@id='settingCont']//div[@class='header']");
-
-
-            try
-            {
-                // Close  popup next
-                SafeClick(backofficeDriver, "//div/div/div/div/button/span", maxRetry: 5);
-            }
-            catch (Exception) { }
-
-
-            //ERP Integration 
-            SafeClick(backofficeDriver, "//h3[@id='9']/label");
-
-
-            // Configuration
-            SafeClick(backofficeDriver, "//div[@id='ERPIntegration']/p[2]");
+            FullWebappAutomation.Backoffice.ERPIntegration.Configuration(backofficeDriver);
 
 
             // CSV Delimiter
@@ -1376,7 +1303,7 @@ namespace FullWebappAutomation
 
 
             // UploadFile  API_Item to web
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Item.csv", "//div[@id='dLoadErpFilesContainer']/div/select/option[@value='API_Item_']");
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Item.csv", "API_Item_",false);
 
 
             // check if file succee loaded API_Item
@@ -1384,7 +1311,7 @@ namespace FullWebappAutomation
 
 
             // UploadFile  API_Item to web
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Inventory.csv", "//div[@id='dLoadErpFilesContainer']/div/select/option[@value='API_Inventory_']");
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Inventory.csv", "API_Inventory_",true);
 
 
             // check if file succee loaded API_Item
@@ -1392,8 +1319,9 @@ namespace FullWebappAutomation
 
 
             // UploadFile  API_Account to web
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Account.csv", "//option[@value='API_Account_']");
-
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Account.csv", "API_Account_",true);
+           
+        
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_Account");
@@ -1531,12 +1459,6 @@ namespace FullWebappAutomation
 
             BuyerWebappDriver.Quit();
         }
-
-
-
-
-
-
 
 
         /// <summary>
@@ -2121,99 +2043,89 @@ namespace FullWebappAutomation
 
         #region Account
 
-        public static void Webapp_Sandbox_New_List_Account_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        /// <summary>
+        /// test the TSA fields
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="backofficeDriver"></param>
+        public static void Webapp_Sandbox_Creat_TSA_Fields_And_Added(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            ///-------------need to add TSA fields----------
-            
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-            int index = 1;
-            string value;
-            bool isContains = true;
+            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
+            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
+            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
+            TSA_Fields.Add("Date", "TSADate");
+            TSA_Fields.Add("Date + Time", "TSADateTime");
+            TSA_Fields.Add("Duration", "TSADuration");
+            TSA_Fields.Add("Number", "TSANumber");
+            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
+            TSA_Fields.Add("Currency", "TSACurrency");
+            TSA_Fields.Add("Checkbox", "TSACheckbox");
+            TSA_Fields.Add("Dropdown", "TSADropdown");
+            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
+            TSA_Fields.Add("Image", "TSAImage");
+            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
+            TSA_Fields.Add("Phone number", "TSAPhonenumber");
+            TSA_Fields.Add("Link", "TSALink");
 
 
-            // Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
+            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
 
-
-            Var_Sandbox_Enable_New_List_Account(DanUsername);
-
-
-            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
-
-
-            Dictionary<string, string> TSA_Fields = Creat_TSA_Fields(backofficeDriver);
-
-            
-            Creat_New_List_Account(backofficeDriver, "Basic_Fields");
-
-
-            Dictionary<string, string> Fields = Add_Basic_Fields(backofficeDriver);
-
-
-            //  Add fields
-            webapp_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Basic_Fields");
-         
-
-            Thread.Sleep(2000);
-
-          
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-
-            Edit_Rep_Permission(backofficeDriver);
-
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-
-
-            Thread.Sleep(7000);
-
-
-            // Account
-            for (int i = 1; i < 10; i++)
+            foreach (var item in TSA_Fields)
             {
-                try
+                // Add Custom Fields
+                SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
+
+
+                // Select Type
+                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
+
+
+                // Name test
+                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key);
+
+
+                // Description test
+                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key);
+
+                // is no exist  Mapped Name Image/Attachment
+                if (item.Key != "Image" && item.Key != "Attachment")
                 {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]",i.ToString()));
-                    break;
+                    // Mapped test
+                    SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='mappedNameSection']/input[1]", item.Key);
                 }
-                catch { }
+
+                if (item.Key == "Dropdown")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                if (item.Key == "Multi Choice")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                //   save 
+                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+
+                Thread.Sleep(2000);
             }
 
-
-            Thread.Sleep(7000);
-
-
-            // check if all fields come to webapp
-            while (true)
-            {
-                try
-                {
-                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML",maxRetry: 3);
-                    if (!Fields.Keys.Contains(value))
-                    {
-                        isContains = false;
-                        break;
-                    }
-                    index++;
-                }
-                catch
-                {
-                    break;
-                }
-            }
-
-            Assert(index == 10 && isContains, "No all fields come to webapp");
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\Account_TSA.csv", "API_Account_",false);
 
 
-
+            Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "TSA_List", TSA_Fields);
         }
 
-        private static Dictionary<string, string> Add_Basic_Fields(RemoteWebDriver backofficeDriver)
+
+        /// <summary>
+        /// test the Basic fields
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="backofficeDriver"></param>
+        public static void Webapp_Sandbox_Add_Basic_Fields(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             Dictionary<string, string> Fields = new Dictionary<string, string>();
 
@@ -2227,9 +2139,14 @@ namespace FullWebappAutomation
             Fields.Add("Email", "Email");
             Fields.Add("Country", "Country");
 
-            return Fields;
+            Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "Basic_List", Fields);
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
         private static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver)
         {
 
@@ -2250,9 +2167,14 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[4]/div[1]/div[1]");
         }
 
-        private static void Creat_New_List_Account(RemoteWebDriver backofficeDriver,string nameNewList)
-        {
 
+        /// <summary>
+        /// Creat_New_List
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="nameNewList">new the new list</param>
+        private static void Creat_New_List(RemoteWebDriver backofficeDriver,string nameNewList)
+        {
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             // + Create New List
@@ -2281,67 +2203,146 @@ namespace FullWebappAutomation
 
             
         }
+      
 
-        private static Dictionary<string, string> Creat_TSA_Fields(RemoteWebDriver backofficeDriver)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="nameNewList"></param>
+        /// <param name="Fields"></param>
+        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver, string nameNewList, Dictionary<string, string> Fields)
         {
-            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
-
-            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
-            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
-            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
-            TSA_Fields.Add("Date", "TSADate");
-            TSA_Fields.Add("Date + Time", "TSADateTime");
-            TSA_Fields.Add("Duration", "TSADuration");
-            TSA_Fields.Add("Number", "TSANumber");
-            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
-            TSA_Fields.Add("Currency", "TSACurrency");
-            TSA_Fields.Add("Checkbox", "TSACheckbox");
-            TSA_Fields.Add("Dropdown", "TSADropdown");
-            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
-            TSA_Fields.Add("Image", "TSAImage");
-            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
-            TSA_Fields.Add("Phone number", "TSAPhonenumber");
-            TSA_Fields.Add("Link", "TSALink");
-           
+            int index = 1;
+            string value;
+            bool isContains = true;
 
 
-            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
+            Creat_New_List(backofficeDriver, nameNewList);
 
-            foreach (var item in TSA_Fields)
+
+            //  Add fields
+            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, nameNewList);
+
+
+            Thread.Sleep(2000);
+
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            Edit_Rep_Permission(backofficeDriver);
+
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+
+
+            Thread.Sleep(5000);
+
+
+            // Account
+            for (int i = 1; i < 10; i++)
             {
-                // Add Custom Fields
-                SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
-
-
-                // Select Type
-                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
-
-
-                // Name test
-                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key);
-
-
-                // Description test
-                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key);
-
-                if(item.Key== "Dropdown")
+                try
                 {
-                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
+                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
+                    break;
                 }
-
-                if (item.Key == "Multi Choice")
-                {
-                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
-                }
-                //   save 
-                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
-
-                Thread.Sleep(2000);
+                catch { }
             }
 
 
-            return TSA_Fields;
+            Thread.Sleep(5000);
 
+
+            // Check if all fields come to webapp
+            while (true)
+            {
+                try
+                {
+                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
+                    if (!Fields.Keys.Contains(value))
+                    {
+                        isContains = false;
+                        break;
+                    }
+                    index++;
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            Assert(index == Fields.Count + 1 && isContains, "No all fields come to webapp");
+        }
+
+
+        public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+
+            Creat_New_List( backofficeDriver,  "basic");
+
+            // key=name, value=API name
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+            Fields.Add("AccountID", "(ExternallID)");
+            Fields.Add("Street", "(Street)");
+
+
+            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "basic");
+
+
+            Edit_Rep_Permission(backofficeDriver);
+
+            // Accounts
+            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
+
+            // Get name of last account
+            String name = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[4]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title").ToString();
+
+            // Click search button
+            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
+
+            // Input name
+            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
+            SafeSendKeys(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input", name);
+
+            // Click search button
+            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
+            Thread.Sleep(bufferTime);
+
+
+            String foundName = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title").ToString();
+
+            Assert(serach(name, foundName), "Account search failed (found name doesn't match expected)");
+            /* bool Compar = false;
+             StringComparison comp = StringComparison.OrdinalIgnoreCase;
+             Compar= foundName.Contains(name,comp);*/
+
+            //public static bool serach();
+
+            string temp = null;
+            int index = 0;
+            while (index != -1)
+            {
+                index = name.IndexOf(" ");
+                if (index > -1)
+                    temp = name.Substring(0, index);
+                else
+                    temp = name;
+                //foundName.Contains(temp);
+                Assert(foundName.Contains(temp), "Account search failed (found name doesn't match expected)");
+                name = name.Remove(0, index + 1);
+            }
+
+
+
+            // Assert(name == foundName, "Account search failed (found name doesn't match expected)");
         }
 
         #endregion

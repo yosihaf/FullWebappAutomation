@@ -250,12 +250,19 @@ namespace FullWebappAutomation
             #endregion
 
 
-
-            if (testsToRun["New_List_Account_Table"])
+            if (testsToRun["New_Basic_List_Account_Table"])
             {
-                Delegator delegatedFunction = Webapp_Sandbox_New_List_Account_Table;
+                Delegator delegatedFunction = Webapp_Sandbox_Add_Basic_Fields;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
+
+
+            if (testsToRun["New_TSA_List_Account_Table"])
+            {
+                Delegator delegatedFunction = Webapp_Sandbox_Creat_TSA_Fields_And_Added;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+            
         }
 
         public static void RunTests(string chosenUsername, Dictionary<string, bool> testsToRun)

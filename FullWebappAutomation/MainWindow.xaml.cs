@@ -64,7 +64,6 @@ namespace FullWebappAutomation
                 "Search Account",
                 "Order By",
                 "Image Home",
-                //"Load items",
                 "Creat Bayer",
                 "Change title home screen",
                 "Change Title All Home",
@@ -73,7 +72,8 @@ namespace FullWebappAutomation
                 "Branding color Main",
                 "Branding color Secondary",
                 "Branding image logo",
-                "New_List_Account_Table"
+                "New_Basic_List_Account_Table",
+                "New_TSA_List_Account_Table"
             };
 
             testsToRun = new Dictionary<string, bool>();

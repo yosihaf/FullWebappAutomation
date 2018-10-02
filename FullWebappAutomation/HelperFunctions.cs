@@ -153,7 +153,7 @@ namespace FullWebappAutomation
                     element.Click();
                     break;
                 }
-                catch (Exception e)
+                catch 
                 {
                     Thread.Sleep(safeWait);
                     retryCount++;
@@ -203,7 +203,7 @@ namespace FullWebappAutomation
 
                     return;
                 }
-                catch (Exception e)
+                catch 
                 {
                     Thread.Sleep(safeWait);
                     retryCount++;
@@ -234,7 +234,7 @@ namespace FullWebappAutomation
                     element.Clear();
                     return;
                 }
-                catch (Exception e)
+                catch 
                 {
                     Thread.Sleep(safeWait);
                     retryCount++;
@@ -268,7 +268,7 @@ namespace FullWebappAutomation
                     Highlight(driver, element, safeWait / 2);
                     return value;
                 }
-                catch (Exception e)
+                catch 
                 {
                     Thread.Sleep(safeWait);
                     retryCount++;
@@ -286,28 +286,30 @@ namespace FullWebappAutomation
         /// </summary>
         /// <param name="driver"></param>
         /// <param name="pathFile"></param>
-        /// <param name="elementXPath"></param>
-        public static void UploadFile(RemoteWebDriver driver, string pathFile, string elementXPath)
+        /// <param name="elementXPath">Type of file</param>
+        public static void UploadFile(RemoteWebDriver driver, string pathFile, string elementXPath, bool erp)
         {
-            // File Upload and Logs
-            SafeClick(driver, "//p[@id='ErpFilesDetails']");
-
+            if (!erp)
+            {
+                // ERP Integration
+                FullWebappAutomation.Backoffice.ERPIntegration.File_Uploads_And_Logs(driver);
+            }
 
             // Upload Button
-            SafeClick(driver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[1]/div[1]/div[6]/div[2]" );
+            SafeClick(driver, "//div/div/div[@id='loadERPFile']");
 
 
             // Choose value
-            SafeClick(driver, "//div[@id='dLoadErpFilesContainer']/div/select" );
+            SafeClick(driver, "//div[@id='dLoadErpFilesContainer']/div/select[@id='erpFileType']");
 
 
             // API Item
-            SafeClick(driver, elementXPath);
+            SafeClick(driver,string.Format("//div[@id='dLoadErpFilesContainer']/div/select/option[@value='{0}']", elementXPath));
 
 
 
             //  Browse  
-            SafeClick(driver, "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable']/div[@id='loadERPFileDialog']/div[1]/div[2]/a[1][@class='upload']");
+            SafeClick(driver, "//div[@id='loadERPFileDialog']/div/div/a");
 
 
             // UploadFile to web
@@ -317,7 +319,7 @@ namespace FullWebappAutomation
 
 
             //close popue
-            SafeClick(driver, "//div[@aria-labelledby='ui-dialog-title-loadERPFileDialog']/div[@class='ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix']/a[1]/span[@class='ui-icon ui-icon-closethick']");
+            SafeClick(driver, "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable']//a/span[@class='ui-icon ui-icon-closethick']");
             Thread.Sleep(4000);
         }
         
@@ -730,14 +732,39 @@ namespace FullWebappAutomation
             varDriver.Quit();
         }
 
-
-        public static void webapp_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields,string nameList)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="Fields">Fields to add</param>
+        /// <param name="nameList">list to add</param>
+        public static void backoffice_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields,string nameList)
         {
 
-            //FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
+            // Select List
+            int top = 0;
+            try
+            {
+                while (true)
+                {
+                    if (nameList == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l0 r0']", "innerHTML"))
+                    {
+                        SafeClick(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:0px']/div[@class='slick-cell l3 r3']/div[@title='Edit']");
+                        break;
+                    }
+                    top += 40;
+                }
+            }
+            catch
+            {
+                Assert(false, "no exist the new list");
+                return;
+            }
 
-            SafeGetValue(backofficeDriver, "//div[@class='ui-widget-content slick-row even']/div[@class='slick-cell l3 r3']/div[@title='Delete']", "");
+            // Configuration
+            SafeClick(backofficeDriver, "//md-pagination-wrapper/md-tab-item[2]");
 
 
             // Edit (Configuration) List View 

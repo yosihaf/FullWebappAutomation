@@ -13,13 +13,13 @@ namespace FullWebappAutomation
         public static string newCredentialsFilePath;
         public static string DanUsername;
         public static string DanPassword;
-        public static bool isCreat;
+        
         public static void Setting(RemoteWebDriver backofficeDriver)
         {
             SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
             try
             {
-                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", maxRetry: 2);
+                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']",safeWait:100, maxRetry: 3);
             }
             catch { }
         }
@@ -27,7 +27,6 @@ namespace FullWebappAutomation
         {
             DateTime dateTime = DateTime.Now;
 
-            
             successLogFilePath = CreateNewLog("success", "chrome", dateTime);
             performanceLogFilePath = CreateNewLog("performance", "chrome", dateTime);
             finalizedPerformanceLogFilePath = CreateNewLog("finalizedPerformance", "chrome", dateTime);
