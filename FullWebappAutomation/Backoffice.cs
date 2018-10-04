@@ -596,6 +596,11 @@ namespace FullWebappAutomation
             public static void ERP_Integration(RemoteWebDriver backofficeDriver)
             {
                 Setting(backofficeDriver);
+                try
+                {
+                    SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']", safeWait: 100, maxRetry: 3);
+                }
+                catch { }
                 if (SafeGetValue(backofficeDriver, "//div[@id='ERPIntegration']", "style").ToString().Contains("display: none;"))
                     SafeClick(backofficeDriver, "//h3[@id='9']/label");
             }

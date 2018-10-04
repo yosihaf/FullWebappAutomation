@@ -577,7 +577,7 @@ namespace FullWebappAutomation
             var data = string.Empty;
 
             // API request url, with inserted data from method params
-            string url = string.Format(@"https://apint.sandbox.pepperi.com/restapi/PepperiAPInt.Data.svc/V1.0/{0}?where={1}='{2}'", objectType, property, value);
+            string url = string.Format(@"https://apint.sandbox.pepperi.com/restapi/PepperiAPInt.Data.svc/V1.0/{0}?where={1}'{2}'", objectType, property, value);
 
             // Create the request object
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -751,7 +751,7 @@ namespace FullWebappAutomation
                 {
                     if (nameList == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l0 r0']", "innerHTML"))
                     {
-                        SafeClick(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:0px']/div[@class='slick-cell l3 r3']/div[@title='Edit']");
+                        SafeClick(backofficeDriver, "//div[@style='top:"+ top.ToString() + "px']/div[@class='slick-cell l3 r3']/div[@title='Edit']");
                         break;
                     }
                     top += 40;

@@ -246,7 +246,7 @@ namespace FullWebappAutomation
             string actualActivityID = SafeGetValue(webappDriver, string.Format("(//label[@id='WrntyID'])[{0}]", orderIndexInList), "innerHTML").ToString();
 
             // Get Activity ID from API
-            var apiData = GetApiData(DanUsername, DanPassword, "transactions", "Remark", orderInfo["orderRemark"]);
+            var apiData = GetApiData(DanUsername, DanPassword, "transactions", "Remark=", orderInfo["orderRemark"]);
             string apiActivityID = apiData[0].InternalID.ToString();
 
             Assert(actualActivityID == apiActivityID, "Activity ID doesn't match API data");
@@ -294,7 +294,7 @@ namespace FullWebappAutomation
             string actualActivityID = SafeGetValue(backofficeDriver, string.Format("//table[@class='ll_tbl']/tbody/tr[{0}]/td[3]/a", orderIndexInList), "title");
 
             // Get activity ID from API
-            var apiData = GetApiData(DanUsername, DanPassword, "transactions", "Remark", orderInfo["orderRemark"]);
+            var apiData = GetApiData(DanUsername, DanPassword, "transactions", "Remark=", orderInfo["orderRemark"]);
             string apiActivityID = apiData[0].InternalID.ToString();
 
             Assert(apiActivityID == actualActivityID, "BO activity id doesn't match sql data");
@@ -578,7 +578,7 @@ namespace FullWebappAutomation
             string itemName = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[6]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
 
             // Get item ID from API
-            var apiData = GetApiData(DanUsername, DanPassword, "items", "Name", itemName);
+            var apiData = GetApiData(DanUsername, DanPassword, "items", "Name=", itemName);
             string apiItemCode = apiData[0].ExternalID.ToString();
 
             // Click search icon
@@ -612,7 +612,7 @@ namespace FullWebappAutomation
             string itemID = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[7]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
 
             // Get item data from api
-            var apiData = GetApiData(DanUsername, DanPassword, "items", "ExternalID", itemID);
+            var apiData = GetApiData(DanUsername, DanPassword, "items", "ExternalID=", itemID);
 
             // Parse the data to integer and store it in variable - min qty
             int apiItemMinQty;
@@ -910,13 +910,13 @@ namespace FullWebappAutomation
             string itemID = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[3]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
 
             // Get item api data
-            var apiData = GetApiData(DanUsername, DanPassword, "items", "Name", itemID);
+            var apiData = GetApiData(DanUsername, DanPassword, "items", "Name=", itemID);
 
             // Parse out InternalID
             string InternalID = apiData[0].InternalID.ToString();
 
             // Get item inverntory data from api
-            apiData = GetApiData(DanUsername, DanPassword, "inventory", "ItemInternalID", InternalID);
+            apiData = GetApiData(DanUsername, DanPassword, "inventory", "ItemInternalID=", InternalID);
 
             // Parse out InStockQuantity
             int inStockQuantity;
@@ -2113,11 +2113,40 @@ namespace FullWebappAutomation
                 Thread.Sleep(2000);
             }
 
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\Account_TSA.csv", "API_Account_",false);
-
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\Account_TSA.csv", "API_Account_Overwrite_", false);
 
             Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "TSA_List", TSA_Fields);
+
+
+
+            TSA_Fields_Line_(webappDriver, backofficeDriver);
+
+         
+
         }
+
+
+        public static void TSA_Fields_Line_(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Dictionary<string, string> TSA_Fields_Line = new Dictionary<string, string>();
+
+            TSA_Fields_Line.Add("Single Line Text", "TSASingleLineText");
+            TSA_Fields_Line.Add("Limited Line Text", "TSALimitedLineText");
+            TSA_Fields_Line.Add("Duration", "TSADuration");
+            TSA_Fields_Line.Add("Number", "TSANumber");
+            TSA_Fields_Line.Add("Decimal Number", "TSADecimalNumber");
+            TSA_Fields_Line.Add("Currency", "TSACurrency");
+            TSA_Fields_Line.Add("Dropdown", "TSADropdown");
+            TSA_Fields_Line.Add("Multi Choice", "TSAMultiChoice");
+            TSA_Fields_Line.Add("Phone number", "TSAPhonenumber");
+
+
+            Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "TSA_List_Line", TSA_Fields_Line);
+
+
+            SafeClick(webappDriver, "//div[@class='ellipsis']");
+        }
+
 
 
         /// <summary>
@@ -2149,7 +2178,6 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         private static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver)
         {
-
             // Permission
             SafeClick(backofficeDriver, "//md-tab-item[3][@class='md-tab ng-scope ng-isolate-scope ng-binding']");
 
@@ -2212,10 +2240,11 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         /// <param name="nameNewList"></param>
         /// <param name="Fields"></param>
-        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver, string nameNewList, Dictionary<string, string> Fields)
+        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver, string nameNewList, Dictionary<string, string> Fields,bool isHeader=true)
         {
             int index = 1;
-            string value;
+            string valueH = "";
+            string valueL;
             bool isContains = true;
 
 
@@ -2256,30 +2285,57 @@ namespace FullWebappAutomation
                 catch { }
             }
 
-
-            Thread.Sleep(5000);
-
-
-            // Check if all fields come to webapp
-            while (true)
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList),safeWait:300,maxRetry:20);
+            }
+            catch
             {
                 try
                 {
-                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
-                    if (!Fields.Keys.Contains(value))
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
                     {
-                        isContains = false;
-                        break;
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']",nameNewList));
                     }
-                    index++;
                 }
-                catch
+                catch 
                 {
-                    break;
+                    isContains = false;
                 }
             }
 
-            Assert(index == Fields.Count + 1 && isContains, "No all fields come to webapp");
+
+            Thread.Sleep(5000);
+
+            if (isHeader)
+            {
+                // Check if all fields come to webapp
+                while (true)
+                {
+                    try
+                    {
+                        valueH = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
+                        if (!Fields.Keys.Contains(valueH))
+                        {
+                            isContains = false;
+                            break;
+                        }
+
+                        index++;
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+
+                Assert(index == Fields.Count + 1 && isContains, "No all fields come to webapp");
+            }
+            else
+            {
+
+            }
         }
 
 
@@ -2290,14 +2346,20 @@ namespace FullWebappAutomation
 
             // key=name, value=API name
             Dictionary<string, string> Fields = new Dictionary<string, string>();
-            Fields.Add("AccountID", "(ExternallID)");
-            Fields.Add("Street", "(Street)");
+            Fields.Add("Account ID", "ExternalID");
+            Fields.Add("Street", "Street");
 
 
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "basic");
 
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Edit_Rep_Permission(backofficeDriver);
+
+
+            Sreach(backofficeDriver,Fields);
+
+            Thread.Sleep(3000);
 
             // Accounts
             SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
@@ -2343,6 +2405,22 @@ namespace FullWebappAutomation
 
 
             // Assert(name == foundName, "Account search failed (found name doesn't match expected)");
+        }
+
+        private static void Sreach(RemoteWebDriver backofficeDriver, Dictionary<string, string> fields)
+        {
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+            // Configuration
+
+
+            // edit search
+            //md-tab-content[2]//div[@style='top:0px']/div[@class='slick-cell l0 r0']
+
+          //  --------------------------------------------------------------------------------------To do
+            // edit rep
+
+
         }
 
         #endregion
