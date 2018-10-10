@@ -10,7 +10,7 @@ namespace FullWebappAutomation
     class TestOnChrome
     {
         public static RemoteWebDriver webappDriver, backofficeDriver;
-        public static RemoteWebDriver backofficeDriver2;
+        //public static RemoteWebDriver backofficeDriver2;
         //public static bool isCreatLocal;
         public static void SetUp()
         {
@@ -21,7 +21,7 @@ namespace FullWebappAutomation
             webappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
             backofficeDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
-            backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
+            //backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
 
             GlobalSettings.InitLogFiles();
@@ -46,8 +46,8 @@ namespace FullWebappAutomation
 
             ////if (isCreatLocal == false)
             ////{
-            Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
-            backofficeDriver2.Quit();
+          //  Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
+          //  backofficeDriver2.Quit();
             //isCreatLocal = true;
             ////}
 
@@ -56,8 +56,12 @@ namespace FullWebappAutomation
             Webapp_Sandbox_Login(webappDriver, DanUsername, DanPassword);
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
 
-            // Load file items /inventory /accounts 
-            Backoffice_Sandbox_Load_File(webappDriver, backofficeDriver);
+            //if (true)
+            //{
+            //    // Load file items / inventory / accounts
+            //    Delegator delegatedFunction = Backoffice_Sandbox_Load_File;
+            //    BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            //}
 
             if (testsToRun["Resync"])
             {
@@ -191,11 +195,7 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
-            //if (testsToRun["Load items"])
-            //{
-            //    Delegator delegatedFunction = Backoffice_Sandbox_Load_File;
-            //    BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
-            //}
+            
 
             if (testsToRun["Creat Bayer"])
             {

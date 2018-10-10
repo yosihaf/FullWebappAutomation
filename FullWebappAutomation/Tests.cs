@@ -265,7 +265,7 @@ namespace FullWebappAutomation
         /// <param name="orderInfo"></param>
         public static void Backoffice_Sandbox_Check_Sales_Order(RemoteWebDriver backofficeDriver, Dictionary<string, string> orderInfo)
         {
-            backofficeDriver.Navigate().GoToUrl(backofficeSandboxHomePageUrl);
+            //backofficeDriver.Navigate().GoToUrl(backofficeSandboxHomePageUrl);
             SafeClick(backofficeDriver, "(//a[contains(text(),'Activities')])[2]");
 
             bool remarkMatch = false;
@@ -1499,61 +1499,10 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         public static void Webapp_Sandbox_Change_All_Home(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            int total = 0;
-            string value;
-            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+
+            Backoffice_Change_All_Home(backofficeDriver);
 
 
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[1]/div[2]/div[1]/span[2]");
-
-
-            Backoffice_Delete_Layout(backofficeDriver);
-
-
-            // Add any 16 button
-
-            // Available Filds
-            for (int i = 1; ; i++)
-            {
-                try
-                {
-                    SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
-
-                }
-                catch
-                {
-                    break;
-                }
-                // sub Available Filds
-                for (int j = 1; ; j++)
-                {
-                    try
-                    {
-                        value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
-                        if (value.Contains("Catalog") || value.Contains("Dashboard"))
-                        {
-                            continue;
-                        }
-                        SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
-                        total++;
-                        if (total >= 16)
-                            break;
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                }
-                if (total >= 16)
-                    break;
-            }
-
-            // Save button
-            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
-
-
-            Thread.Sleep(2000);
             Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
             Thread.Sleep(4000);
 
@@ -1592,6 +1541,79 @@ namespace FullWebappAutomation
             Thread.Sleep(4000);
 
             Assert(flag, "sume of button different between webapp to bakeoffice");
+        }
+
+        public static void Backoffice_Change_All_Home(RemoteWebDriver backofficeDriver)
+        {
+            int total = 0;
+            string value;
+
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+            Fields.Add("Accounts", "Accounts");
+            Fields.Add("Activity List", "ActivityList");
+            Fields.Add("Catalog", "Catalog");
+            Fields.Add("Contacts", "Contacts");
+            Fields.Add("Users", "Users");
+            Fields.Add("Pepperi.com", "OLA_41562");
+            Fields.Add("Support", "OLA_41563");
+            Fields.Add("ALL", "");
+            Fields.Add("Support", "OLA_41563");
+            Fields.Add("ALL", "");
+
+
+            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+
+            
+
+            // Edit Admin
+            SafeClick(backofficeDriver, "//div/div[3]/div/span[2]");
+
+
+            Backoffice_Delete_Layout(backofficeDriver);
+
+
+            // Add any 16 button
+
+            // Available Filds
+            for (int i = 1; ; i++)
+            {
+                try
+                {
+                    SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
+                }
+                catch
+                {
+                    break;
+                }
+                // sub Available Filds
+                for (int j = 1; ; j++)
+                {
+                    try
+                    {
+                        value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
+                        if (value.Contains("Catalog") || value.Contains("Dashboard"))
+                        {
+                            continue;
+                        }
+                        SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
+                        total++;
+                        if (total >= 16)
+                            break;
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+                if (total >= 16)
+                    break;
+            }
+
+            // Save button
+            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
+
+
+            Thread.Sleep(2000);
         }
 
         /// <summary>
@@ -2172,254 +2194,122 @@ namespace FullWebappAutomation
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="backofficeDriver"></param>
-        private static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver)
-        {
-            // Permission
-            SafeClick(backofficeDriver, "//md-tab-item[3][@class='md-tab ng-scope ng-isolate-scope ng-binding']");
-
-
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[4]/div[1]/div[1]/div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[1]/div[2]/div[1]/span[2]");
-
-
-            // Account Lists
-            SafeClick(backofficeDriver, "//div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]");
-            SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[1]/div[1]/div[1]");
-
-
-            // Save
-            SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[4]/div[1]/div[1]");
-        }
-
-
-        /// <summary>
-        /// Creat_New_List
-        /// </summary>
-        /// <param name="backofficeDriver"></param>
-        /// <param name="nameNewList">new the new list</param>
-        private static void Creat_New_List(RemoteWebDriver backofficeDriver,string nameNewList)
-        {
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-            // + Create New List
-            SafeClick(backofficeDriver, "//div[@id='btnAddNewAcc']");
-
-
-            //  Input New List Fildes
-            // input name
-            SafeSendKeys(backofficeDriver, "//div[@class='ListName parCont clearfix']/input[@name='name']", nameNewList);
-
-
-            // input description
-            SafeSendKeys(backofficeDriver, "//div[@class='ListDescription parCont clearfix']/input[@name='description']", "Automation "+nameNewList);
-
-
-            //// Date Range
-            //SafeClick(backofficeDriver, "//div[@id='s2id_autogen17']//a[@class='select2-choice']");
-
-
-            //// Creation Date 
-            //SafeClick(backofficeDriver, "//select[@class='dateApiName ng-untouched ng-valid ng-not-empty ng-dirty ng-valid-parse']//option[@value='CreationDate']");
-
-
-            // Save
-            SafeClick(backofficeDriver, "//div[@class='general-info ng-scope']/input[1]");
-
-            
-        }
-      
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="webappDriver"></param>
-        /// <param name="backofficeDriver"></param>
-        /// <param name="nameNewList"></param>
-        /// <param name="Fields"></param>
-        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver, string nameNewList, Dictionary<string, string> Fields,bool isHeader=true)
-        {
-            int index = 1;
-            string valueH = "";
-            string valueL;
-            bool isContains = true;
-
-
-            Creat_New_List(backofficeDriver, nameNewList);
-
-
-            //  Add fields
-            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, nameNewList);
-
-
-            Thread.Sleep(2000);
-
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-
-            Edit_Rep_Permission(backofficeDriver);
-
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-
-
-            Thread.Sleep(5000);
-
-
-            // Account
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
-
-            try
-            {
-                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList),safeWait:300,maxRetry:20);
-            }
-            catch
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
-                    {
-                        SafeClick(webappDriver, "//div[@class='ellipsis']");
-                        SafeClick(webappDriver, string.Format("//li[@title='{0}']",nameNewList));
-                    }
-                }
-                catch 
-                {
-                    isContains = false;
-                }
-            }
-
-
-            Thread.Sleep(5000);
-
-            if (isHeader)
-            {
-                // Check if all fields come to webapp
-                while (true)
-                {
-                    try
-                    {
-                        valueH = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
-                        if (!Fields.Keys.Contains(valueH))
-                        {
-                            isContains = false;
-                            break;
-                        }
-
-                        index++;
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                }
-
-                Assert(index == Fields.Count + 1 && isContains, "No all fields come to webapp");
-            }
-            else
-            {
-
-            }
-        }
-
-
         public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            Creat_New_List( backofficeDriver,  "basic");
+            Creat_New_List(backofficeDriver, "Search");
 
             // key=name, value=API name
             Dictionary<string, string> Fields = new Dictionary<string, string>();
             Fields.Add("Account ID", "ExternalID");
             Fields.Add("Street", "Street");
+            Fields.Add("Locations", "Locations");
+            Fields.Add("Price List ExternalID", "PriceListExternalID");
+            Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
 
 
-            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "basic");
+
+            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Search_List");
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Edit_Rep_Permission(backofficeDriver);
 
 
-            Sreach(backofficeDriver,Fields);
+            Sreach_Available_Fields(backofficeDriver, Fields, "Search");
+
+
+            Thread.Sleep(3000);
+
+
+            // Accounts
+            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
+
+
+
+
+            check_Field_Button_Search(webappDriver, "105599", 10, 1);
+            check_Field_Button_Search(webappDriver, "105599 98", 1, 1);
+
+
+            check_Field_Textbox_Search(webappDriver, "EAsTERn", 12, 2);
+            check_Field_Textbox_Search(webappDriver, "EASTERn 794 ", 1, 2);
+
+
+            check_Field_Textbox_Search(webappDriver, "QQ17 ", 12, 4);
+            check_Field_Textbox_Search(webappDriver, "QQ17 ", 1, 4);
+
+
+            check_Field_Textbox_Search(webappDriver, "sp 5 ", 7, 5);
+            check_Field_Textbox_Search(webappDriver, "sp 5 ", 1, 5);
+        }
+
+      
+
+        public static void Webapp_Sandbox_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            // Create New List Smart_Search
+
+            Creat_New_List(backofficeDriver, "Smarch_Search_List");
+
+
+            // key=name, value=API name
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+            Fields.Add("Account ID", "ExternalID");
+            Fields.Add("Street", "Street");
+            Fields.Add("Locations", "Locations");
+            Fields.Add("Price List ExternalID", "PriceListExternalID");
+            Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
+
+
+            backoffice_Sandbox_Add_Available_Fields(backofficeDriver,Fields, "Smarch_Search_List");
+
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            Edit_Rep_Permission(backofficeDriver);
+
+
+            Sreach_Available_Fields(backofficeDriver, Fields, "Smarch_Search");
+
 
             Thread.Sleep(3000);
 
             // Accounts
             SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
 
-            // Get name of last account
-            String name = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[4]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title").ToString();
+            check_Field_Smart_Search(webappDriver);
 
-            // Click search button
-            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
-
-            // Input name
-            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
-            SafeSendKeys(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input", name);
-
-            // Click search button
-            SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
-            Thread.Sleep(bufferTime);
-
-
-            String foundName = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title").ToString();
-
-            Assert(serach(name, foundName), "Account search failed (found name doesn't match expected)");
-            /* bool Compar = false;
-             StringComparison comp = StringComparison.OrdinalIgnoreCase;
-             Compar= foundName.Contains(name,comp);*/
-
-            //public static bool serach();
-
-            string temp = null;
-            int index = 0;
-            while (index != -1)
-            {
-                index = name.IndexOf(" ");
-                if (index > -1)
-                    temp = name.Substring(0, index);
-                else
-                    temp = name;
-                //foundName.Contains(temp);
-                Assert(foundName.Contains(temp), "Account search failed (found name doesn't match expected)");
-                name = name.Remove(0, index + 1);
-            }
-
-
-
-            // Assert(name == foundName, "Account search failed (found name doesn't match expected)");
         }
 
-        private static void Sreach(RemoteWebDriver backofficeDriver, Dictionary<string, string> fields)
+        private static void check_Field_Smart_Search(RemoteWebDriver webappDriver)
         {
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            // Select field 
+            SafeClick(webappDriver, "//ul/li/label/span[contains(text(),'Account ID')]");
 
-            // Configuration
+
+            // Select last 
+            SafeClick(webappDriver, "//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[99]/label");
 
 
-            // edit search
-            //md-tab-content[2]//div[@style='top:0px']/div[@class='slick-cell l0 r0']
+            // Done 
+            SafeClick(webappDriver, "//a[@title='Done']");
 
-          //  --------------------------------------------------------------------------------------To do
-            // edit rep
 
+            // Get  value
+            string value = "1056";
+            int index = 1;
+            int column = 1;
+            string foundName = "";
+            try
+            {
+                foundName = SafeGetValue(webappDriver, string.Format("//div[2]/div[{0}]/app-custom-form[1]/fieldset/div[{1}]/app-custom-field-generator/app-custom-textbox/label", index, column), "title", safeWait: 100, maxRetry: 7).ToString();
+            }
+            catch { }
+            
+
+            bool isFound = serach(value, foundName);
 
         }
 

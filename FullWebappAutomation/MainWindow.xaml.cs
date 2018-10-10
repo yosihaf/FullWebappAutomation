@@ -39,7 +39,7 @@ namespace FullWebappAutomation
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         
 
-            usernames = new string[] { "qatests@pepperitest.com", "daniel10@pepperitest.com" };
+            usernames = new string[] { "automation80@pepperitest.com", "daniel10@pepperitest.com" };
             tests = new string[]
             {
                 "Resync",
