@@ -1537,8 +1537,7 @@ namespace FullWebappAutomation
 
 
 
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[1]/div[2]/div[1]/span[2]");
+           
 
 
             // reverse all
@@ -1607,42 +1606,7 @@ namespace FullWebappAutomation
             }
 
 
-            //// Add any 16 button
-
-            //// Available Filds
-            //for (int i = 1; ; i++)
-            //{
-            //    try
-            //    {
-            //        SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
-            //    }
-            //    catch
-            //    {
-            //        break;
-            //    }
-            //    // sub Available Filds
-            //    for (int j = 1; ; j++)
-            //    {
-            //        try
-            //        {
-            //            value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
-            //            if (value.Contains("Catalog") || value.Contains("Dashboard"))
-            //            {
-            //                continue;
-            //            }
-            //            SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
-            //            total++;
-            //            if (total >= 16)
-            //                break;
-            //        }
-            //        catch
-            //        {
-            //            break;
-            //        }
-            //    }
-            //    if (total >= 16)
-            //        break;
-            //}
+           
 
             // Save button
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
@@ -1660,7 +1624,27 @@ namespace FullWebappAutomation
         /// <param name="defaultiv"></param>
         public static void Backoffice_Delete_Layout(RemoteWebDriver backofficeDriver, string Accounts = null, string Activity = null, bool defaultiv = false)
         {
+
+            FullWebappAutomation.Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+
+
+            // Edit Admin
+            int k = 2;
+            while (true)
+            {
+                try
+                {
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    {
+                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
+                        break;
+                    }
+                }
+                catch { }
+                k++;
+            }
             string value;
+
             //delete all Layout
             for (int i = 1; ;)
             {
@@ -1677,14 +1661,11 @@ namespace FullWebappAutomation
                     }
                     else
                         SafeClick(backofficeDriver, string.Format("//ul[@class='clearfix ui-sortable']//li[{0}]//div[1]//div[1]//span[4]", i), maxRetry: 2);
-
-
                 }
                 catch
                 {
                     break;
                 }
-
             }
         }
 
