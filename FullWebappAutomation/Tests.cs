@@ -1500,30 +1500,42 @@ namespace FullWebappAutomation
         public static void Webapp_Sandbox_Change_All_Home(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            Backoffice_Change_All_Home(backofficeDriver);
+            Backoffice_Change_All_Button_Home(backofficeDriver);
 
-
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+            Fields.Add("Accounts", "Accounts");
+            Fields.Add("Activity List", "ActivityList");
+            Fields.Add("Catalog", "Catalog");
+            Fields.Add("Contacts", "Contacts");
+            Fields.Add("Users", "Users");
+            Fields.Add("Photo", "Photo");
+            Fields.Add("Support", "OLA_41563");
+            Fields.Add("Sales Order", "Sales Order");
+            Fields.Add("Visit", "Visit");
+            string value = "";
             Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
             Thread.Sleep(4000);
 
             bool flag = false;
-            // check if exist 16 button in home page 
-            for (int i = 1; ; i++)
+            
+            // check if exist  button in home page 
+            for (int i=1;;i++)
             {
-
-
                 try
                 {
-                    SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2);
+                 if(!Fields.ContainsKey(SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2)))
+                    {
+                        break;
+                    }
                 }
                 catch
                 {
-                    if (i == 17)
+                    if (i == 9)
                         flag = true;
-                    break;
-
                 }
             }
+
+
 
             // Edit Rep
             SafeClick(backofficeDriver, "//div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[1]/div[2]/div[1]/span[2]");
@@ -1543,10 +1555,9 @@ namespace FullWebappAutomation
             Assert(flag, "sume of button different between webapp to bakeoffice");
         }
 
-        public static void Backoffice_Change_All_Home(RemoteWebDriver backofficeDriver)
+        public static void Backoffice_Change_All_Button_Home(RemoteWebDriver backofficeDriver)
         {
-            int total = 0;
-            string value;
+          
 
             Dictionary<string, string> Fields = new Dictionary<string, string>();
             Fields.Add("Accounts", "Accounts");
@@ -1554,60 +1565,84 @@ namespace FullWebappAutomation
             Fields.Add("Catalog", "Catalog");
             Fields.Add("Contacts", "Contacts");
             Fields.Add("Users", "Users");
-            Fields.Add("Pepperi.com", "OLA_41562");
+            Fields.Add("Photo", "Photo");
             Fields.Add("Support", "OLA_41563");
-            Fields.Add("ALL", "");
-            Fields.Add("Support", "OLA_41563");
-            Fields.Add("ALL", "");
+            Fields.Add("Sales Order", "Sales Order");
+            Fields.Add("Visit", "Visit");
+            
+
 
 
             Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
 
-            
+
 
             // Edit Admin
-            SafeClick(backofficeDriver, "//div/div[3]/div/span[2]");
+            int k = 2;
+            while (true)
+            {
+                try
+                {
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    {
+                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
+                        break;
+                    }
+                }
+                catch { }
+                k++;
+            }
+
 
 
             Backoffice_Delete_Layout(backofficeDriver);
 
-
-            // Add any 16 button
-
-            // Available Filds
-            for (int i = 1; ; i++)
+            foreach (var item in Fields)
             {
-                try
-                {
-                    SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
-                }
-                catch
-                {
-                    break;
-                }
-                // sub Available Filds
-                for (int j = 1; ; j++)
-                {
-                    try
-                    {
-                        value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
-                        if (value.Contains("Catalog") || value.Contains("Dashboard"))
-                        {
-                            continue;
-                        }
-                        SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
-                        total++;
-                        if (total >= 16)
-                            break;
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                }
-                if (total >= 16)
-                    break;
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(item.Key);
+                SafeClick(backofficeDriver, string.Format("//li[@data-id='{0}']//div[@class='fr plusIcon plusIconDisable']", item.Value));
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+                SafeClick(backofficeDriver, "//div[3]/div/div//span[@class='fa fa-search']");
+                Thread.Sleep(1000);
             }
+
+
+            //// Add any 16 button
+
+            //// Available Filds
+            //for (int i = 1; ; i++)
+            //{
+            //    try
+            //    {
+            //        SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
+            //    }
+            //    catch
+            //    {
+            //        break;
+            //    }
+            //    // sub Available Filds
+            //    for (int j = 1; ; j++)
+            //    {
+            //        try
+            //        {
+            //            value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
+            //            if (value.Contains("Catalog") || value.Contains("Dashboard"))
+            //            {
+            //                continue;
+            //            }
+            //            SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
+            //            total++;
+            //            if (total >= 16)
+            //                break;
+            //        }
+            //        catch
+            //        {
+            //            break;
+            //        }
+            //    }
+            //    if (total >= 16)
+            //        break;
+            //}
 
             // Save button
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
@@ -1767,10 +1802,38 @@ namespace FullWebappAutomation
         public static void Webapp_Sandbox_Online_action_Home_Page(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
+            Bakeoffice_Sandbox_Online_action_Home_Page(webappDriver, backofficeDriver);
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            Thread.Sleep(2000);
+
+            // check if exist button in "Online action automation" and click
+            for (int i = 1; ; i++)
+            {
+                if (SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2) == "Online action automation")
+                {
+                    SafeClick(webappDriver, string.Format("//div[@id='mainCont']/app-home-page/footer/div/div[2]/div[{0}]/div", i));
+                    break;
+                }
+            }
+
+            var browserTabs = webappDriver.WindowHandles;
+            webappDriver.SwitchTo().Window(browserTabs[1]);
+
+            bool isOpen = webappDriver.Url == @"https://www.hidabroot.org/";
+
+
+            webappDriver.Close();
+            webappDriver.SwitchTo().Window(browserTabs[0]);
+
+        }
+
+        public static void Bakeoffice_Sandbox_Online_action_Home_Page(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
             FullWebappAutomation.Backoffice.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
 
             // Add new
-            SafeClick(backofficeDriver, "//div[2]/div/div/div/div[2]");
+            SafeClick(backofficeDriver, "//div[6]/div[1]/div[4]/div[1]/div[1]//div[@class='btnAddOnlineAction allButtons grnbtn roundCorner fl']");
 
             // input name
             SafeSendKeys(backofficeDriver, "//div[@id='GeneralInfo']/table/tbody/tr/td[2]/input[@id='actName']", "Online action automation");
@@ -1806,53 +1869,33 @@ namespace FullWebappAutomation
                 k++;
             }
 
-            int j = 0;
-            for (j = 1; j < 10; j++)
+
+
+           
+            int index = 0;
+            while (true)
             {
                 try
                 {
-                    // Find the "Online Add-ons" button and click it
-                    if (SafeGetValue(backofficeDriver, string.Format("//div[3]/div[2]/ul[1]/div[{0}]/div[1]/div[1]", j), "innerHTML") == "Online Add-ons")
-                    {
-                        SafeClick(backofficeDriver, string.Format("//div[1]/div[3]/div[2]/ul[1]/div[{0}]/div[1]", j));
-                        break;
-                    }
+                    backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys("Online action automation");
+                    index++;
+                    SafeClick(backofficeDriver, string.Format("//div/div[@class='lb-bank ui-droppable']/ul/div[2]//li[{0}]//div[@class='fr plusIcon plusIconDisable']", index),500,6);
+                    break;
                 }
-                catch { }
+                catch {
+                    backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+                    if (index > 10)
+                        break;
+                    continue; }
             }
-
-
-            // + Online action automation
-            SafeClick(backofficeDriver, string.Format("//div[@class='lb-bank ui-droppable']//div[{0}]//ul[1]//li[1]//div[1]//div[1]", j));
+            
+            Thread.Sleep(1000);
 
 
             // Save button
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
 
-
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-            Thread.Sleep(2000);
-
-
-            // check if exist button in "Online action automation" and click
-            for (int i = 1; ; i++)
-            {
-                if (SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2) == "Online action automation")
-                {
-                    SafeClick(webappDriver, string.Format("//div[@id='mainCont']/app-home-page/footer/div/div[2]/div[{0}]/div", i));
-                    break;
-                }
-            }
-
-            var browserTabs = webappDriver.WindowHandles;
-            webappDriver.SwitchTo().Window(browserTabs[1]);
-
-            bool isOpen = webappDriver.Url == @"https://www.hidabroot.org/";
-
-
-            webappDriver.Close();
-            webappDriver.SwitchTo().Window(browserTabs[0]);
-
+            
         }
         #endregion
 
@@ -2250,7 +2293,7 @@ namespace FullWebappAutomation
         {
             // Create New List Smart_Search
 
-            Creat_New_List(backofficeDriver, "Smarch_Search_List");
+            //Creat_New_List(backofficeDriver, "Smarch_Search_List");
 
 
             // key=name, value=API name
@@ -2262,7 +2305,7 @@ namespace FullWebappAutomation
             Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
 
 
-            backoffice_Sandbox_Add_Available_Fields(backofficeDriver,Fields, "Smarch_Search_List");
+            //(backofficeDriver,Fields, "Smarch_Search_List");
 
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);

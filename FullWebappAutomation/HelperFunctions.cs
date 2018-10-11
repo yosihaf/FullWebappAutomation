@@ -657,8 +657,22 @@ namespace FullWebappAutomation
             Backoffice.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
 
 
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div/div[2]/div/span[2]");
+            // Edit Admin
+            int k = 2;
+            while (true)
+            {
+                try
+                {
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    {
+                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
+                        break;
+                    }
+                }
+                catch { }
+                k++;
+            }
+
 
 
             // Edit Sales Order click
