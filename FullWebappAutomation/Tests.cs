@@ -1207,6 +1207,10 @@ namespace FullWebappAutomation
 
         public static void Webapp_Sandbox_Order_By(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+
+
+
+
             bool flag = false;
 
             // Clicke in button Accounts
@@ -1302,29 +1306,64 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@id='msgModalLeftBtn']");
 
 
+            // UploadFile  API_PriceLevel_ to web
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Price_List.csv", "API_PriceLevel_", false);
+
+            // check if file succee loaded API_PriceLevel_
+            checkFile(backofficeDriver, "API_PriceLevel_");
+
+
+            // UploadFile  API_Special_Price_List to web
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Special_Price_List.csv", "API_SpecialPriceLevel_", true);
+
+
+
+            // check if file succee loaded API_SpecialPriceLevel_
+            checkFile(backofficeDriver, "API_SpecialPriceLevel_");
+
             // UploadFile  API_Item to web
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Item.csv", "API_Item_",false);
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Item.csv", "API_Item_", true);
 
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_Item");
 
 
-            // UploadFile  API_Item to web
+            // UploadFile  API_Special_Price_List to web
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_price_List_Item.csv", "API_PriceLevelItem_", true);
+
+
+
+            // check if file succee loaded API_PriceLevelItem_
+            checkFile(backofficeDriver, "API_PriceLevelItem_");
+
+
+
+            // UploadFile  API_Inventory_ to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Inventory.csv", "API_Inventory_",true);
 
 
-            // check if file succee loaded API_Item
+            // check if file succee loaded API_Inventory_
             checkFile(backofficeDriver, "API_Inventory");
 
 
             // UploadFile  API_Account to web
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Account.csv", "API_Account_",true);
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Account.csv", "API_Account_Overwrite_", true);
            
         
 
             // check if file succee loaded API_Item
-            checkFile(backofficeDriver, "API_Account");
+            checkFile(backofficeDriver, "API_Account_Overwrite_");
+
+
+          
+
+
+
+       
+
+
+
         }
 
 
@@ -2221,35 +2260,35 @@ namespace FullWebappAutomation
         public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            Creat_New_List(backofficeDriver, "Search");
+            //Creat_New_List(backofficeDriver, "Search");
 
-            // key=name, value=API name
-            Dictionary<string, string> Fields = new Dictionary<string, string>();
-            Fields.Add("Account ID", "ExternalID");
-            Fields.Add("Street", "Street");
-            Fields.Add("Locations", "Locations");
-            Fields.Add("Price List ExternalID", "PriceListExternalID");
-            Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
-
-
-
-            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Search_List");
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-            Edit_Rep_Permission(backofficeDriver);
+            //// key=name, value=API name
+            //Dictionary<string, string> Fields = new Dictionary<string, string>();
+            //Fields.Add("Account ID", "ExternalID");
+            //Fields.Add("Street", "Street");
+            //Fields.Add("Price List ExternalID", "PriceListExternalID");
+            //Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
+            ////Fields.Add("Price list name", "PriceLevelName");
+            ////Fields.Add("Country", "Country");
 
 
-            Sreach_Available_Fields(backofficeDriver, Fields, "Search");
+            //backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Search_List");
+
+            //FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+            //Edit_Rep_Permission(backofficeDriver);
 
 
-            Thread.Sleep(3000);
+            //Sreach_Available_Fields(backofficeDriver, Fields, "Search");
+
+
+            //Thread.Sleep(3000);
 
 
             // Accounts
             SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
 
-
+            Thread.Sleep(3000);
 
 
             check_Field_Button_Search(webappDriver, "105599", 10, 1);
@@ -2260,83 +2299,207 @@ namespace FullWebappAutomation
             check_Field_Textbox_Search(webappDriver, "EASTERn 794 ", 1, 2);
 
 
-            check_Field_Textbox_Search(webappDriver, "QQ17 ", 12, 4);
-            check_Field_Textbox_Search(webappDriver, "QQ17 ", 1, 4);
-
-
-            check_Field_Textbox_Search(webappDriver, "sp 5 ", 7, 5);
-            check_Field_Textbox_Search(webappDriver, "sp 5 ", 1, 5);
+            
         }
 
       
 
         public static void Webapp_Sandbox_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            // Create New List Smart_Search
+          
+             //Backoffice_Sandbox_Smart_Search(backofficeDriver);
 
-            //Creat_New_List(backofficeDriver, "Smarch_Search_List");
 
+            //Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+
+            // Accounts
+            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
+
+
+            Dictionary<string,string> values = new Dictionary<string,string>();
+            Dictionary<int, string> columns = new Dictionary<int, string>();
+
+            // 26
+            HashSet<int> numbers = new HashSet<int>() { 2, 4 };
+            columns.Add(4, "TaxtBox");
+            check_Field_Smart_Search_TaxtBox(webappDriver, "PriceListExternalID", numbers, columns, values, 26, true);
+
+            //7
+            numbers = new HashSet<int>() { 2, 4, 6 };
+            columns.Add(5, "TaxtBox");
+            check_Field_Smart_Search_TaxtBox(webappDriver, "SpecialPriceListExternalID", numbers, columns, values,7, true);
+
+            //3
+            numbers = new HashSet<int>() { 2, 4, 6 };
+            columns.Add(1, "Button");
+            check_Field_Smart_Search_TaxtBox(webappDriver, "ExternalID", numbers, columns, values,3, true);
+
+            //2
+            numbers = new HashSet<int>() { 2,3 };
+            columns.Add(2, "TaxtBox");
+            check_Field_Smart_Search_TaxtBox(webappDriver, "Street", numbers, columns, values,2, true);
+
+
+
+
+            columns.Remove(2);
+            foreach (var item in values.Where(i=>i.Value== "Street").ToList())
+            {
+                    values.Remove(item.Key.ToString());
+            }
+
+            //3
+            check_Field_Smart_Search_TaxtBox(webappDriver, "Street", numbers, columns, values, 3, false);
+
+            columns.Remove(1);
+            foreach (var item in values.Where(i => i.Value == "ExternalID").ToList())
+            {
+                values.Remove(item.Key.ToString());
+            }
+
+
+            //7
+            check_Field_Smart_Search_TaxtBox(webappDriver, "ExternalID", numbers, columns, values, 7, false);
+            columns.Remove(5);
+            foreach (var item in values.Where(i => i.Value == "SpecialPriceListExternalID").ToList())
+            {
+                values.Remove(item.Key.ToString());
+            }
+
+
+            // 26
+            check_Field_Smart_Search_TaxtBox(webappDriver, "SpecialPriceListExternalID", numbers, columns, values, 26, false);
+        }
+
+
+
+        public static void Backoffice_Sandbox_Smart_Search(RemoteWebDriver backofficeDriver)
+        {
+
+            //Create New List Smart_Search
+
+            Creat_New_List(backofficeDriver, "Smart_Search_List");
 
             // key=name, value=API name
             Dictionary<string, string> Fields = new Dictionary<string, string>();
             Fields.Add("Account ID", "ExternalID");
             Fields.Add("Street", "Street");
-            Fields.Add("Locations", "Locations");
+            Fields.Add("Country", "Country");
             Fields.Add("Price List ExternalID", "PriceListExternalID");
             Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
 
 
-            //(backofficeDriver,Fields, "Smarch_Search_List");
 
+            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Smart_Search_List");
 
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
 
             Edit_Rep_Permission(backofficeDriver);
 
 
-            Sreach_Available_Fields(backofficeDriver, Fields, "Smarch_Search");
+            Sreach_Available_Fields(backofficeDriver, Fields, "Smart Search");
+
+
+            Thread.Sleep(3000);
+        }
+
+   
+
+        public static void check_Field_Smart_Search_TaxtBox(RemoteWebDriver webappDriver, string field, HashSet<int> numbers, Dictionary<int, string> columns, Dictionary<string,string> values,int numRow,bool isAdd)
+        {
+
+            // Select field 
+            SafeClick(webappDriver, string.Format("//ul[@class='ul-smart-search']//li[@data-smartsearch='{0}']", field));
+
+            if (isAdd)
+            {
+                // Select last 
+                foreach (var num in numbers)
+                {
+                    string value = SafeGetValue(webappDriver, string.Format("//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[{0}]/label", num), "innerHTML");
+                    values.Add(value, field);
+                    SafeClick(webappDriver, string.Format("//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[{0}]/input", num));
+                }
+                // Done 
+                SafeClick(webappDriver, "//a[@title='Done']");
+            }
+            else
+            {
+                SafeClick(webappDriver, "//div[1]/app-advanced-search[1]/div[1]/div[2]/div[1]/a[1]");
+            }
+
+
+
 
 
             Thread.Sleep(3000);
 
-            // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
-
-            check_Field_Smart_Search(webappDriver);
-
-        }
-
-        private static void check_Field_Smart_Search(RemoteWebDriver webappDriver)
-        {
-            // Select field 
-            SafeClick(webappDriver, "//ul/li/label/span[contains(text(),'Account ID')]");
-
-
-            // Select last 
-            SafeClick(webappDriver, "//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[99]/label");
-
-
-            // Done 
-            SafeClick(webappDriver, "//a[@title='Done']");
-
-
             // Get  value
-            string value = "1056";
-            int index = 1;
-            int column = 1;
-            string foundName = "";
-            try
+            int index;
+            bool isContain = true;
+            foreach (var column in columns)
             {
-                foundName = SafeGetValue(webappDriver, string.Format("//div[2]/div[{0}]/app-custom-form[1]/fieldset/div[{1}]/app-custom-field-generator/app-custom-textbox/label", index, column), "title", safeWait: 100, maxRetry: 7).ToString();
+
+                if (column.Value == "TaxtBox")
+                {
+                    index = 1;
+                    while (true)
+                    {
+                        try
+                        {
+                            string valuef = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]", index, column.Key), "innerHTML", safeWait: 100, maxRetry: 7).ToString();
+                            if (!values.Keys.Contains(valuef))
+                            {
+                                isContain = false;
+                                break;
+                            }
+                            index++;
+                        }
+                        catch
+                        {
+                            if (numRow + 1 != index)
+                            {
+                                isContain = false;
+                            }
+                            break;
+                        }
+                    }
+                }
+                else if (column.Value == "Button")
+                {
+                    index = 1;
+                    while (true)
+                    {
+                        try
+                        {
+                            string valuef = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span[1]", index, column.Key), "innerHTML", safeWait: 500, maxRetry: 3).ToString();
+                            if (!values.Keys.Contains(valuef))
+                            {
+                                isContain = false;
+                                break;
+                            }
+                            index++;
+                        }
+                        catch
+                        {
+                            if (numRow + 1 != index)
+                            {
+                                isContain = false;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (!isContain)
+                {
+                    
+                    break;
+                }
             }
-            catch { }
             
 
-            bool isFound = serach(value, foundName);
-
+            Assert(isContain, string.Format("smart search {0} no display", field));
         }
-
         #endregion
 
         #region Activities 

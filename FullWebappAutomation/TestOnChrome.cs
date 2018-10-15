@@ -10,7 +10,7 @@ namespace FullWebappAutomation
     class TestOnChrome
     {
         public static RemoteWebDriver webappDriver, backofficeDriver;
-        //public static RemoteWebDriver backofficeDriver2;
+        // public static RemoteWebDriver backofficeDriver2;
         //public static bool isCreatLocal;
         public static void SetUp()
         {
@@ -21,7 +21,7 @@ namespace FullWebappAutomation
             webappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
             backofficeDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
-            //backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
+            // backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
 
             GlobalSettings.InitLogFiles();
@@ -46,8 +46,8 @@ namespace FullWebappAutomation
 
             ////if (isCreatLocal == false)
             ////{
-          //  Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
-          //  backofficeDriver2.Quit();
+             // Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
+            // backofficeDriver2.Quit();
             //isCreatLocal = true;
             ////}
 
@@ -250,6 +250,8 @@ namespace FullWebappAutomation
             #endregion
 
 
+
+            #region new Accounts_list
             if (testsToRun["New_Basic_List_Account_Table"])
             {
                 Delegator delegatedFunction = Webapp_Sandbox_Add_Basic_Fields;
@@ -262,7 +264,14 @@ namespace FullWebappAutomation
                 Delegator delegatedFunction = Webapp_Sandbox_Creat_TSA_Fields_And_Added;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-            
+
+            if (testsToRun["Smart_Search_Account"])
+            {
+                Delegator delegatedFunction = Webapp_Sandbox_Smart_Search;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+            #endregion
         }
 
         public static void RunTests(string chosenUsername, Dictionary<string, bool> testsToRun)

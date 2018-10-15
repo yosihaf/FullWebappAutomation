@@ -727,8 +727,10 @@ namespace FullWebappAutomation
             }
 
             Assert(isFound && index == count + 1, "Account search by column " + column + " failed (found name doesn't match expected)");
-            SafeClear(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
-            Thread.Sleep(3000);
+
+
+            SafeClick(webappDriver, "//div[@id='topBarContainer']/div/search/div/a[2]/span");
+            Thread.Sleep(4000);
         }
 
         /// <summary>
@@ -778,8 +780,11 @@ namespace FullWebappAutomation
             }
 
             Assert(isFound && index == count + 1, "Account search failed (found name doesn't match expected)");
-            SafeClear(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
-            Thread.Sleep(3000);
+
+          
+
+            SafeClick(webappDriver, "//div[@id='topBarContainer']/div/search/div/a[2]/span");
+            Thread.Sleep(4000);
         }
 
         /// <summary>
