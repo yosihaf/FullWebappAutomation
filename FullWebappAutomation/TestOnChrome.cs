@@ -10,8 +10,8 @@ namespace FullWebappAutomation
     class TestOnChrome
     {
         public static RemoteWebDriver webappDriver, backofficeDriver;
-        // public static RemoteWebDriver backofficeDriver2;
-        //public static bool isCreatLocal;
+         public static RemoteWebDriver backofficeDriver2;
+        public static bool isCreatLocal;
         public static void SetUp()
         {
             DesiredCapabilities capability = DesiredCapabilities.Chrome();
@@ -21,7 +21,7 @@ namespace FullWebappAutomation
             webappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
             backofficeDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
-            // backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
+            backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
 
             GlobalSettings.InitLogFiles();
@@ -46,8 +46,8 @@ namespace FullWebappAutomation
 
             ////if (isCreatLocal == false)
             ////{
-             // Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
-            // backofficeDriver2.Quit();
+            Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
+             backofficeDriver2.Quit();
             //isCreatLocal = true;
             ////}
 
@@ -56,12 +56,15 @@ namespace FullWebappAutomation
             Webapp_Sandbox_Login(webappDriver, DanUsername, DanPassword);
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
 
-            //if (true)
-            //{
-            //    // Load file items / inventory / accounts
-            //    Delegator delegatedFunction = Backoffice_Sandbox_Load_File;
-            //    BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
-            //}
+            if (true)
+            {
+                // Load file items / inventory / accounts
+                
+                Delegator delegatedFunction = backoffice_Custom_Fields_Acccounts;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                Delegator delegatedFunction1 = Backoffice_Sandbox_Load_File;
+                BasicTestWrapper(delegatedFunction1, webappDriver, backofficeDriver);
+            }
 
             if (testsToRun["Resync"])
             {
@@ -177,11 +180,7 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
-            if (testsToRun["Search Account"])
-            {
-                Delegator delegatedFunction = Webapp_Sandbox_Search_Account;
-                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
-            }
+           
 
             if(testsToRun["Order By"])
             {
@@ -252,22 +251,31 @@ namespace FullWebappAutomation
 
 
             #region new Accounts_list
+
+           
+
             if (testsToRun["New_Basic_List_Account_Table"])
             {
-                Delegator delegatedFunction = Webapp_Sandbox_Add_Basic_Fields;
+                Delegator delegatedFunction = Sandbox_Add_Basic_List;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
 
             if (testsToRun["New_TSA_List_Account_Table"])
             {
-                Delegator delegatedFunction = Webapp_Sandbox_Creat_TSA_Fields_And_Added;
+                Delegator delegatedFunction = Sandbox_Creat_TSA_Fields_And_Added;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+            if (testsToRun["Search Account"])
+            {
+                Delegator delegatedFunction = Sandbox_Search_Account;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
             if (testsToRun["Smart_Search_Account"])
             {
-                Delegator delegatedFunction = Webapp_Sandbox_Smart_Search;
+                Delegator delegatedFunction = Sandbox_Smart_Search;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 

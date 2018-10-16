@@ -66,9 +66,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Backoffice.cs" />
+    <Compile Include="BakeofficeTest.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="TestOnChrome.cs" />
     <Compile Include="Tests.cs" />
+    <Compile Include="WebappTest.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

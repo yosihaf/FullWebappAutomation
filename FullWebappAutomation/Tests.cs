@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using static FullWebappAutomation.GlobalSettings;
 using static FullWebappAutomation.HelperFunctions;
 using static FullWebappAutomation.Consts;
+using static FullWebappAutomation.BakeofficeTest;
+using static FullWebappAutomation.WebappTest;
 using System.Threading;
 using System.Linq;
 using System.Drawing;
@@ -2128,110 +2130,29 @@ namespace FullWebappAutomation
 
         #region Account
 
+
+
         /// <summary>
         /// test the TSA fields
         /// </summary>
         /// <param name="webappDriver"></param>
         /// <param name="backofficeDriver"></param>
-        public static void Webapp_Sandbox_Creat_TSA_Fields_And_Added(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        public static void Sandbox_Creat_TSA_Fields_And_Added(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+
             Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
-            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
-            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
-            TSA_Fields.Add("Date", "TSADate");
-            TSA_Fields.Add("Date + Time", "TSADateTime");
-            TSA_Fields.Add("Duration", "TSADuration");
-            TSA_Fields.Add("Number", "TSANumber");
-            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
-            TSA_Fields.Add("Currency", "TSACurrency");
-            TSA_Fields.Add("Checkbox", "TSACheckbox");
-            TSA_Fields.Add("Dropdown", "TSADropdown");
-            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
-            TSA_Fields.Add("Image", "TSAImage");
-            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
-            TSA_Fields.Add("Phone number", "TSAPhonenumber");
-            TSA_Fields.Add("Link", "TSALink");
+            backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
 
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
-            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
+            Webapp_Sandbox_New_List_Table(webappDriver, "TSA_List", TSA_Fields);
 
-            foreach (var item in TSA_Fields)
-            {
-                // Add Custom Fields
-                SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
-
-
-                // Select Type
-                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
-
-
-                // Name test
-                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key);
-
-
-                // Description test
-                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key);
-
-                // is no exist  Mapped Name Image/Attachment
-                if (item.Key != "Image" && item.Key != "Attachment")
-                {
-                    // Mapped test
-                    SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='mappedNameSection']/input[1]", item.Key);
-                }
-
-                if (item.Key == "Dropdown")
-                {
-                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
-                }
-
-                if (item.Key == "Multi Choice")
-                {
-                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
-                }
-
-                //   save 
-                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
-
-                Thread.Sleep(2000);
-            }
-
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\Account_TSA.csv", "API_Account_Overwrite_", false);
-
-            Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "TSA_List", TSA_Fields);
-
-
-
-            TSA_Fields_Line_(webappDriver, backofficeDriver);
-
-         
+            Webapp_Sandbox_New_List_Table(webappDriver, "TSA_List", TSA_Fields, isHeader: false);
+            
 
         }
-
-
-        public static void TSA_Fields_Line_(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
-        {
-            Dictionary<string, string> TSA_Fields_Line = new Dictionary<string, string>();
-
-            TSA_Fields_Line.Add("Single Line Text", "TSASingleLineText");
-            TSA_Fields_Line.Add("Limited Line Text", "TSALimitedLineText");
-            TSA_Fields_Line.Add("Duration", "TSADuration");
-            TSA_Fields_Line.Add("Number", "TSANumber");
-            TSA_Fields_Line.Add("Decimal Number", "TSADecimalNumber");
-            TSA_Fields_Line.Add("Currency", "TSACurrency");
-            TSA_Fields_Line.Add("Dropdown", "TSADropdown");
-            TSA_Fields_Line.Add("Multi Choice", "TSAMultiChoice");
-            TSA_Fields_Line.Add("Phone number", "TSAPhonenumber");
-
-
-            Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "TSA_List_Line", TSA_Fields_Line);
-
-
-            SafeClick(webappDriver, "//div[@class='ellipsis']");
-        }
-
 
 
         /// <summary>
@@ -2239,267 +2160,63 @@ namespace FullWebappAutomation
         /// </summary>
         /// <param name="webappDriver"></param>
         /// <param name="backofficeDriver"></param>
-        public static void Webapp_Sandbox_Add_Basic_Fields(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        public static void Sandbox_Add_Basic_List(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+
             Dictionary<string, string> Fields = new Dictionary<string, string>();
 
-            Fields.Add("Name", "Name");
-            Fields.Add("City", "City");
-            Fields.Add("Street", "Street");
-            Fields.Add("Sales Reps", "Agents");
-            Fields.Add("Price List ExternalID", "PriceListExternalID");
-            Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
-            Fields.Add("Account ID", "ExternalID");
-            Fields.Add("Email", "Email");
-            Fields.Add("Country", "Country");
 
-            Webapp_Sandbox_New_List_Table(webappDriver, backofficeDriver, "Basic_List", Fields);
+            bakeoffice_Sandbox_Add_Basic_List(backofficeDriver,Fields);
+
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+
+
+            Webapp_Sandbox_New_List_Table(webappDriver, "Basic_List", Fields);
         }
 
 
-        public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        public static void Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            //Creat_New_List(backofficeDriver, "Search");
+            backoffice_Sandbox_Search_Account(backofficeDriver);
 
-            //// key=name, value=API name
-            //Dictionary<string, string> Fields = new Dictionary<string, string>();
-            //Fields.Add("Account ID", "ExternalID");
-            //Fields.Add("Street", "Street");
-            //Fields.Add("Price List ExternalID", "PriceListExternalID");
-            //Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
-            ////Fields.Add("Price list name", "PriceLevelName");
-            ////Fields.Add("Country", "Country");
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
-
-            //backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Search_List");
-
-            //FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-            //Edit_Rep_Permission(backofficeDriver);
-
-
-            //Sreach_Available_Fields(backofficeDriver, Fields, "Search");
-
-
-            //Thread.Sleep(3000);
-
-
-            // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
-
-            Thread.Sleep(3000);
-
-
-            check_Field_Button_Search(webappDriver, "105599", 10, 1);
-            check_Field_Button_Search(webappDriver, "105599 98", 1, 1);
-
-
-            check_Field_Textbox_Search(webappDriver, "EAsTERn", 12, 2);
-            check_Field_Textbox_Search(webappDriver, "EASTERn 794 ", 1, 2);
-
-
+            Webapp_Sandbox_Search_Account(webappDriver);
             
         }
 
-      
 
-        public static void Webapp_Sandbox_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        public static void Sandbox_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-          
-             //Backoffice_Sandbox_Smart_Search(backofficeDriver);
-
-
-            //Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-
-            // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
-
-
-            Dictionary<string,string> values = new Dictionary<string,string>();
-            Dictionary<int, string> columns = new Dictionary<int, string>();
-
-            // 26
-            HashSet<int> numbers = new HashSet<int>() { 2, 4 };
-            columns.Add(4, "TaxtBox");
-            check_Field_Smart_Search_TaxtBox(webappDriver, "PriceListExternalID", numbers, columns, values, 26, true);
-
-            //7
-            numbers = new HashSet<int>() { 2, 4, 6 };
-            columns.Add(5, "TaxtBox");
-            check_Field_Smart_Search_TaxtBox(webappDriver, "SpecialPriceListExternalID", numbers, columns, values,7, true);
-
-            //3
-            numbers = new HashSet<int>() { 2, 4, 6 };
-            columns.Add(1, "Button");
-            check_Field_Smart_Search_TaxtBox(webappDriver, "ExternalID", numbers, columns, values,3, true);
-
-            //2
-            numbers = new HashSet<int>() { 2,3 };
-            columns.Add(2, "TaxtBox");
-            check_Field_Smart_Search_TaxtBox(webappDriver, "Street", numbers, columns, values,2, true);
-
-
-
-
-            columns.Remove(2);
-            foreach (var item in values.Where(i=>i.Value== "Street").ToList())
-            {
-                    values.Remove(item.Key.ToString());
-            }
-
-            //3
-            check_Field_Smart_Search_TaxtBox(webappDriver, "Street", numbers, columns, values, 3, false);
-
-            columns.Remove(1);
-            foreach (var item in values.Where(i => i.Value == "ExternalID").ToList())
-            {
-                values.Remove(item.Key.ToString());
-            }
-
-
-            //7
-            check_Field_Smart_Search_TaxtBox(webappDriver, "ExternalID", numbers, columns, values, 7, false);
-            columns.Remove(5);
-            foreach (var item in values.Where(i => i.Value == "SpecialPriceListExternalID").ToList())
-            {
-                values.Remove(item.Key.ToString());
-            }
-
-
-            // 26
-            check_Field_Smart_Search_TaxtBox(webappDriver, "SpecialPriceListExternalID", numbers, columns, values, 26, false);
-        }
-
-
-
-        public static void Backoffice_Sandbox_Smart_Search(RemoteWebDriver backofficeDriver)
-        {
-
-            //Create New List Smart_Search
-
-            Creat_New_List(backofficeDriver, "Smart_Search_List");
-
-            // key=name, value=API name
             Dictionary<string, string> Fields = new Dictionary<string, string>();
-            Fields.Add("Account ID", "ExternalID");
-            Fields.Add("Street", "Street");
-            Fields.Add("Country", "Country");
-            Fields.Add("Price List ExternalID", "PriceListExternalID");
-            Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
 
 
-
-            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Smart_Search_List");
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-            Edit_Rep_Permission(backofficeDriver);
+            backoffice_Sandbox_Smart_Search(backofficeDriver, Fields);
 
 
-            Sreach_Available_Fields(backofficeDriver, Fields, "Smart Search");
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
-            Thread.Sleep(3000);
+            webapp_Sandbox_Smart_Search(webappDriver);
         }
 
-   
 
-        public static void check_Field_Smart_Search_TaxtBox(RemoteWebDriver webappDriver, string field, HashSet<int> numbers, Dictionary<int, string> columns, Dictionary<string,string> values,int numRow,bool isAdd)
+        public static void Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-
-            // Select field 
-            SafeClick(webappDriver, string.Format("//ul[@class='ul-smart-search']//li[@data-smartsearch='{0}']", field));
-
-            if (isAdd)
-            {
-                // Select last 
-                foreach (var num in numbers)
-                {
-                    string value = SafeGetValue(webappDriver, string.Format("//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[{0}]/label", num), "innerHTML");
-                    values.Add(value, field);
-                    SafeClick(webappDriver, string.Format("//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[{0}]/input", num));
-                }
-                // Done 
-                SafeClick(webappDriver, "//a[@title='Done']");
-            }
-            else
-            {
-                SafeClick(webappDriver, "//div[1]/app-advanced-search[1]/div[1]/div[2]/div[1]/a[1]");
-            }
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
+            backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
+
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
-
-            Thread.Sleep(3000);
-
-            // Get  value
-            int index;
-            bool isContain = true;
-            foreach (var column in columns)
-            {
-
-                if (column.Value == "TaxtBox")
-                {
-                    index = 1;
-                    while (true)
-                    {
-                        try
-                        {
-                            string valuef = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]", index, column.Key), "innerHTML", safeWait: 100, maxRetry: 7).ToString();
-                            if (!values.Keys.Contains(valuef))
-                            {
-                                isContain = false;
-                                break;
-                            }
-                            index++;
-                        }
-                        catch
-                        {
-                            if (numRow + 1 != index)
-                            {
-                                isContain = false;
-                            }
-                            break;
-                        }
-                    }
-                }
-                else if (column.Value == "Button")
-                {
-                    index = 1;
-                    while (true)
-                    {
-                        try
-                        {
-                            string valuef = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span[1]", index, column.Key), "innerHTML", safeWait: 500, maxRetry: 3).ToString();
-                            if (!values.Keys.Contains(valuef))
-                            {
-                                isContain = false;
-                                break;
-                            }
-                            index++;
-                        }
-                        catch
-                        {
-                            if (numRow + 1 != index)
-                            {
-                                isContain = false;
-                            }
-                            break;
-                        }
-                    }
-                }
-                if (!isContain)
-                {
-                    
-                    break;
-                }
-            }
-            
-
-            Assert(isContain, string.Format("smart search {0} no display", field));
+            webapp_Sandbox_Smart_Search(webappDriver);
         }
+
+
         #endregion
 
         #region Activities 

@@ -959,105 +959,80 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         /// <param name="nameNewList"></param>
         /// <param name="Fields"></param>
-        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver, string nameNewList, Dictionary<string, string> Fields, bool isHeader = true)
+
+
+        public static void backoffice_Custom_Fields_Acccounts(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            int index = 1;
-            string valueH = "";
-            bool isContains = true;
+            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
+
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-            Creat_New_List(backofficeDriver, nameNewList);
+           
+            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
+            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
+            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
+            TSA_Fields.Add("Date", "TSADate");
+            TSA_Fields.Add("Date + Time", "TSADateTime");
+            TSA_Fields.Add("Duration", "TSADuration");
+            TSA_Fields.Add("Number", "TSANumber");
+            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
+            TSA_Fields.Add("Currency", "TSACurrency");
+            TSA_Fields.Add("Checkbox", "TSACheckbox");
+            TSA_Fields.Add("Dropdown", "TSADropdown");
+            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
+            TSA_Fields.Add("Image", "TSAImage");
+            TSA_Fields.Add("Attachment", "TSAAttachment");
+            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
+            TSA_Fields.Add("Phone number", "TSAPhonenumber");
+            TSA_Fields.Add("Link", "TSALink");
+            TSA_Fields.Add("Email", "TSAEmail");
 
 
-            //  Add fields
-            backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, nameNewList);
 
 
-            Thread.Sleep(2000);
-
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-
-            Edit_Rep_Permission(backofficeDriver);
-
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
-
-            Tests.Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
-
-
-            Thread.Sleep(5000);
-
-
-            // Account
-            for (int i = 1; i < 10; i++)
+            foreach (var item in TSA_Fields)
             {
-                try
+                // Add Custom Fields
+                SafeClick(backofficeDriver, "//span[@class='allButtons grnbtn roundCorner dc-add']");
+
+
+                // Select Type
+                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
+
+
+                // Name test
+                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key);
+
+
+                // Description test
+                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key);
+
+                // is no exist  Mapped Name Image/Attachment
+                if (item.Key != "Image" && item.Key != "Attachment")
                 {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
-
-            try
-            {
-                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
-            }
-            catch
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
-                    {
-                        SafeClick(webappDriver, "//div[@class='ellipsis']");
-                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
-                    }
-                }
-                catch
-                {
-                    isContains = false;
-                }
-            }
-
-
-            Thread.Sleep(5000);
-
-            if (isHeader)
-            {
-                // Check if all fields come to webapp
-                while (true)
-                {
-                    try
-                    {
-                        valueH = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
-                        if (!Fields.Keys.Contains(valueH))
-                        {
-                            isContains = false;
-                            break;
-                        }
-
-                        index++;
-                    }
-                    catch
-                    {
-                        break;
-                    }
+                    // Mapped test
+                    SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='mappedNameSection']/input[1]", item.Key);
                 }
 
-                Assert(index == Fields.Count + 1 && isContains, "No all fields come to webapp");
-            }
-            else
-            {
+                if (item.Key == "Dropdown")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
 
+                if (item.Key == "Multi Choice")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                //   save 
+                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+
+                Thread.Sleep(2000);
             }
+
         }
 
-
-       
 
         public static void Sreach_Available_Fields(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields,string nameSearch)
         {
