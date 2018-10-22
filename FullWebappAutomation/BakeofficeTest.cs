@@ -23,11 +23,9 @@ namespace FullWebappAutomation
         {
 
             //Create New List Smart_Search
-
             Creat_New_List(backofficeDriver, "Smart_Search_List");
 
             // key=name, value=API name
-            
             Fields.Add("Account ID", "ExternalID");
             Fields.Add("Street", "Street");
             Fields.Add("Country", "Country");
@@ -35,10 +33,11 @@ namespace FullWebappAutomation
             Fields.Add("Special price list external ID", "SpecialPriceListExternalID");
 
 
-
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Smart_Search_List");
 
+
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
 
             Edit_Rep_Permission(backofficeDriver);
 
@@ -134,7 +133,10 @@ namespace FullWebappAutomation
 
             Edit_Rep_Permission(backofficeDriver);
 
+            Sreach_Available_Fields(backofficeDriver, TSA_Fields, "Smart Search");
 
+
+            Thread.Sleep(3000);
         }
 
     }

@@ -10,18 +10,18 @@ namespace FullWebappAutomation
     class TestOnChrome
     {
         public static RemoteWebDriver webappDriver, backofficeDriver;
+
          public static RemoteWebDriver backofficeDriver2;
-        public static bool isCreatLocal;
-        public static void SetUp()
+      
+        public static void SetUp(bool isCreatLocal)
         {
             DesiredCapabilities capability = DesiredCapabilities.Chrome();
 
 
-            //isCreatLocal = FullWebappAutomation.GlobalSettings.isCreat;
             webappDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
             backofficeDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
-
-            backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
+            if (isCreatLocal)
+                backofficeDriver2 = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capability, TimeSpan.FromSeconds(600));
 
 
             GlobalSettings.InitLogFiles();
@@ -44,22 +44,20 @@ namespace FullWebappAutomation
             DanPassword = GetUserPassword(DanUsername);
 
 
-            ////if (isCreatLocal == false)
-            ////{
-            Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
-             backofficeDriver2.Quit();
-            //isCreatLocal = true;
-            ////}
+            if (testsToRun["New Account ?"])
+            {
+                Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
+                backofficeDriver2.Quit();
+            }
 
 
             // Login
             Webapp_Sandbox_Login(webappDriver, DanUsername, DanPassword);
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
 
-            if (true)
+            if (testsToRun["New Account ?"])
             {
                 // Load file items / inventory / accounts
-                
                 Delegator delegatedFunction = backoffice_Custom_Fields_Acccounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
                 Delegator delegatedFunction1 = Backoffice_Sandbox_Load_File;
@@ -279,12 +277,17 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
+            if (testsToRun["TSA_Smart_Search_Account"])
+            {
+                Delegator delegatedFunction = Sandbox_TSA_Smart_Search;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
             #endregion
         }
 
         public static void RunTests(string chosenUsername, Dictionary<string, bool> testsToRun)
         {
-            SetUp();
+            SetUp(testsToRun["New Account ?"]);
             TestSuite(chosenUsername, testsToRun);
             TearDown();
         }

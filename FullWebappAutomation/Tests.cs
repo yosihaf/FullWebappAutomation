@@ -2205,15 +2205,17 @@ namespace FullWebappAutomation
 
         public static void Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
+
+            //Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-            backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
-
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            //backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
 
 
-            webapp_Sandbox_Smart_Search(webappDriver);
+            //Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+
+
+            webapp_Sandbox_TSA_Smart_Search(webappDriver);
         }
 
 
