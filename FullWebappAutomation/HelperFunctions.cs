@@ -658,18 +658,23 @@ namespace FullWebappAutomation
 
 
             // Edit Admin
+            string type = "Admin";
             int k = 2;
             while (true)
             {
                 try
                 {
-                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == type)
                     {
                         SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
                         break;
                     }
                 }
-                catch { }
+                catch {
+                    k = 1;
+                    type = "Rep";
+                    
+                }
                 k++;
             }
 
@@ -706,13 +711,13 @@ namespace FullWebappAutomation
 
 
             string foundName = "";
-            int index = 1;
+            int index = 2;
             bool isFound = true;
             while (true)
             {
                 try
-                {
-                    foundName = SafeGetValue(webappDriver, string.Format("//div[2]/div[{0}]/app-custom-form[1]/fieldset/div[{1}]/app-custom-field-generator/app-custom-textbox/label", index, column), "title", safeWait: 100, maxRetry: 7).ToString();
+                {                                                          //div[4]/app-custom-form[1]/fieldset[1]/div[2]/app-custom-field-generator/app-custom-textbox/label
+                    foundName = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset/div[{1}]/app-custom-field-generator/app-custom-textbox/label", index, column), "innerHTML", safeWait: 100, maxRetry: 7).ToString();
                     index++;
                     if (!serach(Street, foundName))
                     {
@@ -726,7 +731,7 @@ namespace FullWebappAutomation
                 }
             }
 
-            Assert(isFound && index == count + 1, "Account search by column " + column + " failed (found name doesn't match expected)");
+            Assert(isFound && index == count + 2, "Account search by column " + column + " failed (found name doesn't match expected)");
 
 
             SafeClick(webappDriver, "//div[@id='topBarContainer']/div/search/div/a[2]/span");
@@ -745,6 +750,8 @@ namespace FullWebappAutomation
             // Click search button
             SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
 
+
+
             // Input name
             SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
             SafeSendKeys(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input", AccountId);
@@ -756,7 +763,7 @@ namespace FullWebappAutomation
 
 
             string foundName = "";
-            int index = 1;
+            int index = 2;
             bool isFound = true;
 
             // Check All rows is contain
@@ -764,8 +771,8 @@ namespace FullWebappAutomation
             {
                 try
                 {
-
-                    foundName = SafeGetValue(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[{0}]/app-custom-form/fieldset/div[1]/app-custom-field-generator/app-custom-button/a/span", index), "title", safeWait: 100, maxRetry: 7).ToString();
+                    //div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span
+                    foundName = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span", index,column), "innerHTML", safeWait: 100, maxRetry: 7).ToString();
                     index++;
                     if (!serach(AccountId, foundName))
                     {
@@ -779,7 +786,7 @@ namespace FullWebappAutomation
                 }
             }
 
-            Assert(isFound && index == count + 1, "Account search failed (found name doesn't match expected)");
+            Assert(isFound && index == count + 2, "Account search failed (found name doesn't match expected)");
 
           
 

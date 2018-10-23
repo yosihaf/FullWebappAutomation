@@ -20,7 +20,7 @@ namespace FullWebappAutomation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class DanZlotnikov : Window
+    public partial class yosef_haftke : Window
     {
         public static string[] usernames; // Stores the available usernames
         public static string[] tests; // Stores the available tests
@@ -39,7 +39,7 @@ namespace FullWebappAutomation
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         
 
-            usernames = new string[] { "automation104@pepperitest.com", "daniel10@pepperitest.com" };
+            usernames = new string[] { "automation118@pepperitest.com", "daniel10@pepperitest.com" };
             tests = new string[]
             {
                 "New Account ?",
@@ -261,7 +261,7 @@ namespace FullWebappAutomation
 
         }
 
-        public DanZlotnikov()
+        public yosef_haftke()
         {
             InitializeComponent();
             InitVariables();

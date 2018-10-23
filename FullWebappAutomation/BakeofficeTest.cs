@@ -52,7 +52,7 @@ namespace FullWebappAutomation
 
         public static void backoffice_Sandbox_Search_Account(RemoteWebDriver backofficeDriver)
         {
-            Creat_New_List(backofficeDriver, "Search");
+            Creat_New_List(backofficeDriver, "Search_List");
 
             // key=name, value=API name
             Dictionary<string, string> Fields = new Dictionary<string, string>();

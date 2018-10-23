@@ -1278,7 +1278,7 @@ namespace FullWebappAutomation
         public static void Backoffice_Sandbox_Load_File(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
+           
             FullWebappAutomation.Backoffice.ERPIntegration.Configuration(backofficeDriver);
 
 
@@ -1356,16 +1356,6 @@ namespace FullWebappAutomation
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_Account_Overwrite_");
-
-
-          
-
-
-
-       
-
-
-
         }
 
 
@@ -1382,15 +1372,6 @@ namespace FullWebappAutomation
             Dictionary<string, string> Buyer = new Dictionary<string, string>();
 
             
-            // setting button
-            SafeClick(backofficeDriver, "//div[@id='settingCont']//div[@class='header']");
-
-            try
-            {
-                //  Close  popup next
-                SafeClick(backofficeDriver, "//div[@id='walkme-balloon-3983183']/div/div/div[@class='walkme-custom-balloon-bottom-div']//span[@class='walkme-custom-balloon-button-text']", maxRetry: 4);
-            }
-            catch { }
 
             // Account
             SafeClick(backofficeDriver, "//div[1]/div[1]/ul[1]/li[3]/a[1]");
@@ -1541,100 +1522,66 @@ namespace FullWebappAutomation
         public static void Webapp_Sandbox_Change_All_Home(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            Backoffice_Change_All_Button_Home(backofficeDriver);
-
             Dictionary<string, string> Fields = new Dictionary<string, string>();
-            Fields.Add("Accounts", "Accounts");
-            Fields.Add("Activity List", "ActivityList");
-            Fields.Add("Catalog", "Catalog");
-            Fields.Add("Contacts", "Contacts");
-            Fields.Add("Users", "Users");
-            Fields.Add("Photo", "Photo");
-            Fields.Add("Support", "OLA_41563");
-            Fields.Add("Sales Order", "Sales Order");
-            Fields.Add("Visit", "Visit");
+
+
+            Backoffice_Change_All_Button_Home(backofficeDriver, Fields);
+
+
             string value = "";
             Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
             Thread.Sleep(4000);
 
             bool flag = false;
-            
+
             // check if exist  button in home page 
-            for (int i=1;;i++)
+            for (int i = 1; ; i++)
             {
                 try
                 {
-                 if(!Fields.ContainsKey(SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2)))
+                    value = SafeGetValue(webappDriver, string.Format("//app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i), "innerHTML", maxRetry: 2);
+                    if (!Fields.ContainsKey(value))
                     {
                         break;
                     }
                 }
                 catch
                 {
-                    if (i == 9)
+                    if (i == Fields.Count + 1)
                         flag = true;
+                    break;
                 }
+
             }
 
 
-
-           
-
-
-            // reverse all
-            Backoffice_Delete_Layout(backofficeDriver, "Accounts", "Activity List", true);
+                // reverse all
+                Backoffice_Delete_Layout(backofficeDriver, "Accounts", "Activity List", true);
 
 
 
 
 
-            // Save button
-            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
-            Thread.Sleep(4000);
+                // Save button
+                SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
+                Thread.Sleep(4000);
 
-            Assert(flag, "sume of button different between webapp to bakeoffice");
+                Assert(flag, "sume of button different between webapp to bakeoffice");
+            
         }
-
-        public static void Backoffice_Change_All_Button_Home(RemoteWebDriver backofficeDriver)
+        public static void Backoffice_Change_All_Button_Home(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields)
         {
-          
-
-            Dictionary<string, string> Fields = new Dictionary<string, string>();
             Fields.Add("Accounts", "Accounts");
             Fields.Add("Activity List", "ActivityList");
-            Fields.Add("Catalog", "Catalog");
             Fields.Add("Contacts", "Contacts");
             Fields.Add("Users", "Users");
             Fields.Add("Photo", "Photo");
-            Fields.Add("Support", "OLA_41563");
+            Fields.Add("All Sales Transactions", "AL1");
             Fields.Add("Sales Order", "Sales Order");
             Fields.Add("Visit", "Visit");
-            
-
-
-
-            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
-
-
-
-            // Edit Admin
-            int k = 2;
-            while (true)
-            {
-                try
-                {
-                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
-                    {
-                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
-                        break;
-                    }
-                }
-                catch { }
-                k++;
-            }
-
-
-
+            Fields.Add("All Activities", "AL2");
+            Fields.Add("ALL", "AL7");
+          
             Backoffice_Delete_Layout(backofficeDriver);
 
             foreach (var item in Fields)
@@ -1670,20 +1617,27 @@ namespace FullWebappAutomation
 
 
             // Edit Admin
+            string type = "Admin";
             int k = 2;
             while (true)
             {
                 try
                 {
-                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == type)
                     {
                         SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
                         break;
                     }
                 }
-                catch { }
+                catch
+                {
+                    k = 1;
+                    type = "Rep";
+
+                }
                 k++;
             }
+
             string value;
 
             //delete all Layout
@@ -1720,56 +1674,15 @@ namespace FullWebappAutomation
             int total = 0;
             string value;
             int i = 0;
-            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
-
-
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[1]/div[2]/div[1]/span[2]");
+         
 
 
             Backoffice_Delete_Layout(backofficeDriver);
 
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
 
+            Backoffice_Change_All_Button_Home(backofficeDriver, Fields);
             // Add any 16 button
-
-            // Available Filds
-            for (i = 1; ; i++)
-            {
-                try
-                {
-                    SafeClick(backofficeDriver, string.Format("//body/form[@id='aspnetForm']/div[@class='page']/div[@class='main']/div[@id='appHomePageCustCont']/div[@id='centerContainer']/div[@id='content']/div[@id='formContTemplate']/div[@class='template-forms-edit lb']/div[@class='lb-bank ui-droppable']/ul/div[{0}]/div[1]/span[1]", i), maxRetry: 2);
-
-                }
-                catch
-                {
-                    break;
-                }
-                // sub Available Filds
-                for (int j = 1; ; j++)
-                {
-                    try
-                    {
-                        value = SafeGetValue(backofficeDriver, string.Format("//div[{0}]/ul[1]/li[{1}]/div[1]/span[2]/span[1]", i, j), "innerHTML", maxRetry: 2).ToString().Trim();
-                        if (value.Contains("Catalog") || value.Contains("Dashboard"))
-                        {
-                            continue;
-                        }
-                        SafeClick(backofficeDriver, string.Format("//ul//div[{0}]//ul[1]//li[{1}]//div[1]//div[1]", i, j), maxRetry: 2);
-                        total++;
-                        if (total >= 16)
-                            break;
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                }
-                if (total >= 16)
-                    break;
-            }
-
-            // Save button
-            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
 
 
             Thread.Sleep(2000);
@@ -1790,17 +1703,21 @@ namespace FullWebappAutomation
             {
                 Assert(false, "Although the page is small there is no menu");
             }
-
+            bool flag = true;
             try
             {
                 for (i = 1; ; i++)
                 {
-                    SafeGetValue(webappDriver, string.Format("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[3]/ul[1]/li[{0}]", i), "innerHTML", maxRetry: 5);
+                   string valueF= SafeGetValue(webappDriver, string.Format("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[3]/ul[1]/li[{0}]", i), "innerHTML", maxRetry: 5);
+                    if (!Fields.Keys.Contains(valueF))
+                    {
+                        flag = false;
+                    }
                 }
             }
             catch
             {
-                Assert(i == 17, "no all menu exist");
+                Assert(i == Fields.Count+1&&flag, "no all menu exist");
             }
 
 
@@ -1855,7 +1772,7 @@ namespace FullWebappAutomation
             FullWebappAutomation.Backoffice.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
 
             // Add new
-            SafeClick(backofficeDriver, "//div[6]/div[1]/div[4]/div[1]/div[1]//div[@class='btnAddOnlineAction allButtons grnbtn roundCorner fl']");
+            SafeClick(backofficeDriver, "//div[6]/div[1]/div[4]/div[2]/div[1]/div[1]/div[1]/div[@id='btnAddNewOnlineAction']");
 
             // input name
             SafeSendKeys(backofficeDriver, "//div[@id='GeneralInfo']/table/tbody/tr/td[2]/input[@id='actName']", "Online action automation");
@@ -1876,24 +1793,31 @@ namespace FullWebappAutomation
             FullWebappAutomation.Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
 
             // Edit Admin
+            string type = "Admin";
             int k = 2;
             while (true)
             {
                 try
                 {
-                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == "Admin")
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == type)
                     {
                         SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
                         break;
                     }
                 }
-                catch { }
+                catch
+                {
+                    k = 1;
+                    type = "Rep";
+
+                }
                 k++;
             }
 
 
 
-           
+
+
             int index = 0;
             while (true)
             {
@@ -1930,8 +1854,9 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         /// <param name="elementXPath"></param>
         /// <param name="filePath"></param>
-        public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver, string elementXPath, string filePath)
+        public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver, string elementXPath, string filePath,bool isNew=true)
         {
+            if(isNew)
             FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
 
 
@@ -1960,7 +1885,7 @@ namespace FullWebappAutomation
 
             Sandbox_Upload_Image(backofficeDriver, "//div[@id='supeRepCont']//tr[1]/td[2]/table[1]/tbody[1]/tr[1]/td[2]/div[1][@id='btnSupeRepLandscape']", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\cat.jpeg");
 
-            Sandbox_Upload_Image(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\shirt.jpeg");
+            Sandbox_Upload_Image(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\shirt.jpeg",isNew:false);
 
 
             // wait 4 second
@@ -2179,11 +2104,11 @@ namespace FullWebappAutomation
         public static void Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            backoffice_Sandbox_Search_Account(backofficeDriver);
+          backoffice_Sandbox_Search_Account(backofficeDriver);
 
-            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+           Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
-            Webapp_Sandbox_Search_Account(webappDriver);
+           Webapp_Sandbox_Search_Account(webappDriver, "Search_List");
             
         }
 
@@ -2199,23 +2124,23 @@ namespace FullWebappAutomation
             Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
-            webapp_Sandbox_Smart_Search(webappDriver);
+            webapp_Sandbox_Smart_Search(webappDriver, "Smart_Search_List");
         }
 
 
         public static void Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            //Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-            //backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
+           backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
 
 
-            //Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
-            webapp_Sandbox_TSA_Smart_Search(webappDriver);
+            webapp_Sandbox_TSA_Smart_Search(webappDriver, "TSA_List");
         }
 
 

@@ -16,8 +16,6 @@ namespace FullWebappAutomation
     class WebappTest
     {
 
-
-
         public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, string nameNewList, Dictionary<string, string> Fields, bool isHeader = true)
         {
             int index = 1;
@@ -94,7 +92,8 @@ namespace FullWebappAutomation
         }
 
 
-        public static void webapp_Sandbox_Smart_Search(RemoteWebDriver webappDriver)
+
+        public static void webapp_Sandbox_Smart_Search(RemoteWebDriver webappDriver,string nameNewList)
         {
             // Accounts
             for (int i = 1; i < 10; i++)
@@ -108,6 +107,28 @@ namespace FullWebappAutomation
                 catch { }
             }
 
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
+                    }
+                }
+                catch
+                {
+                    Assert(false,"no costome list");
+                }
+            }
+
+
+            Thread.Sleep(5000);
 
             Dictionary<string, string> values = new Dictionary<string, string>();
             Dictionary<int, string> columns = new Dictionary<int, string>();
@@ -166,7 +187,8 @@ namespace FullWebappAutomation
         }
 
 
-        public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver)
+
+        public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver,string nameNewList)
         {
             // Accounts
             for (int i = 1; i < 10; i++)
@@ -178,6 +200,26 @@ namespace FullWebappAutomation
                     break;
                 }
                 catch { }
+            }
+
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
+                    }
+                }
+                catch
+                {
+                    Assert(false, "no costome list");
+                }
             }
 
             Thread.Sleep(3000);
@@ -194,7 +236,7 @@ namespace FullWebappAutomation
 
 
 
-        public static void webapp_Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver)
+        public static void webapp_Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver,string nameNewList)
         {
             // Accounts
             for (int i = 1; i < 10; i++)
@@ -207,6 +249,28 @@ namespace FullWebappAutomation
                 }
                 catch { }
             }
+
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
+                    }
+                }
+                catch
+                {
+                    Assert(false, "no costome list");
+                }
+            }
+
+            Thread.Sleep(3000);
 
 
             Dictionary<string, string> values = new Dictionary<string, string>();
@@ -246,7 +310,7 @@ namespace FullWebappAutomation
 
 
             // sum fo line 17
-            Webapp_check_Field_Smart_Search_TaxtBox(webappDriver, "TSADropdown", numbers, columns, values, 17, false);
+            Webapp_check_Field_Smart_Search_TaxtBox(webappDriver, "TSADropdown", numbers, columns, values, 17, false, numToRemuve: 11);
 
             ///////////----------------------
             // sum fo line 6
@@ -256,12 +320,11 @@ namespace FullWebappAutomation
 
 
             // sum fo line 17
-            Webapp_check_Field_Smart_Search_TaxtBox(webappDriver, "Limited Line Text", numbers, columns, values, 17, false,numToRemuve:3);
+            Webapp_check_Field_Smart_Search_TaxtBox(webappDriver, "TSALimitedLineText", numbers, columns, values, 17, false,numToRemuve:3);
 
 
 
         }
-
 
 
 
@@ -333,9 +396,16 @@ namespace FullWebappAutomation
 
                     case "select":
 
-                       
-                        break;
 
+                        // Select last 
+                        foreach (var num in numbers)
+                        {
+
+                            string value = SafeGetValue(webappDriver, string.Format("//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[{0}]/label", num), "innerHTML");
+                            values.Add(value, field);
+                            SafeClick(webappDriver, string.Format("//app-advanced-search[1]/div[1]/div[2]/div[3]/ul[1]/li[{0}]/input", num));
+                        }
+                        break;
 
                     default:
 

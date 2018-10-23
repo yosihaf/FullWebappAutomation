@@ -14,14 +14,17 @@ namespace FullWebappAutomation
         public static string DanUsername;
         public static string DanPassword;
         
-        public static void Setting(RemoteWebDriver backofficeDriver)
+        public static void Setting(RemoteWebDriver backofficeDriver,bool flag=false)
         {
             SafeClick(backofficeDriver, "//div[@id='settingCont']/div");
-            try
+            if (flag)
             {
-                SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']",safeWait:100, maxRetry: 3);
+                try
+                {
+                    SafeClick(backofficeDriver, "//div/button/span[@class='walkme-custom-balloon-button-text']");
+                }
+                catch { }
             }
-            catch { }
         }
         public static void InitLogFiles()
         {
