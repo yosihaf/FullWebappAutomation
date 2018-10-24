@@ -40,8 +40,8 @@ namespace FullWebappAutomation
         /// </summary>
         public static void TestSuite(string chosenUsername, Dictionary<string, bool> testsToRun)
         {
-            DanUsername = chosenUsername;
-            DanPassword = GetUserPassword(DanUsername);
+            Username = chosenUsername;
+            Password = GetUserPassword(Username);
 
 
             if (testsToRun["New Account ?"])
@@ -52,8 +52,8 @@ namespace FullWebappAutomation
 
 
             // Login
-            Webapp_Sandbox_Login(webappDriver, DanUsername, DanPassword);
-            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
+            Webapp_Sandbox_Login(webappDriver, Username, Password);
+            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password);
 
             if (testsToRun["New Account ?"])
             {

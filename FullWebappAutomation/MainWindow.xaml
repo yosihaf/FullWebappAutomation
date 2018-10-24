@@ -1,11 +1,11 @@
-﻿<Window x:Class="FullWebappAutomation.yosef_haftke"
+﻿<Window x:Class="FullWebappAutomation.Pepperi_Aoutomation"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FullWebappAutomation"
         mc:Ignorable="d"
-        Title="Dan Zlotnikov" Height="450" Width="700">
+        Title="Pepperi Automation" Height="450" Width="700">
     <Grid Name="MainGrid">
 
 

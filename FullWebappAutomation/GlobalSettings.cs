@@ -11,8 +11,8 @@ namespace FullWebappAutomation
         public static string finalizedPerformanceLogFilePath;
         public static string UserCredentialsFilePath;
         public static string newCredentialsFilePath;
-        public static string DanUsername;
-        public static string DanPassword;
+        public static string Username;
+        public static string Password;
         
         public static void Setting(RemoteWebDriver backofficeDriver,bool flag=false)
         {

@@ -109,8 +109,8 @@ namespace FullWebappAutomation
 
 
                     // 
-                    FullWebappAutomation.GlobalSettings.DanUsername = string.Format("automation{0}@pepperitest.com", indexForCreate);
-                    FullWebappAutomation.GlobalSettings.DanPassword = "Aa123456";
+                    FullWebappAutomation.GlobalSettings.Username = string.Format("automation{0}@pepperitest.com", indexForCreate);
+                    FullWebappAutomation.GlobalSettings.Password = "Aa123456";
 
 
                     // SING UP button
@@ -150,7 +150,7 @@ namespace FullWebappAutomation
                     // Click next in pop up
                     SafeClick(backofficeDriver, "//div/div/div/div/div/button/span",safeWait: 2000, maxRetry: 40);
 
-                    Var_Sandbox_Enable_New_List_Account(DanUsername);
+                    Var_Sandbox_Enable_New_List_Account(Username);
                 }
                 catch (Exception e)
                 {

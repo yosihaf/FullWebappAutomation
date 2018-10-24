@@ -19,7 +19,7 @@ namespace FullWebappAutomation
     {
         public static void All_Backoffice_Menus(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, DanUsername, DanPassword);
+            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password);
 
             Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
             Backoffice.CompanyProfile.Branding(backofficeDriver);
@@ -248,7 +248,7 @@ namespace FullWebappAutomation
             string actualActivityID = SafeGetValue(webappDriver, string.Format("(//label[@id='WrntyID'])[{0}]", orderIndexInList), "innerHTML").ToString();
 
             // Get Activity ID from API
-            var apiData = GetApiData(DanUsername, DanPassword, "transactions", "Remark=", orderInfo["orderRemark"]);
+            var apiData = GetApiData(Username, Password, "transactions", "Remark=", orderInfo["orderRemark"]);
             string apiActivityID = apiData[0].InternalID.ToString();
 
             Assert(actualActivityID == apiActivityID, "Activity ID doesn't match API data");
@@ -296,7 +296,7 @@ namespace FullWebappAutomation
             string actualActivityID = SafeGetValue(backofficeDriver, string.Format("//table[@class='ll_tbl']/tbody/tr[{0}]/td[3]/a", orderIndexInList), "title");
 
             // Get activity ID from API
-            var apiData = GetApiData(DanUsername, DanPassword, "transactions", "Remark=", orderInfo["orderRemark"]);
+            var apiData = GetApiData(Username, Password, "transactions", "Remark=", orderInfo["orderRemark"]);
             string apiActivityID = apiData[0].InternalID.ToString();
 
             Assert(apiActivityID == actualActivityID, "BO activity id doesn't match sql data");
@@ -580,7 +580,7 @@ namespace FullWebappAutomation
             string itemName = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[6]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
 
             // Get item ID from API
-            var apiData = GetApiData(DanUsername, DanPassword, "items", "Name=", itemName);
+            var apiData = GetApiData(Username, Password, "items", "Name=", itemName);
             string apiItemCode = apiData[0].ExternalID.ToString();
 
             // Click search icon
@@ -614,7 +614,7 @@ namespace FullWebappAutomation
             string itemID = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[7]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
 
             // Get item data from api
-            var apiData = GetApiData(DanUsername, DanPassword, "items", "ExternalID=", itemID);
+            var apiData = GetApiData(Username, Password, "items", "ExternalID=", itemID);
 
             // Parse the data to integer and store it in variable - min qty
             int apiItemMinQty;
@@ -912,13 +912,13 @@ namespace FullWebappAutomation
             string itemID = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[3]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
 
             // Get item api data
-            var apiData = GetApiData(DanUsername, DanPassword, "items", "Name=", itemID);
+            var apiData = GetApiData(Username, Password, "items", "Name=", itemID);
 
             // Parse out InternalID
             string InternalID = apiData[0].InternalID.ToString();
 
             // Get item inverntory data from api
-            apiData = GetApiData(DanUsername, DanPassword, "inventory", "ItemInternalID=", InternalID);
+            apiData = GetApiData(Username, Password, "inventory", "ItemInternalID=", InternalID);
 
             // Parse out InStockQuantity
             int inStockQuantity;
@@ -2134,7 +2134,7 @@ namespace FullWebappAutomation
             Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-           backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
+            backoffice_Sandbox_Creat_TSA_Fields_And_Added(backofficeDriver, TSA_Fields);
 
 
             Webapp_Sandbox_Resync(webappDriver, backofficeDriver);
@@ -2143,6 +2143,8 @@ namespace FullWebappAutomation
             webapp_Sandbox_TSA_Smart_Search(webappDriver, "TSA_List");
         }
 
+
+       /// public static void Sandbox_
 
         #endregion
 
