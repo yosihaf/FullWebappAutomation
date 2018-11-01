@@ -647,6 +647,32 @@ namespace FullWebappAutomation
             return true;
         }
 
+        public static void backoffice_Edit_Admin(RemoteWebDriver backofficeDriver, string type,string id= "formContTemplate")
+        {
+
+            
+            int k = 2;
+            while (true)
+            {
+                try
+                {
+                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='{1}']/div/div[{0}]/div/span[1]", k, id), "innerHTML", maxRetry: 3, safeWait: 300) == type)
+                    {
+                        SafeClick(backofficeDriver, string.Format("//div[@id='{1}']/div/div[{0}]/div/span[2]", k, id));
+                        break;
+                    }
+                }
+                catch
+                {
+                    k = 1;
+                    type = "Rep";
+
+                }
+                k++;
+            }
+        }
+
+
         /// <summary>
         ///  Help Change Title Home Screen
         /// </summary>
@@ -658,25 +684,7 @@ namespace FullWebappAutomation
 
 
             // Edit Admin
-            string type = "Admin";
-            int k = 2;
-            while (true)
-            {
-                try
-                {
-                    if (SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[1]", k), "innerHTML", maxRetry: 3) == type)
-                    {
-                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']/div/div[{0}]/div/span[2]", k));
-                        break;
-                    }
-                }
-                catch {
-                    k = 1;
-                    type = "Rep";
-                    
-                }
-                k++;
-            }
+            backoffice_Edit_Admin(backofficeDriver, "Admin");
 
 
 
@@ -763,7 +771,7 @@ namespace FullWebappAutomation
 
 
             string foundName = "";
-            int index = 2;
+            int index = 1;
             bool isFound = true;
 
             // Check All rows is contain
@@ -786,7 +794,7 @@ namespace FullWebappAutomation
                 }
             }
 
-            Assert(isFound && index == count + 2, "Account search failed (found name doesn't match expected)");
+            Assert(isFound && index == count + 1, "Account search failed (found name doesn't match expected)");
 
           
 
@@ -880,8 +888,9 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@class='ui-widget-content slick-row even']/div[@class='slick-cell l2 r2']/div[@title='Edit']");
 
 
-            // Edit Rep 
-            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[2]");
+            // Edit Admin 
+            backoffice_Edit_Admin(backofficeDriver, "Admin");
+
 
             foreach (var item in Fields)
             {
@@ -895,27 +904,40 @@ namespace FullWebappAutomation
 
             // Save
             SafeClick(backofficeDriver, "//div[@class='save allButtons grnbtn roundCorner  fl']");
-
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="backofficeDriver"></param>
-        public static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver)
+        public static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver,string List,bool isAll=false)
         {
+
+
+
             // Permission
             SafeClick(backofficeDriver, "//md-tab-item[3][@class='md-tab ng-scope ng-isolate-scope ng-binding']");
 
+            // Edit Admin
+            backoffice_Edit_Admin(backofficeDriver, "Admin", "formContTemplate2");
 
-            // Edit Rep
-            SafeClick(backofficeDriver, "//div[4]/div[1]/div[1]/div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[1]/div[2]/div[1]/span[2]");
+            // Edit Admin
+            //SafeClick(backofficeDriver, "//div[4]/div[1]/div[1]/div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[1]/div[2]/div[1]/span[2]");
 
 
-            // Account Lists
-            SafeClick(backofficeDriver, "//div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]");
-            SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[1]/div[1]/div[1]");
 
+            try
+            {
+                // Account Lists
+                SafeClick(backofficeDriver, "//div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]");
+                SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[1]/div[1]/div[1]");
+                if(isAll)
+                SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[2]/div[1]/div[1]");
+
+            }
+            catch { }
+          
+            
 
             // Save
             SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[4]/div[1]/div[1]");
@@ -993,7 +1015,7 @@ namespace FullWebappAutomation
             TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
             TSA_Fields.Add("Phone number", "TSAPhonenumber");
             TSA_Fields.Add("Link", "TSALink");
-            TSA_Fields.Add("Email", "TSAEmail");
+            //TSA_Fields.Add("Email", "TSAEmail");
 
 
 
@@ -1071,8 +1093,8 @@ namespace FullWebappAutomation
                 return;
             }
 
-            // Edit Rep 
-            SafeClick(backofficeDriver, "//div[@class='fl-box-title']/span[2]");
+            // Edit Admin 
+            backoffice_Edit_Admin(backofficeDriver, "Admin", "formContTemplate1");
 
 
             foreach (var item in Fields)

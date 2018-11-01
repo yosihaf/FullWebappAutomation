@@ -17,7 +17,7 @@ namespace FullWebappAutomation
         internal class GeneralActions
         {
             static Random rnd = new Random();
-            public static void SandboxLogin(RemoteWebDriver backofficeDriver, string username, string password)
+            public static void SandboxLogin(RemoteWebDriver backofficeDriver, string username, string password,bool isF=false)
             {
                 Exception error = null;
                 bool testSuccess = true;
@@ -62,8 +62,8 @@ namespace FullWebappAutomation
                     }
                     catch { }
 
-
-                    Setting(backofficeDriver,true);
+                   if(isF)
+                    Setting(backofficeDriver,isF);
 
 
                 }

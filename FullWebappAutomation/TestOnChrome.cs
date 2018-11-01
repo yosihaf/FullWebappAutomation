@@ -53,7 +53,7 @@ namespace FullWebappAutomation
 
             // Login
             Webapp_Sandbox_Login(webappDriver, Username, Password);
-            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password);
+            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password, true);
 
             if (testsToRun["New Account ?"])
             {
@@ -62,11 +62,18 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
                 Delegator delegatedFunction1 = Backoffice_Sandbox_Load_File;
                 BasicTestWrapper(delegatedFunction1, webappDriver, backofficeDriver);
+                Delegator delegatedFunction2 = Backoffice_Sandbox_Create_Lists_Accounts;
+                BasicTestWrapper(delegatedFunction2, webappDriver, backofficeDriver);
+                Delegator delegatedFunction3 = Backoffice_Sandbox_Smart_Search_List_Accounts;
+                BasicTestWrapper(delegatedFunction3, webappDriver, backofficeDriver);
+                Delegator delegatedFunction4 = Backoffice_Sandbox_Search_List_Accounts;
+                BasicTestWrapper(delegatedFunction4, webappDriver, backofficeDriver);
+
             }
 
             if (testsToRun["Resync"])
             {
-                Delegator delegatedFunction = Webapp_Sandbox_Resync;
+                Delegator delegatedFunction = webapp_Sandbox_Resync;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
@@ -252,16 +259,16 @@ namespace FullWebappAutomation
 
            
 
-            if (testsToRun["New_Basic_List_Account_Table"])
+            if (testsToRun["Basic_List_Account_Table"])
             {
                 Delegator delegatedFunction = Sandbox_Add_Basic_List;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
 
-            if (testsToRun["New_TSA_List_Account_Table"])
+            if (testsToRun["TSA_List_Account_Table"])
             {
-                Delegator delegatedFunction = Sandbox_Creat_TSA_Fields_And_Added;
+                Delegator delegatedFunction = Sandbox_TSA_Fields_Header;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
@@ -280,6 +287,12 @@ namespace FullWebappAutomation
             if (testsToRun["TSA_Smart_Search_Account"])
             {
                 Delegator delegatedFunction = Sandbox_TSA_Smart_Search;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+            if (testsToRun["creat_Account"])
+            {
+                Delegator delegatedFunction = Sandbox_creat_Account;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
             #endregion

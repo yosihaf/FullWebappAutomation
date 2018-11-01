@@ -39,7 +39,7 @@ namespace FullWebappAutomation
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         
 
-            usernames = new string[] { "automation1009@pepperitest.com", "daniel10@pepperitest.com" };
+            usernames = new string[] { "automation133@pepperitest.com", "daniel10@pepperitest.com" };
             tests = new string[]
             {
                 "New Account ?",
@@ -73,10 +73,11 @@ namespace FullWebappAutomation
                 "Branding color Main",
                 "Branding color Secondary",
                 "Branding image logo",
-                "New_Basic_List_Account_Table",
-                "New_TSA_List_Account_Table",
+                "Basic_List_Account_Table",
+                "TSA_List_Account_Table",
                 "Smart_Search_Account",
-                "TSA_Smart_Search_Account"
+                "TSA_Smart_Search_Account",
+                "creat_Account"
             };
 
             testsToRun = new Dictionary<string, bool>();
