@@ -78,10 +78,20 @@ namespace FullWebappAutomation
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
 
             // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
+            for (int i = 1; i < 10; i++)
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
+                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
+                    break;
+                }
+                catch { }
+            }
+
 
             // First account
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span");
+            SafeClick(webappDriver, "//div[1]/app-custom-form[1]/fieldset[1]//a[1]/span[1]");
             Thread.Sleep(5000);
 
             // Plus button
@@ -1095,6 +1105,77 @@ namespace FullWebappAutomation
 
             // Edit Admin 
             backoffice_Edit_Admin(backofficeDriver, "Admin", "formContTemplate1");
+
+
+            foreach (var item in Fields)
+            {
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(item.Key);
+                SafeClick(backofficeDriver, string.Format("//li[@data-id='{0}']//div[@class='fr plusIcon plusIconDisable']", item.Value));
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+                SafeClick(backofficeDriver, "//div[3]/div/div//span[@class='fa fa-search']");
+                Thread.Sleep(1000);
+            }
+
+
+            // Save
+            SafeClick(backofficeDriver, "//div[@class='footer-buttons']/div[@class='save allButtons grnbtn roundCorner  fl']");
+
+            Thread.Sleep(2500);
+        }
+
+
+        public static void Sreach_Available_Fields_Per_List(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields, string nameSearch,string nameList)
+        {
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
+
+            // Select List
+            int top = 0;
+            try
+            {
+                while (true)
+                {
+                    if (nameList == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l0 r0']", "innerHTML"))
+                    {
+                        SafeClick(backofficeDriver, "//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l3 r3']/div[@title='Edit']");
+                        break;
+                    }
+                    top += 40;
+                }
+            }
+            catch
+            {
+                Assert(false, "no exist the new list");
+                return;
+            }
+
+            // Configuration
+            SafeClick(backofficeDriver, "//md-pagination-wrapper/md-tab-item[2]");
+
+
+            // Select List
+            top = 0;
+            try
+            {
+                while (true)
+                {
+                    if (nameSearch == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-scroll md-no-transition-remove md-no-transition-remove-active md-active']//div[@style='top:" + top.ToString() + "px']//div[@class='slick-cell l0 r0']", "innerHTML"))
+                    {
+                        SafeClick(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-scroll md-no-transition-remove md-no-transition-remove-active md-active']//div[@style='top:" + top.ToString() + "px']//div[@title='Edit']");
+                        break;
+                    }
+                    top += 40;
+                }
+            }
+            catch
+            {
+                Assert(false, "no exist the new list");
+                return;
+            }
+
+            // Edit Admin 
+            backoffice_Edit_Admin(backofficeDriver, "Admin", "formContTemplate");
 
 
             foreach (var item in Fields)

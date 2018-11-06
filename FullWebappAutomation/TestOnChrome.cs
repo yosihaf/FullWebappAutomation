@@ -189,7 +189,7 @@ namespace FullWebappAutomation
 
             if(testsToRun["Order By"])
             {
-                Delegator delegatedFunction = Webapp_Sandbox_Order_By;
+                Delegator delegatedFunction = Sandbox_Order_By_Accounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
@@ -290,9 +290,9 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
-            if (testsToRun["creat_Account"])
+            if (testsToRun["Create Account"])
             {
-                Delegator delegatedFunction = Sandbox_creat_Account;
+                Delegator delegatedFunction = Sandbox_create_Account;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
             #endregion
