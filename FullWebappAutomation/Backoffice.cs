@@ -12,7 +12,6 @@ namespace FullWebappAutomation
 {
     namespace Backoffice
     {
-        
 
         internal class GeneralActions
         {
@@ -532,6 +531,8 @@ namespace FullWebappAutomation
                     SafeClick(backofficeDriver, "//h3[@id='7']/label");
             }
 
+            
+
             public static void Transaction_Types(RemoteWebDriver backofficeDriver)
             {
                 SalesActivity(backofficeDriver);
@@ -542,6 +543,12 @@ namespace FullWebappAutomation
             {
                 SalesActivity(backofficeDriver);
                 SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='ActivityTypes']");
+            }
+
+            public static void Activity_Lists_New(RemoteWebDriver backofficeDriver)
+            {
+                SalesActivity(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Orders']/p[@id='ActivityGenericList']");
             }
 
             public static void Sales_Activity_Lists(RemoteWebDriver backofficeDriver)

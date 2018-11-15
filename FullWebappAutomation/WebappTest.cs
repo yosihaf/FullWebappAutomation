@@ -15,15 +15,16 @@ namespace FullWebappAutomation
 {
     class WebappTest
     {
+        public static void Small_view(RemoteWebDriver webappDriver,string type)
+        {
+            // Small view
+            SafeClick(webappDriver, "//div[@id='header']/div/div/ul/li/span[@class='fa fa-th-large fa-lg']");
+            SafeClick(webappDriver,string.Format( "//div[@id='header']/div/div/ul/li//span[contains(text(),'{0}')]",type));
+            Thread.Sleep(bufferTime);
+        }
 
         public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, string nameNewList, Dictionary<string, string> Fields, bool isHeader = true)
         {
-
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-
-
-
-
             int index = 1;
             string valueH = "";
             bool isContains = true;
@@ -31,17 +32,9 @@ namespace FullWebappAutomation
             Thread.Sleep(5000);
 
 
-            // Account
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            // Accounts
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+           
 
             try
             {
@@ -101,41 +94,12 @@ namespace FullWebappAutomation
 
         public static void webapp_Sandbox_Smart_Search(RemoteWebDriver webappDriver,string nameNewList)
         {
-
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-
-
             // Accounts
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
-            try
-            {
-                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
-            }
-            catch
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
-                    {
-                        SafeClick(webappDriver, "//div[@class='ellipsis']");
-                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
-                    }
-                }
-                catch
-                {
-                    Assert(false,"no costome list");
-                }
-            }
+            // 
+            select_list_general(webappDriver, nameNewList);
+           
 
 
             Thread.Sleep(5000);
@@ -197,22 +161,12 @@ namespace FullWebappAutomation
         }
 
 
-
         public static void Webapp_Sandbox_Search_Account(RemoteWebDriver webappDriver,string nameNewList)
         {
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
 
             // Accounts
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+           
 
             try
             {
@@ -250,19 +204,9 @@ namespace FullWebappAutomation
 
         public static void webapp_Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver,string nameNewList)
         {
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-
             // Accounts
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+            
 
             try
             {
@@ -344,19 +288,10 @@ namespace FullWebappAutomation
 
         public static void Webapp_check_Field_Smart_Search_TaxtBox(RemoteWebDriver webappDriver, string field, HashSet<int> numbers, Dictionary<int, string> columns, Dictionary<string, string> values, int numRow, bool isAdd,string typeCurrently="",int numToRemuve=0)
         {
-            //webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
 
-            //// Accounts
-            //for (int i = 1; i < 10; i++)
-            //{
-            //    try
-            //    {
-            //        if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-            //            SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-            //        break;
-            //    }
-            //    catch { }
-            //}
+            // Accounts
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+
 
             // Select field 
             SafeClick(webappDriver, string.Format("//ul[@class='ul-smart-search']//li[@data-smartsearch='{0}']", field));
@@ -644,22 +579,12 @@ namespace FullWebappAutomation
         }
 
 
+
         public static void webapp_Sandbox_creat_Account(RemoteWebDriver webappDriver, Dictionary<string, string> Fields)
         {
-
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-
-            // Account
-            for (int i = 1; i < 16; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            // Accounts
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+           
 
             // + button and Add
             SafeClick(webappDriver, "//div[@calss='row']//list-menu[2]//div[1]/a/span");
@@ -736,24 +661,10 @@ namespace FullWebappAutomation
 
         public static void Webapp_Sandbox_Order_By(RemoteWebDriver webappDriver)
         {
-
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-
-
             bool flag = false;
 
             // Accounts
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
-
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
             // Select list TSA_List
             try
@@ -890,17 +801,7 @@ namespace FullWebappAutomation
 
             bool flag = false;
 
-            // Accounts
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
 
             // Select list TSA_List
@@ -930,17 +831,17 @@ namespace FullWebappAutomation
             Dictionary<string, KeyValuePair<int, string>> TSA_Fields = new Dictionary<string, KeyValuePair<int, string>>();
 
 
-            TSA_Fields.Add("Account ID", new KeyValuePair<int, string>(1, "/app-custom-form[1]/fieldset[1]//a[1]/span[1]"));
-            TSA_Fields.Add("Single Line Text", new KeyValuePair<int, string>(2, "/app-custom-form[1]/fieldset[1]/div[2]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]"));
-            TSA_Fields.Add("Limited Line Text", new KeyValuePair<int, string>(3, "/app-custom-form[1]/fieldset[1]/div[3]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]"));
-            TSA_Fields.Add("Paragraph Text", new KeyValuePair<int, string>(4, "/app-custom-form[1]/fieldset[1]/div[4]/app-custom-field-generator[1]/app-custom-textarea[1]/textarea"));
-            TSA_Fields.Add("Date", new KeyValuePair<int, string>(5, "/app-custom-form[1]/fieldset[1]/div[5]/app-custom-field-generator[1]/app-custom-date[1]/label[1]"));
-            TSA_Fields.Add("Number", new KeyValuePair<int, string>(7, "/app-custom-form[1]/fieldset[1]/div[7]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]"));
-            TSA_Fields.Add("Decimal Number", new KeyValuePair<int, string>(8, "/app-custom-form[1]/fieldset[1]/div[8]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]"));
-            TSA_Fields.Add("Currency", new KeyValuePair<int, string>(9, "/app-custom-form[1]/fieldset[1]/div[9]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]"));
-            TSA_Fields.Add("Checkbox", new KeyValuePair<int, string>(10, "/app-custom-form[1]/fieldset[1]/div[10]/app-custom-field-generator[1]/app-custom-checkbox[1]/input[1]"));
-            TSA_Fields.Add("Dropdown", new KeyValuePair<int, string>(11, "/app-custom-form[1]/fieldset[1]/div[11]/app-custom-field-generator[1]/app-custom-select[1]/label[1]"));
-            // TSA_Fields.Add("Multi Choice", new KeyValuePair<int, string>(12, "/app-custom-form[1]/fieldset[1]/div[12]/app-custom-field-generator[1]/app-custom-select[1]/label[1]"));
+            TSA_Fields.Add("Account ID", new KeyValuePair<int, string>(1,"/app-custom-form[1]/fieldset[1]//a[1]/span[1]"));
+            TSA_Fields.Add("Single Line Text", new KeyValuePair<int, string>(2,"/app-custom-form[1]/fieldset[1]/div[2]/label[1]"));
+            TSA_Fields.Add("Limited Line Text", new KeyValuePair<int, string>(3,"/app-custom-form[1]/fieldset[1]/div[3]/label[1]"));
+            TSA_Fields.Add("Paragraph Text", new KeyValuePair<int, string>(4,"/app-custom-form[1]/fieldset[1]/div[4]/label[1]"));
+            TSA_Fields.Add("Date", new KeyValuePair<int, string>(5,"/app-custom-form[1]/fieldset[1]/div[5]/label[1]"));
+            TSA_Fields.Add("Number", new KeyValuePair<int, string>(7,"/app-custom-form[1]/fieldset[1]/div[7]/label[1]"));
+            TSA_Fields.Add("Decimal Number", new KeyValuePair<int, string>(8,"/app-custom-form[1]/fieldset[1]/div[8]/label[1]"));
+            TSA_Fields.Add("Currency", new KeyValuePair<int, string>(9,"/app-custom-form[1]/fieldset[1]/div[9]/label[1]"));
+            TSA_Fields.Add("Checkbox", new KeyValuePair<int, string>(10,"/app-custom-form[1]/fieldset[1]/div[10]/app-custom-checkbox[1]/input[1]"));
+            TSA_Fields.Add("Dropdown", new KeyValuePair<int, string>(11,"/app-custom-form[1]/fieldset[1]/div[11]/label[1]"));
+            // TSA_Fields.Add("Multi Choice", new KeyValuePair<int, string>(12,"/app-custom-form[1]/fieldset[1]/div[12]/app-custom-field-generator[1]/app-custom-select[1]/label[1]"));
 
 
             string itemTemp = "", itemNew = "";
@@ -949,6 +850,11 @@ namespace FullWebappAutomation
             // Check if oreder by Descending all field
             foreach (var Field in TSA_Fields)
             {
+
+                if(flag)
+                {
+                    break;
+                }
 
                 // Order by Field
                 SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div[1]/fieldset/div[{0}]/label", Field.Value.Key));
@@ -964,7 +870,7 @@ namespace FullWebappAutomation
 
 
                 // Send Data from title 
-                if (Field.Key == "Paragraph Text" || Field.Key == "Checkbox")
+                if (Field.Key == "Checkbox")
                     typeSendValue = "title";
 
 
@@ -1017,93 +923,36 @@ namespace FullWebappAutomation
                             break;
                         }
                     }
+
                     itemTemp = itemNew;
                 }
             }
 
 
-            //// Check if oreder by Ascending all field
-            //foreach (var Field in TSA_Fields)
-            //{
-
-            //    // Order by Field
-            //    SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div[1]/fieldset/div[{0}]/label", Field.Value.Key));
-            //    SafeClick(webappDriver, string.Format("(.//*[normalize-space(text()) and normalize-space(.)='{0}'])[2]/following::i[1]", Field.Value.Key));
-            //   // (.//*[normalize-space(text()) and normalize-space(.)='Account ID'])[2]/following::i[1]
-            //   // IWebElement element = webappDriver.FindElement(By.XPath(string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[@title='Ascending']", Field.Value.Key)));
-            //   // IJavaScriptExecutor jse = (IJavaScriptExecutor)webappDriver;
-
-            //  //  jse.ExecuteScript("scroll(250, 0)"); // if the element is on top.
-
-
-            //    // Send Data from innerHTML
-            //    string typeSendValue = "innerHTML";
-
-
-            //    // type of order by string
-            //    string type = "str";
-
-
-            //    // Send Data from title 
-            //    if (Field.Key == "Paragraph Text" || Field.Key == "Checkbox")
-            //        typeSendValue = "title";
-
-
-            //    // type of order by number
-            //    if (Field.Key == "Currency" || Field.Key == "Number" || Field.Key == "Checkbox")
-            //        type = "curr";
-
-
-            //    if (Field.Key == "Date")
-            //        type = "Date";
-
-
-            //    Thread.Sleep(4000);
-
-
-            //    // Firts accunt 
-            //    itemTemp = SafeGetValue(webappDriver, string.Format("//div[{0}]{1}", 1, Field.Value.Value), typeSendValue);
-
-
-            //    // Check if 6 row is order by the field 
-            //    for (int i = 2; i <= 6; i++)
-            //    {
-            //        itemNew = SafeGetValue(webappDriver, string.Format("//div[{0}]{1}", i, Field.Value.Value), typeSendValue);
-            //        if (type == "str")
-            //        {
-            //            if (itemTemp.CompareTo(itemNew) > 0)
-            //            {
-            //                flag = true;
-            //                itemTemp = Field.Key;
-            //                break;
-            //            }
-            //        }
-            //        else if (type == "curr")
-            //        {
-            //            itemTemp = itemTemp.Replace('$', ' ');
-            //            itemNew = itemNew.Replace('$', ' ');
-            //            if (float.Parse(itemTemp) > float.Parse(itemNew))
-            //            {
-            //                flag = true;
-            //                itemTemp = Field.Key;
-            //                break;
-            //            }
-            //        }
-            //        else if (type == "Date")
-            //        {
-            //            if (DateTime.Parse(itemTemp) > DateTime.Parse(itemNew))
-            //            {
-            //                flag = true;
-            //                itemTemp = Field.Key;
-            //                break;
-            //            }
-            //        }
-            //        itemTemp = itemNew;
-            //    }
-            //}
-
             //Assert of checking 
             Assert(!flag, string.Format("The list not Descending by {0}", itemTemp));
+        }
+
+
+
+        public static void webapp_Sandbox_Home_Button(RemoteWebDriver webappDriver,string nameButton)
+        {
+            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
+
+            // Accounts
+            for (int i = 1; i < 10; i++)
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == nameButton)
+                    {
+                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
+                        break;
+                    }
+                   
+                }
+                catch { break; }
+            }
         }
 
 
@@ -1114,17 +963,10 @@ namespace FullWebappAutomation
 
             //   var api= GetApiData(Username,Password, "accounts","(Hidden = 0)","");
 
-            // Account
-            for (int i = 1; i < 16; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+
+            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+
+          
 
             // stor data the account
 

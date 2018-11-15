@@ -75,30 +75,19 @@ namespace FullWebappAutomation
         /// <param name="webappDriver"></param>
         public static void GetToOrderCenter_SalesOrder(RemoteWebDriver webappDriver)
         {
-            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
-
-            // Accounts
-            for (int i = 1; i < 10; i++)
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()), "innerHTML") == "Accounts")
-                        SafeClick(webappDriver, string.Format("//app-root[1]/div[1]/app-home-page[1]/footer[1]/div[1]/div[2]/div[{0}]/div[1]", i.ToString()));
-                    break;
-                }
-                catch { }
-            }
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
 
             // First account
-            SafeClick(webappDriver, "//div[1]/app-custom-form[1]/fieldset[1]//a[1]/span[1]");
-            Thread.Sleep(5000);
+            first_account(webappDriver,1);
 
-            // Plus button
-            SafeClick(webappDriver, "//div[@id='actionBar']/div/ul[3]/li/a/span");
+            
+
+            // ... button
+            SafeClick(webappDriver, "//div[@id='topBarContainer']//list-menu/div/a/span");
 
             // Sales Order
-            SafeClick(webappDriver, "//div[@id='actionBar']/div/ul[3]/li/ul/li/span");
+            SafeClick(webappDriver, "//div/div/top-bar/div/div/list-menu/div/ul//li[@title='Sales Order']");
             Thread.Sleep(5000);
 
             /*     
@@ -109,21 +98,35 @@ namespace FullWebappAutomation
             //Done
             SafeClick(driver, "//div[@id='mainCont']/app-accounts-home-page/object-chooser-modal/div/div/div/div[3]/div[2]");
             */
+            try
+            {
+                // Default Catalog
+                SafeClick(webappDriver, "//div[@class='scrollable-content']/div[2]",safeWait:300,maxRetry:4);
+            }
+            catch{ }
 
-            // Default Catalog
-            SafeClick(webappDriver, "//div[@class='scrollable-content']/div[2]");
+
         }
+
+        public static void first_account(RemoteWebDriver webappDriver, int index)
+        {
+            // First account
+            SafeClick(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]//a[1]/span[1]", index));
+            Thread.Sleep(5000);
+        }
+
 
         public static void GetToOrderCenter_SalesOrder2(RemoteWebDriver webappDriver)
         {
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
 
+            webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
+
             // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
             // First account
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span");
-
+            first_account(webappDriver, 1);
 
             Thread.Sleep(5000);
 
@@ -144,6 +147,7 @@ namespace FullWebappAutomation
             // Default Catalog
             SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form");
         }
+
 
         /// <summary>
         /// Clicks an element in the web page. Uses retry logic for a specified amount of tries. One second buffer between tries.
@@ -834,6 +838,7 @@ namespace FullWebappAutomation
             SafeSendKeys(varDriver, "//div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/input[1]", userName);
 
 
+
             SafeClick(varDriver, "//div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/a[1]");
 
 
@@ -848,12 +853,18 @@ namespace FullWebappAutomation
             SafeClick(varDriver, "//div[6]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/a[1]");
 
 
-            // Enable new account list
+            // Enable new Account list
             SafeClick(varDriver, "//input[@id='chkEnableNewAccountList']");
+
+
+            // Enable new Activities list
+            SafeClick(varDriver, "//input[@id='chkEnableNewActivityList']");
+            SafeClick(varDriver, "//div[@id='msgModalRightBtn']");
 
 
             // Save
             SafeClick(varDriver, "//div[@id='ctl00_MainContent_dDistributorDetailsContainer_dSave']//a[@title='Save']");
+
 
             Thread.Sleep(4000);
             varDriver.Quit();
@@ -868,7 +879,6 @@ namespace FullWebappAutomation
         public static void backoffice_Sandbox_Add_Available_Fields(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields,string nameList)
         {
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             // Select List
             int top = 0;
@@ -878,6 +888,7 @@ namespace FullWebappAutomation
                 {
                     if (nameList == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l0 r0']", "innerHTML"))
                     {
+                        // Edit List
                         SafeClick(backofficeDriver, "//div[@style='top:"+ top.ToString() + "px']/div[@class='slick-cell l3 r3']/div[@title='Edit']");
                         break;
                     }
@@ -922,18 +933,12 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         public static void Edit_Rep_Permission(RemoteWebDriver backofficeDriver,string List,bool isAll=false)
         {
-
-
-
             // Permission
             SafeClick(backofficeDriver, "//md-tab-item[3][@class='md-tab ng-scope ng-isolate-scope ng-binding']");
 
+
             // Edit Admin
             backoffice_Edit_Admin(backofficeDriver, "Admin", "formContTemplate2");
-
-            // Edit Admin
-            //SafeClick(backofficeDriver, "//div[4]/div[1]/div[1]/div[1]/div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[1]/div[2]/div[1]/span[2]");
-
 
 
             try
@@ -943,10 +948,8 @@ namespace FullWebappAutomation
                 SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[1]/div[1]/div[1]");
                 if(isAll)
                 SafeClick(backofficeDriver, "//div[1]/md-tabs[1]/md-tabs-content-wrapper[1]/md-tab-content[3]/div[1]/div[1]/div[3]/div[2]/ul[1]/div[1]/ul[1]/li[2]/div[1]/div[1]");
-
             }
             catch { }
-          
             
 
             // Save
@@ -959,7 +962,7 @@ namespace FullWebappAutomation
         /// </summary>
         /// <param name="backofficeDriver"></param>
         /// <param name="nameNewList">new the new list</param>
-        public static void Creat_New_List(RemoteWebDriver backofficeDriver, string nameNewList)
+        public static void Creat_New_List_Lists_Accounts(RemoteWebDriver backofficeDriver, string nameNewList)
         {
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
@@ -1192,6 +1195,30 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@class='footer-buttons']/div[@class='save allButtons grnbtn roundCorner  fl']");
 
             Thread.Sleep(2500);
+        }
+
+
+        public static void select_list_general(RemoteWebDriver webappDriver, string nameNewList)
+        {
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
+                    }
+                }
+                catch
+                {
+                    Assert(false, "no costome list");
+                }
+            }
         }
 
     }

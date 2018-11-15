@@ -68,7 +68,8 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction3, webappDriver, backofficeDriver);
                 Delegator delegatedFunction4 = Backoffice_Sandbox_Search_List_Accounts;
                 BasicTestWrapper(delegatedFunction4, webappDriver, backofficeDriver);
-
+                Delegator delegatedFunction5 = Sandbox_Create_Lists_Activities;
+                BasicTestWrapper(delegatedFunction5, webappDriver, backofficeDriver);
             }
 
             if (testsToRun["Resync"])
@@ -184,23 +185,16 @@ namespace FullWebappAutomation
                 Delegator delegatedFunction = Webapp_Sandbox_Duplicate_Transaction;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
-           
-
             if(testsToRun["Order By"])
             {
                 Delegator delegatedFunction = Sandbox_Order_By_Accounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
             if (testsToRun["Image Home"])
             {
                 Delegator delegatedFunction = Sandbox_Minimize_Home_As_Tablet;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-
-            
-
             if (testsToRun["Creat Bayer"])
             {
                 Delegator delegatedFunction = Backoffice_Sandbox_Creat_Byer;
