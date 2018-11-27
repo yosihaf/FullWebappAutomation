@@ -60,6 +60,10 @@ namespace FullWebappAutomation
                 // Load file items / inventory / accounts
                 Delegator delegatedFunction = backoffice_Custom_Fields_Acccounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                Delegator delegatedFunction6 = backoffice_Custom_Fields_Transaction;
+                BasicTestWrapper(delegatedFunction6, webappDriver, backofficeDriver);
+                Delegator delegatedFunction7 = backoffice_Custom_Fields_Activities;
+                BasicTestWrapper(delegatedFunction7, webappDriver, backofficeDriver);
                 Delegator delegatedFunction1 = Backoffice_Sandbox_Load_File;
                 BasicTestWrapper(delegatedFunction1, webappDriver, backofficeDriver);
                 Delegator delegatedFunction2 = Backoffice_Sandbox_Create_Lists_Accounts;
@@ -70,6 +74,7 @@ namespace FullWebappAutomation
                 BasicTestWrapper(delegatedFunction4, webappDriver, backofficeDriver);
                 Delegator delegatedFunction5 = Sandbox_Create_Lists_Activities;
                 BasicTestWrapper(delegatedFunction5, webappDriver, backofficeDriver);
+                
             }
 
             if (testsToRun["Resync"])
@@ -185,7 +190,7 @@ namespace FullWebappAutomation
                 Delegator delegatedFunction = Webapp_Sandbox_Duplicate_Transaction;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
-            if(testsToRun["Order By"])
+            if(testsToRun["Order By Accounts"])
             {
                 Delegator delegatedFunction = Sandbox_Order_By_Accounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
@@ -286,9 +291,20 @@ namespace FullWebappAutomation
 
             if (testsToRun["Create Account"])
             {
-                Delegator delegatedFunction = Sandbox_create_Account;
+                Delegator delegatedFunction = Sandbox_add_Account;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
+            #endregion
+
+
+            #region
+            if (testsToRun["Order By Activities"])
+            {
+                Delegator delegatedFunction = Sandbox_Order_By_Activities;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+
+
             #endregion
         }
 

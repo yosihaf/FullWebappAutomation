@@ -79,9 +79,9 @@ namespace FullWebappAutomation
 
 
             // First account
-            first_account(webappDriver,1);
+            SafeClick(webappDriver, first_account(webappDriver, 1));
+            Thread.Sleep(4000);
 
-            
 
             // ... button
             SafeClick(webappDriver, "//div[@id='topBarContainer']//list-menu/div/a/span");
@@ -108,11 +108,16 @@ namespace FullWebappAutomation
 
         }
 
-        public static void first_account(RemoteWebDriver webappDriver, int index)
+        /// <summary>
+        /// return first account from list account
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static string first_account(RemoteWebDriver webappDriver, int index)
         {
             // First account
-            SafeClick(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]//a[1]/span[1]", index));
-            Thread.Sleep(5000);
+           return string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]//a[1]/span[1]", index);
         }
 
 
@@ -126,7 +131,7 @@ namespace FullWebappAutomation
             WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
             // First account
-            first_account(webappDriver, 1);
+            SafeClick(webappDriver, first_account(webappDriver, 1));
 
             Thread.Sleep(5000);
 
@@ -1076,11 +1081,14 @@ namespace FullWebappAutomation
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="Fields">name of fields to add</param>
+        /// <param name="nameSearch">type of search</param>
         public static void Sreach_Available_Fields(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields,string nameSearch)
         {
-
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-
 
             // Configuration
             SafeClick(backofficeDriver, "//md-pagination-wrapper/md-tab-item[2]");
@@ -1130,7 +1138,7 @@ namespace FullWebappAutomation
         public static void Sreach_Available_Fields_Per_List(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields, string nameSearch,string nameList)
         {
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+           
 
 
             // Select List
@@ -1163,9 +1171,9 @@ namespace FullWebappAutomation
             {
                 while (true)
                 {
-                    if (nameSearch == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-scroll md-no-transition-remove md-no-transition-remove-active md-active']//div[@style='top:" + top.ToString() + "px']//div[@class='slick-cell l0 r0']", "innerHTML"))
+                    if (nameSearch == SafeGetValue(backofficeDriver, string.Format("//div[@id='formContTemplate']//div[@style='top:{0}px']//div[contains(@class,'slick-cell l0')]", top), "innerHTML"))
                     {
-                        SafeClick(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-scroll md-no-transition-remove md-no-transition-remove-active md-active']//div[@style='top:" + top.ToString() + "px']//div[@title='Edit']");
+                        SafeClick(backofficeDriver, string.Format("//div[@id='formContTemplate']//div[@style='top:{0}px']//div[@title='Edit']", top));
                         break;
                     }
                     top += 40;

@@ -94,6 +94,7 @@ namespace FullWebappAutomation
             Backoffice.ConfigurationFiles.User_Defined_Tables(backofficeDriver);
         }
 
+
         public static void Webapp_Sandbox_Login(RemoteWebDriver webappDriver, string username, string password)
         {
             Exception error = null;
@@ -125,6 +126,7 @@ namespace FullWebappAutomation
             }
         }
 
+
         public static void webapp_Sandbox_Resync(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
@@ -140,6 +142,7 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, "/html/body/app-root/div/app-home-page/app-user-helper/div/nav/div/div/ul/li[2]/ul/li/a");
             Thread.Sleep(3000);
         }
+
 
         // Checked with "Sales Order"
         public static void Webapp_Sandbox_Sales_Order(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
@@ -161,14 +164,13 @@ namespace FullWebappAutomation
             orderInfo["unitsQty"] = SafeGetValue(webappDriver, item_qty_input(1), "title");
 
             // Cart
-            SafeClick(webappDriver,cart());
+            SafeClick(webappDriver, cart());
 
             // Small view
             Small_view(webappDriver, "GridLine");
 
             // Transaction Menu
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/a/i");
-            Thread.Sleep(bufferTime);
+            SafeClick(webappDriver, Transaction_Menu());
 
             // Order details
             SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li/span");
@@ -200,13 +202,14 @@ namespace FullWebappAutomation
             //try
             //{
             //    SafeClick(webappDriver, "//div[@class='btn allButtons btnOk grnbtn ng-star-inserted']");
-            //    webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            webapp_Sandbox_Resync(webappDriver, backofficeDriver);
             //}
             //catch { }
 
             Webapp_Sandbox_Check_Sales_Order(webappDriver, orderInfo);
-           // Backoffice_Sandbox_Check_Sales_Order(backofficeDriver, orderInfo);
+            // Backoffice_Sandbox_Check_Sales_Order(backofficeDriver, orderInfo);
         }
+
 
         /// <summary>
         /// Check if sales order appears correctly in activities list
@@ -214,7 +217,7 @@ namespace FullWebappAutomation
         /// <param name="webappDriver"></param>
         /// <param name="orderInfo"></param>
         public static void Webapp_Sandbox_Check_Sales_Order(RemoteWebDriver webappDriver, Dictionary<string, string> orderInfo)
-        { 
+        {
             // Activities
             webapp_Sandbox_Home_Button(webappDriver, "Activities");
             Thread.Sleep(3000);
@@ -227,13 +230,13 @@ namespace FullWebappAutomation
             int index = 1;
             string value = "";
 
-            while (value!= "Order Remark")
+            while (value != "Order Remark")
             {
                 try
                 {
                     value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
-                    if(value == "Order Remark")
-                     break;
+                    if (value == "Order Remark")
+                        break;
                     index++;
                 }
                 catch
@@ -244,8 +247,8 @@ namespace FullWebappAutomation
 
 
             // Click order by Remark
-            SafeClick(webappDriver,string.Format( "//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/label",index));
-            SafeClick(webappDriver,string.Format( "//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[2]",index));
+            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/label", index));
+            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[2]", index));
             Thread.Sleep(3000);
 
 
@@ -256,7 +259,7 @@ namespace FullWebappAutomation
 
             for (int i = 1; i < 6; i++)
             {
-                actualRemark = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/label[1]", i,index), "innerHTML").ToString();
+                actualRemark = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/label[1]", i, index), "innerHTML").ToString();
 
                 if (actualRemark == orderInfo["orderRemark"])
                 {
@@ -269,7 +272,7 @@ namespace FullWebappAutomation
             Assert(remarkMatch, "No sales order with matching remark in activity list");
 
             // Get actual activity ID from web page and compare with API data
-           // string actualActivityID = SafeGetValue(webappDriver, string.Format("(//label[@id='WrntyID'])[{0}]", orderIndexInList), "innerHTML").ToString();
+            // string actualActivityID = SafeGetValue(webappDriver, string.Format("(//label[@id='WrntyID'])[{0}]", orderIndexInList), "innerHTML").ToString();
 
             // Get Activity ID from API
             var apiData = GetApiData(Username, Password, "transactions", "Remark=", orderInfo["orderRemark"]);
@@ -278,11 +281,12 @@ namespace FullWebappAutomation
             Assert(orderInfo["orderRemark"] == apiActivityRemark, "Activity ID doesn't match API data");
 
             // Check correct Units Qty 
-           // SafeClick(webappDriver, string.Format("(//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span)[{0}]", orderIndexInList));
+            // SafeClick(webappDriver, string.Format("(//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span)[{0}]", orderIndexInList));
             string actualUnitsQty = apiData[0].QuantitiesTotal.ToString();
 
             Assert(actualUnitsQty == orderInfo["unitsQty"], "Actual units Qty doesn't match ordered Qty");
         }
+
 
         /// <summary>
         /// Check if sales order arrives correctly to Backoffice
@@ -326,6 +330,7 @@ namespace FullWebappAutomation
             Assert(apiActivityID == actualActivityID, "BO activity id doesn't match sql data");
         }
 
+
         public static void Webapp_Sandbox_Config_Home_Button(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             bool homeButtonMatch = false;
@@ -352,6 +357,7 @@ namespace FullWebappAutomation
                 Assert(homeButtonMatch, "Home button not matching Backoffice configuration");
             }
         }
+
 
         /// <summary>
         /// Change home button to visit
@@ -442,6 +448,7 @@ namespace FullWebappAutomation
             }
         }
 
+
         /// <summary>
         /// Configure app buttons
         /// </summary>
@@ -503,6 +510,7 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
         }
 
+
         /// <summary>
         /// Revert app buttons back to original
         /// </summary>
@@ -549,6 +557,7 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
         }
 
+
         /// <summary>
         /// to do
         /// </summary>
@@ -590,14 +599,15 @@ namespace FullWebappAutomation
 
             // Assert the test
         }
-        
+
+
         // Checked with "Sales Order"
         public static void Webapp_Sandbox_Item_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             GetToOrderCenter_SalesOrder(webappDriver);
 
             // Small view
-            Small_view(webappDriver,"Small");
+            Small_view(webappDriver, "Small");
 
             // Get item name from webpage
             string itemName = SafeGetValue(webappDriver, "//div/div[1]/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[6]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
@@ -610,7 +620,7 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, "//body/app-root/div/app-order-center/div/app-bread-crumbs/div/div/div/span/i");
 
             // Input search parameter
-            SafeSendKeys(webappDriver,"//div/app-bread-crumbs//div[@class='input-group']//input", apiItemCode);
+            SafeSendKeys(webappDriver, "//div/app-bread-crumbs//div[@class='input-group']//input", apiItemCode);
 
             // Click search button
             SafeClick(webappDriver, "//div/app-bread-crumbs//div[@class='input-group']//span[2]/i");
@@ -623,13 +633,14 @@ namespace FullWebappAutomation
             Assert(itemName == actualItemName, "Actual item doesn't match expected");
         }
 
+
         // Checked with "Sales Order"
         public static void Webapp_Sandbox_Minimum_Quantity(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             GetToOrderCenter_SalesOrder(webappDriver);
 
             // Small view
-            Small_view(webappDriver,"Small");
+            Small_view(webappDriver, "Small");
 
             // Get item ID from webpage
             string itemID = SafeGetValue(webappDriver, "//div/div[1]/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[7]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
@@ -650,7 +661,7 @@ namespace FullWebappAutomation
             SafeSendKeys(webappDriver, "//div/div[1]/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[8]/figure/app-custom-field-generator/app-custom-quantity-selector/div/input", (apiItemMinQty - 1).ToString());
 
             // Click outside the box
-            SafeClick(webappDriver,  "//div/div[1]/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[7]/figure/app-custom-field-generator/app-custom-textbox/label/span");
+            SafeClick(webappDriver, "//div/div[1]/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[7]/figure/app-custom-field-generator/app-custom-textbox/label/span");
 
             Thread.Sleep(bufferTime);
 
@@ -660,13 +671,14 @@ namespace FullWebappAutomation
             Assert(qtySelectorStyle.Contains("color: rgb(255, 0, 0);"), "Min qty doesn't mark in red");
         }
 
+
         // Checked with "Sales Order"
         public static void Webapp_Sandbox_Delete_Cart_Item(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             GetToOrderCenter_SalesOrder(webappDriver);
 
             // Small view
-            Small_view(webappDriver,"Small");
+            Small_view(webappDriver, "Small");
 
 
             // First item qty plus
@@ -686,7 +698,7 @@ namespace FullWebappAutomation
 
 
             // Click minus button on first item
-            SafeClick(webappDriver, Xpath_item_qty_plus_or_minus(1,1));
+            SafeClick(webappDriver, Xpath_item_qty_plus_or_minus(1, 1));
 
             // Click "Delete" alert
             SafeClick(webappDriver, "//div[@type='button'][2]");
@@ -711,38 +723,6 @@ namespace FullWebappAutomation
         }
 
 
-        /// <summary>
-        /// return Xpath for plus or minus to qty
-        /// </summary>
-        /// <param name="indexItem">indexItem</param>
-        /// <param name="indexPlusOrMinus">1 to minus 2 to plus</param>
-        /// <returns></returns>
-        public static string Xpath_item_qty_plus_or_minus(int indexItem, int indexPlusOrMinus)
-        {
-            return string.Format("//div/div[{0}]/app-custom-form[1]//mat-grid-list[1]//mat-grid-tile/figure[1]/app-custom-field-generator[1]//div[1]/span[{1}]/i", indexItem, indexPlusOrMinus);
-        }
-
-        
-
-        /// <summary>
-        /// return Xpath for input qty
-        /// </summary>
-        /// <param name="indexItem"></param>
-        /// <returns></returns>
-        public static string item_qty_input(int indexItem)
-        {
-            return string.Format("//div/div[{0}]/app-custom-form[1]//mat-grid-list[1]//mat-grid-tile/figure[1]/app-custom-field-generator[1]//div[1]/input[@id='UnitsQuantity']", indexItem);
-        }
-
-        /// <summary>
-        /// click on cart
-        /// </summary>
-        /// <returns></returns>
-        public static string cart()
-        {
-            return string.Format("//button[@id='goToCartBtn']/span");
-        }
-
 
         // Checked with "Sales Order 2"
         public static void Webapp_Sandbox_Unit_Price_Discount(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
@@ -750,7 +730,7 @@ namespace FullWebappAutomation
             GetToOrderCenter_SalesOrder2(webappDriver);
 
             // Small view
-            Small_view(webappDriver,"Small");
+            Small_view(webappDriver, "Small");
 
             // First item qty plus
             SafeClick(webappDriver, Xpath_item_qty_plus_or_minus(1, 2));
@@ -807,6 +787,7 @@ namespace FullWebappAutomation
             Assert(discount == (((unitPrice - unitPriceAfterDiscount) / unitPrice) * 100), "Discount miscalculated");
         }
 
+
         // Checked with "Sales Order" 
         public static void Webapp_Sandbox_Continue_Ordering(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -816,27 +797,28 @@ namespace FullWebappAutomation
             GetToOrderCenter_SalesOrder(webappDriver);
 
             // Small view
-            Small_view(webappDriver,"Small");
+            Small_view(webappDriver, "Small");
 
             // Item qty plus
-            SafeClick(webappDriver,  Xpath_item_qty_plus_or_minus(1, 2));
+            SafeClick(webappDriver, Xpath_item_qty_plus_or_minus(1, 2));
 
             Thread.Sleep(bufferTime);
 
             // Get units qty from qty selector
-            orderInfo["unitsQty"] = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[8]/figure/app-custom-field-generator/app-custom-quantity-selector/div/input", "innerHTML");
+            orderInfo["unitsQty"] = SafeGetValue(webappDriver, item_qty_input(1), "innerHTML");
 
             // Cart
-            SafeClick(webappDriver, "//button[@id='goToCartBtn']/span");
+            SafeClick(webappDriver, cart());
 
             // Small view
             Small_view(webappDriver, "GridLine");
 
             // Transaction Menu
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/a/i");
+            SafeClick(webappDriver, Transaction_Menu());
 
             // Order details
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li/span");
+            SafeClick(webappDriver, selectAnyValueFromMnue("Order Details"));
+
 
             // Create remark and store it
             orderInfo["orderRemark"] = "Automation " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -856,16 +838,37 @@ namespace FullWebappAutomation
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
 
             // Activities
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div[2]/div");
-
-
-            // Click on order Remark //div[@id='viewsContainer']/app-custom-list/div/fieldset/div/label
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/div/fieldset/div/label");
-
-            // Click order by Remark //div[@id='viewsContainer']/app-custom-list/div/fieldset/div/label
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/div/fieldset/div/div/i[2]");
+            webapp_Sandbox_Home_Button(webappDriver, "Activities");
             Thread.Sleep(3000);
 
+            //"All"
+            select_list_general(webappDriver, "ALL");
+            Thread.Sleep(3000);
+
+
+            int index = 1;
+            string value = "";
+
+            while (value != "Order Remark")
+            {
+                try
+                {
+                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", index), "innerHTML", maxRetry: 3);
+                    if (value == "Order Remark")
+                        break;
+                    index++;
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+
+            // Click order by Remark
+            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/label", index));
+            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[2]", index));
+            Thread.Sleep(5000);
 
 
             //  Find the sales order in activity list
@@ -874,7 +877,7 @@ namespace FullWebappAutomation
 
             for (int i = 1; i < 12; i++)
             {
-                actualRemark = SafeGetValue(webappDriver, string.Format("(//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span)[{0}]", i), "innerHTML").ToString();
+                actualRemark = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/label[1]", i, index), "innerHTML").ToString();
 
                 if (actualRemark == orderInfo["orderRemark"])
                 {
@@ -884,7 +887,7 @@ namespace FullWebappAutomation
             }
 
             // Drill down into the sales order 
-            SafeClick(webappDriver, string.Format("(//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span)[{0}]", orderIndexInList));
+            SafeClick(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[1]/app-custom-button[1]/a[1]/span", orderIndexInList));
             Thread.Sleep(3000);
 
 
@@ -901,10 +904,13 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, "//button[@id='btnTransition']/span");
         }
 
+
         // Checked with "Sales Order"
         public static void Webapp_Sandbox_Duplicate_Line_Item(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+
             GetToOrderCenter_SalesOrder(webappDriver);
+
 
             // Small view
             Small_view(webappDriver, "Small");
@@ -932,53 +938,79 @@ namespace FullWebappAutomation
             // Duplicate popup button
             SafeClick(webappDriver, "(//div[@type='button'])[2]");
 
-            string item1 = SafeGetValue(webappDriver, "//body/app-root/div/app-cart/div/div/div/div/app-custom-list/virtual-scroll/div/div/app-custom-form/fieldset/div[4]/app-custom-field-generator/app-custom-textbox/label", "title");
-            string item2 = SafeGetValue(webappDriver, "//body/app-root/div/app-cart/div/div/div/div/app-custom-list/virtual-scroll/div/div[2]/app-custom-form/fieldset/div[4]/app-custom-field-generator/app-custom-textbox/label", "title");
+            string item1 = "", item2 = "";
 
-            Assert(item1 == item2, "Duplicate action failed");
+
+            // item code
+            item1 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]/div[1]/app-custom-form/fieldset/div[2]/app-custom-field-generator/app-custom-textbox/label"), "innerHTML");
+            item2 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]/div[2]/app-custom-form/fieldset/div[2]/app-custom-field-generator/app-custom-textbox/label"), "innerHTML");
+            Assert(item1 == item2, "Duplicate action failed for item code");
+
+
+            // QTY
+            item1 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]//div[1]//app-custom-form[1]//fieldset[1]//div[5]//app-custom-field-generator[1]//app-custom-quantity-selector[1]//div[1]//input[@id='UnitsQuantity']"), "title");
+            item2 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]//div[2]//app-custom-form[1]//fieldset[1]//div[5]//app-custom-field-generator[1]//app-custom-quantity-selector[1]//div[1]//input[@id='UnitsQuantity']"), "title");
+            Assert(item1 == item2, "Duplicate action failed for QTY");
+
+
+            // Unit Price
+            item1 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]/div[1]/app-custom-form/fieldset/div[6]/app-custom-field-generator/app-custom-textbox/label"), "innerHTML");
+            item2 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]/div[2]/app-custom-form/fieldset/div[6]/app-custom-field-generator/app-custom-textbox/label"), "innerHTML");
+            Assert(item1 == item2, "Duplicate action failed for Unit Price");
+
+
+            // Unit Price After Discount
+            item1 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]/div[1]/app-custom-form/fieldset/div[8]/app-custom-field-generator/app-custom-textbox//input"), "title");
+            item2 = SafeGetValue(webappDriver, string.Format("//div[contains(@class,'grid-body')]/div[2]/app-custom-form/fieldset/div[8]/app-custom-field-generator/app-custom-textbox//input"), "title");
+            Assert(item1 == item2, "Duplicate action failed for Unit Price After Discount");
+
+
+
         }
+
 
         // Checked with "Sales Order 2"
         public static void Webapp_Sandbox_Inventory_Alert(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            GetToOrderCenter_SalesOrder2(webappDriver);
+            GetToOrderCenter_SalesOrder(webappDriver);
 
             // Small view
             Small_view(webappDriver, "Small");
 
             // Get item Name from webpage
-            string itemID = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile[3]/figure/app-custom-field-generator/app-custom-textbox/label/span", "innerHTML");
+            string itemID = SafeGetValue(webappDriver, "//div[1]/app-custom-form[1]/fieldset[1]/mat-grid-list[1]/div[1]/mat-grid-tile[3]/figure[1]/app-custom-field-generator[1]/app-custom-textbox[1]/label[1]//span", "innerHTML");
 
             // Get item api data
-            var apiData = GetApiData(Username, Password, "items", "Name=", itemID);
+            var apiData = GetApiData(Username, Password, "items", "ExternalID=", itemID);
 
-            // Parse out InternalID
-            string InternalID = apiData[0].InternalID.ToString();
+            // Parse out ExternalID
+            string ExternalID = apiData[0].ExternalID.ToString();
 
             // Get item inverntory data from api
-            apiData = GetApiData(Username, Password, "inventory", "ItemInternalID=", InternalID);
+            apiData = GetApiData(Username, Password, "inventory", "Item.ExternalID=", ExternalID);
 
             // Parse out InStockQuantity
             int inStockQuantity;
             Int32.TryParse(apiData[0].InStockQuantity.ToString(), out inStockQuantity);
 
             // Item Qty selector field
-            SafeClick(webappDriver, "//input[@id='UnitsQuantity']");
+            SafeClick(webappDriver, item_qty_input(1));
 
             // Insert less than min qty into qty selector
-            SafeSendKeys(webappDriver, "//input[@id='UnitsQuantity']", (inStockQuantity + 20).ToString());
+            SafeSendKeys(webappDriver, item_qty_input(1), (inStockQuantity + 20).ToString());
 
             // Click outside the box
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]");
+            SafeClick(webappDriver, "//div[1]/app-order-center[1]/div[1]/app-bread-crumbs[1]/div[1]/div[1]/div[1]/div[1]/span[4]/span");
 
             Thread.Sleep(bufferTime);
 
-            string quantityStr = SafeGetValue(webappDriver, "//input[@id='UnitsQuantity']", "title");
+            string quantityStr = SafeGetValue(webappDriver, item_qty_input(1), "title");
 
             double quantity = Double.Parse(quantityStr);
 
             Assert(quantity == (double)inStockQuantity, "Inverntory auto-set failed");
         }
+
 
         public static void Webapp_Sandbox_Search_Activity(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -1006,10 +1038,11 @@ namespace FullWebappAutomation
             Assert((foundID == id) && (foundRemark == remark), "Activity search failed");
         }
 
+
         public static void Webapp_Sandbox_Delete_Activity(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             // Activities
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div[2]/div");
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Activities");
 
             // Get first activity ID and remark
             string id = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div/app-custom-form/fieldset/div[2]/app-custom-field-generator/app-custom-textbox/label", "title").ToString();
@@ -1032,13 +1065,15 @@ namespace FullWebappAutomation
             Assert(id != foundID, "Delete activity action failed");
         }
 
+
         public static void Webapp_Sandbox_Account_Search_Activity(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             // Accounts
-            SafeClick(webappDriver, "//div[@id='mainCont']/app-home-page/footer/div/div[2]/div/div");
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+
 
             // First account
-            first_account(webappDriver, 1);
+            SafeClick(webappDriver, first_account(webappDriver, 1));
 
 
             // Get first activity id
@@ -1065,20 +1100,25 @@ namespace FullWebappAutomation
             Assert(id == foundId && remark == foundRemark, "Account activity search failed");
         }
 
+
         public static void Webapp_Sandbox_Account_Drill_Down(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
+
             // Accounts
             WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
+
             // Get first account's name and drill down into it
-            string name = SafeGetValue(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", "title");
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span");
+            string name = SafeGetValue(webappDriver, first_account(webappDriver, 1), "title");
+            SafeClick(webappDriver, first_account(webappDriver,1));
+
 
             // Get account name from top of page and assert
-            string nameInside = SafeGetValue(webappDriver, "//div[@id='accountsHomePageCont']/acc-details/div/div/div/label", "innerHTML");
+            string nameInside = SafeGetValue(webappDriver,string.Format("//label[contains(text(),'{0}')]", name), "innerHTML");
 
             Assert(name == nameInside, "Account drill down failed");
         }
+
 
         public static void Webapp_Sandbox_Enter_To_Activity(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -1112,13 +1152,17 @@ namespace FullWebappAutomation
             Assert(continueOrderingButton == "Continue ordering", "Enter to activity failed (couldn't find continue ordering button)");
         }
 
+
         public static void Webapp_Sandbox_Account_Activity_Drilldown(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             // Accounts
             WebappTest.webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
+
             // Drill down into first account
-            SafeClick(webappDriver, "//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[1]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span");
+            SafeClick(webappDriver, first_account(webappDriver,1));
+
+
 
             string remark = "";
             string type = "";
@@ -1146,6 +1190,7 @@ namespace FullWebappAutomation
 
             Assert(continueOrderingButton == "Continue ordering", "Account activity drilldown failed (couldn't find continue ordering button)");
         }
+
 
         public static void Webapp_Sandbox_Breadcrumbs_Navigation(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -1179,10 +1224,10 @@ namespace FullWebappAutomation
 
 
             // Cart
-            SafeClick(webappDriver, "//button[@id='goToCartBtn']/span");
+            SafeClick(webappDriver, cart());
 
             // Transaction Menu
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/a/i");
+            SafeClick(webappDriver, Transaction_Menu());
 
             // Order details
             SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li/span");
@@ -1200,7 +1245,7 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, "//body/app-root/div/app-order-details/app-bread-crumbs/div/div/div/div[3]/div[2]");
 
             // Transaction Menu
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/a/i");
+            SafeClick(webappDriver, Transaction_Menu());
 
             // Duplicate transaction
             SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li[3]/span");
@@ -1209,8 +1254,9 @@ namespace FullWebappAutomation
             // Get units qty from qty selector
             string duplicatedQty = SafeGetValue(webappDriver, "//input[@id='UnitsQuantity']", "title");
             Console.WriteLine(duplicatedQty);
+
             // Transaction Menu
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/a/i");
+            SafeClick(webappDriver, Transaction_Menu());
 
             // Order details
             SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li/span");
@@ -1222,7 +1268,6 @@ namespace FullWebappAutomation
             Assert(Double.TryParse(duplicatedQty, out result) == Double.TryParse(originalQty, out result2) && duplicatedRemark == originalRemark, "Duplicated data doesn't match original");
         }
 
-       
 
         public static void Webapp_Sandbox_Mandatory_Fields(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -1232,7 +1277,7 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, "//button[@id='goToCartBtn']/span");
 
             // Transaction Menu
-            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/a/i");
+            SafeClick(webappDriver, Transaction_Menu());
 
             // Order details
             SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li/span");
@@ -1240,14 +1285,12 @@ namespace FullWebappAutomation
             // Save button
             SafeClick(webappDriver, "//body/app-root/div/app-order-details/app-bread-crumbs/div/div/div/div[3]/div[2]");
 
-
         }
 
 
         public static void Backoffice_Sandbox_Load_File(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-           
             FullWebappAutomation.Backoffice.ERPIntegration.Configuration(backofficeDriver);
 
 
@@ -1300,7 +1343,7 @@ namespace FullWebappAutomation
             checkFile(backofficeDriver, "API_Item");
 
 
-            // UploadFile  API_Special_Price_List to web
+            // UploadFile  API_PriceLevelItem_ to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_price_List_Item.csv", "API_PriceLevelItem_", true);
 
 
@@ -1311,7 +1354,7 @@ namespace FullWebappAutomation
 
 
             // UploadFile  API_Inventory_ to web
-            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Inventory.csv", "API_Inventory_",true);
+            UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Inventory.csv", "API_Inventory_", true);
 
 
             // check if file succee loaded API_Inventory_
@@ -1320,17 +1363,17 @@ namespace FullWebappAutomation
 
             // UploadFile  API_Account to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Account.csv", "API_Account_Overwrite_", true);
-           
-        
 
-            // check if file succee loaded API_Item
+
+
+            // check if file succee loaded API_Account_Overwrite_
             checkFile(backofficeDriver, "API_Account_Overwrite_");
 
             // UploadFile  API_Transaction Sales Order to web
             UploadFile(backofficeDriver, @"C:\Users\yosef.h\Desktop\automation_documents\automation_files\API_Transaction Sales Order.csv", "API_Transaction_Sales Order_", true);
 
 
-            // check if file succee loaded API_Item
+            // check if file succee loaded API_Transaction_Sales Order_
             checkFile(backofficeDriver, "API_Transaction_Sales Order_");
 
             // UploadFile  API_Transactionline Sales Order to web
@@ -1339,7 +1382,7 @@ namespace FullWebappAutomation
 
             // check if file succee loaded API_Item
             checkFile(backofficeDriver, "API_TransactionLine_Sales Order_");
-            
+
         }
 
 
@@ -1355,7 +1398,7 @@ namespace FullWebappAutomation
         {
             Dictionary<string, string> Buyer = new Dictionary<string, string>();
 
-            
+
 
             // Account
             SafeClick(backofficeDriver, "//div[1]/div[1]/ul[1]/li[3]/a[1]");
@@ -1539,20 +1582,23 @@ namespace FullWebappAutomation
             }
 
 
-                // reverse all
-                Backoffice_Delete_Layout(backofficeDriver, "Accounts", "Activity List", true);
+            // reverse all
+            Backoffice_Delete_Layout(backofficeDriver, "Accounts", "Activity List", true);
 
 
 
 
 
-                // Save button
-                SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
-                Thread.Sleep(4000);
+            // Save button
+            SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
+            Thread.Sleep(4000);
 
-                Assert(flag, "sume of button different between webapp to bakeoffice");
-            
+            Assert(flag, "sume of button different between webapp to bakeoffice");
+
         }
+
+
+
         public static void Backoffice_Change_All_Button_Home(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields)
         {
             Fields.Add("Accounts", "Accounts");
@@ -1565,7 +1611,7 @@ namespace FullWebappAutomation
             Fields.Add("Visit", "Visit");
             Fields.Add("All Activities", "AL2");
             Fields.Add("ALL", "AL7");
-          
+
             Backoffice_Delete_Layout(backofficeDriver);
 
             foreach (var item in Fields)
@@ -1578,7 +1624,7 @@ namespace FullWebappAutomation
             }
 
 
-           
+
 
             // Save button
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
@@ -1613,7 +1659,7 @@ namespace FullWebappAutomation
 
                     if (defaultiv)
                     {
-                        value = SafeGetValue(backofficeDriver, string.Format("//div[6]/div[1]/div[4]/div[2]/div[1]/div[1]/div[3]/div[4]/div[1]/ul[1]/li[{0}]/div[1]/div[1]/div[1]", i), "innerHTML", maxRetry: 3,safeWait:300);
+                        value = SafeGetValue(backofficeDriver, string.Format("//div[6]/div[1]/div[4]/div[2]/div[1]/div[1]/div[3]/div[4]/div[1]/ul[1]/li[{0}]/div[1]/div[1]/div[1]", i), "innerHTML", maxRetry: 3, safeWait: 300);
                         if (value != Accounts && !value.Contains(Activity))
                             SafeClick(backofficeDriver, string.Format("//ul[@class='clearfix ui-sortable']//li[{0}]//div[1]//div[1]//span[4]", i), maxRetry: 2);
                         else
@@ -1639,7 +1685,7 @@ namespace FullWebappAutomation
             int total = 0;
             string value;
             int i = 0;
-         
+
 
 
             Backoffice_Delete_Layout(backofficeDriver);
@@ -1673,7 +1719,7 @@ namespace FullWebappAutomation
             {
                 for (i = 1; ; i++)
                 {
-                   string valueF= SafeGetValue(webappDriver, string.Format("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[3]/ul[1]/li[{0}]", i), "innerHTML", maxRetry: 5);
+                    string valueF = SafeGetValue(webappDriver, string.Format("/html[1]/body[1]/app-root[1]/app-menu[1]/div[1]/nav[1]/div[3]/ul[1]/li[{0}]", i), "innerHTML", maxRetry: 5);
                     if (!Fields.Keys.Contains(valueF))
                     {
                         flag = false;
@@ -1682,7 +1728,7 @@ namespace FullWebappAutomation
             }
             catch
             {
-                Assert(i == Fields.Count+1&&flag, "no all menu exist");
+                Assert(i == Fields.Count + 1 && flag, "no all menu exist");
             }
 
 
@@ -1767,7 +1813,7 @@ namespace FullWebappAutomation
                 {
                     backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys("Online action automation");
                     index++;
-                    SafeClick(backofficeDriver, string.Format("//div/div[@class='lb-bank ui-droppable']/ul/div[2]//li[{0}]//div[@class='fr plusIcon plusIconDisable']", index),500,6);
+                    SafeClick(backofficeDriver, string.Format("//div/div[@class='lb-bank ui-droppable']/ul/div[2]//li[{0}]//div[@class='fr plusIcon plusIconDisable']", index), 500, 6);
                     break;
                 }
                 catch {
@@ -1776,18 +1822,17 @@ namespace FullWebappAutomation
                         break;
                     continue; }
             }
-            
+
             Thread.Sleep(1000);
 
 
             // Save button
             SafeClick(backofficeDriver, "//div[@id='formContTemplate']/div[4]/div/div");
 
-            
+
         }
 
         #endregion
-
 
 
         #region Images
@@ -1798,10 +1843,10 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         /// <param name="elementXPath"></param>
         /// <param name="filePath"></param>
-        public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver, string elementXPath, string filePath,bool isNew=true)
+        public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver, string elementXPath, string filePath, bool isNew = true)
         {
-            if(isNew)
-            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+            if (isNew)
+                FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
 
 
             //  Change Button 
@@ -1813,8 +1858,6 @@ namespace FullWebappAutomation
             backofficeDriver.SwitchTo().ActiveElement().SendKeys(filePath);
             backofficeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             Thread.Sleep(4000);
-
-
         }
 
 
@@ -1826,10 +1869,11 @@ namespace FullWebappAutomation
         public static void Sandbox_Minimize_Home_As_Tablet(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-
+            // Upload_Image 
             Sandbox_Upload_Image(backofficeDriver, "//div[@id='supeRepCont']//tr[1]/td[2]/table[1]/tbody[1]/tr[1]/td[2]/div[1][@id='btnSupeRepLandscape']", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\cat.jpeg");
 
-            Sandbox_Upload_Image(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\shirt.jpeg",isNew:false);
+            // Upload_Image 
+            Sandbox_Upload_Image(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\shirt.jpeg", isNew: false);
 
 
             // wait 4 second
@@ -1920,17 +1964,15 @@ namespace FullWebappAutomation
             string attributeBO = domElement.GetAttribute("style");
 
 
-
-
             webapp_Sandbox_Resync(webappDriver, backofficeDriver);
             Thread.Sleep(4000);
 
             domElement = webappDriver.FindElement(By.XPath("//app-root[1]/app-menu[1]/div[1]/nav[1]"));
             string attributeWA = domElement.GetAttribute("style");
 
-            bool isSame = (attributeBO == attributeWA);
+            bool isEqual = (attributeBO == attributeWA);
 
-            Assert(isSame, "The color Main  home page no change");
+            Assert(isEqual, "The color Main  home page no change");
         }
 
 
@@ -1971,7 +2013,7 @@ namespace FullWebappAutomation
 
 
             // src of image from webapp
-            string src= domElement.GetAttribute("src");
+            string src = domElement.GetAttribute("src");
 
 
             // open a new tab and set the context
@@ -1981,7 +2023,7 @@ namespace FullWebappAutomation
             webappDriver.Navigate().GoToUrl(src);
 
             string cow = webappDriver.Title;
-           
+
 
             webappDriver.Close();
             webappDriver.SwitchTo().Window(browserTabs[0]);
@@ -1995,7 +2037,6 @@ namespace FullWebappAutomation
 
 
         #endregion
-
 
 
         #region Account
@@ -2031,6 +2072,8 @@ namespace FullWebappAutomation
             Fields.Add("Paragraph Text", "TSAParagraphText");
             Fields.Add("Number", "TSANumber");
 
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
             Sreach_Available_Fields(backofficeDriver, Fields, "Search");
         }
 
@@ -2050,7 +2093,8 @@ namespace FullWebappAutomation
             Fields.Add("Zip code", "ZipCode");
             Fields.Add("Email", "Email");
             Fields.Add("Special price list name", "SpecialPriceListName");
-            
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields_Per_List(backofficeDriver, Fields, "Smart Search", "Basic_List");
 
@@ -2068,6 +2112,7 @@ namespace FullWebappAutomation
             TSA_Fields.Add("Checkbox", "TSACheckbox");
             TSA_Fields.Add("Dropdown", "TSADropdown");
 
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields_Per_List(backofficeDriver, TSA_Fields, "Smart Search", "TSA_List");
 
@@ -2076,7 +2121,7 @@ namespace FullWebappAutomation
 
         }
 
-     
+
 
         public static void Backoffice_Sandbox_Create_Lists_Accounts(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -2140,7 +2185,7 @@ namespace FullWebappAutomation
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
-            Edit_Rep_Permission(backofficeDriver, "Basic_List",true);
+            Edit_Rep_Permission(backofficeDriver, "Basic_List", true);
 
 
 
@@ -2171,14 +2216,14 @@ namespace FullWebappAutomation
             TSA_Fields.Add("Dropdown", "TSADropdown");
 
 
-           // backoffice_Sandbox_Smart_Search(backofficeDriver, TSA_Fields);
+            // backoffice_Sandbox_Smart_Search(backofficeDriver, TSA_Fields);
 
-          //  webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            //  webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
-            Webapp_Sandbox_New_List_Table(webappDriver, "TSA_List", TSA_Fields);
+            Webapp_Sandbox_New_List_Table(webappDriver, "TSA_List",  TSA_Fields, "Accounts" );
 
-            Webapp_Sandbox_New_List_Table(webappDriver, "TSA_List", TSA_Fields, isHeader: false);
-            
+            Webapp_Sandbox_New_List_Table(webappDriver, "TSA_List", TSA_Fields, "Accounts", isHeader: false);
+
 
         }
 
@@ -2212,31 +2257,36 @@ namespace FullWebappAutomation
             //webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
-            Webapp_Sandbox_New_List_Table(webappDriver, "Basic_List", Fields);
+            Webapp_Sandbox_New_List_Table(webappDriver, "Basic_List",  Fields,"Accounts");
         }
 
 
+        /// <summary>
+        /// Search Account
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="backofficeDriver"></param>
         public static void Sandbox_Search_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-        //  backoffice_Sandbox_Search_Account(backofficeDriver);
+            //  backoffice_Sandbox_Search_Account(backofficeDriver);
 
-        //   webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            //   webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
-           Webapp_Sandbox_Search_Account(webappDriver, "Basic_List");
-            
+            Webapp_Sandbox_Search_Account(webappDriver, "Basic_List");
+
         }
 
 
         public static void Sandbox_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-           // Dictionary<string, string> Fields = new Dictionary<string, string>();
+            // Dictionary<string, string> Fields = new Dictionary<string, string>();
 
 
-          //  backoffice_Sandbox_Smart_Search(backofficeDriver, Fields);
+            //  backoffice_Sandbox_Smart_Search(backofficeDriver, Fields);
 
 
-           // webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            // webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
             webapp_Sandbox_Smart_Search(webappDriver, "Basic_List");
@@ -2246,20 +2296,20 @@ namespace FullWebappAutomation
         public static void Sandbox_TSA_Smart_Search(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-         //   Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
+            //   Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
 
-         //   backoffice_Sandbox_Smart_Search(backofficeDriver, TSA_Fields);
+            //   backoffice_Sandbox_Smart_Search(backofficeDriver, TSA_Fields);
 
 
-         //   webapp_Sandbox_Resync(webappDriver, backofficeDriver);
+            //   webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
             webapp_Sandbox_TSA_Smart_Search(webappDriver, "TSA_List");
         }
 
 
-        public static void Sandbox_create_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        public static void Sandbox_add_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             Dictionary<string, string> Fields = new Dictionary<string, string>();
 
@@ -2276,7 +2326,7 @@ namespace FullWebappAutomation
             Fields.Add("Price list name", "PriceLevelName");
             Fields.Add("Creation Date", "CreationDate");
 
-            //creat list bakeoffice Name/ Street / City / Currency / ($)/ Zip Code / Country / State / Phone / Email / Account ID / Price list name Special price list name
+            //creat list bakeoffice Name/ Street / City / Currency / ($)/ Zip Code / Country / State / Phone / Email / Account ID / Price list name /Special price list name
 
             // bakeoffice_Sandbox_Add_Basic_List(backofficeDriver, Fields);
 
@@ -2284,10 +2334,42 @@ namespace FullWebappAutomation
             bakeoffice_Sandbox_Add_views(backofficeDriver, Fields);
 
 
-            //  webapp_Sandbox_Resync(webappDriver,backofficeDriver);
+            webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
             webapp_Sandbox_creat_Account(webappDriver, Fields);
+
+
+
+        }
+
+
+        public static void Sandbox_edit_Account(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+
+
+            Fields.Add("Name", "Name");
+            Fields.Add("Street", "Street");
+            Fields.Add("Country", "Country");
+            Fields.Add("City", "City");
+            Fields.Add("State", "State");
+            Fields.Add("Phone", "Phone");
+            Fields.Add("Zip code", "ZipCode");
+            Fields.Add("Email", "Email");
+            Fields.Add("Special price list name", "SpecialPriceListName");
+            Fields.Add("Price list name", "PriceLevelName");
+            Fields.Add("Creation Date", "CreationDate");
+
+            //creat list bakeoffice Name/ Street / City / Currency / ($)/ Zip Code / Country / State / Phone / Email / Account ID / Price list name /Special price list name
+
+            // bakeoffice_Sandbox_Add_Basic_List(backofficeDriver, Fields);
+
+
+            bakeoffice_Sandbox_Add_views(backofficeDriver, Fields);
+
+
+            webapp_Sandbox_Resync(webappDriver, backofficeDriver);
 
 
             webapp_Sandbox_edit_Account(webappDriver, Fields);
@@ -2297,9 +2379,171 @@ namespace FullWebappAutomation
         #endregion
 
 
-
         #region Activities 
+        
 
+
+        public static void backoffice_Custom_Fields_Transaction(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            FullWebappAutomation.Backoffice.SalesActivities.Transaction_Types(backofficeDriver);
+
+            // Edit Sales Order Transaction
+            SafeClick(backofficeDriver, "//div[contains(@class,'slick-cell')]//div[@title='Edit']");
+
+            // Fields
+            SafeClick(backofficeDriver, "//li[@title='Fields']//a[contains(text(),'Fields')]");
+
+
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
+
+
+
+            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
+            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
+            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
+            TSA_Fields.Add("Date", "TSADate");
+            TSA_Fields.Add("Date + Time", "TSADateTime");
+            TSA_Fields.Add("Limited Date", "TSADateTime");
+            TSA_Fields.Add("Duration", "TSADuration");
+            TSA_Fields.Add("Number", "TSANumber");
+            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
+            TSA_Fields.Add("Currency", "TSACurrency");
+            TSA_Fields.Add("Checkbox", "TSACheckbox");
+            TSA_Fields.Add("Dropdown", "TSADropdown");
+            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
+            TSA_Fields.Add("Image", "TSAImage");
+            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
+            TSA_Fields.Add("Phone number", "TSAPhonenumber");
+            TSA_Fields.Add("Link", "TSALink");
+            //TSA_Fields.Add("Button", "TSAButton");
+            //TSA_Fields.Add("Reference Type", "TSAReferenceType");
+            //TSA_Fields.Add("User defined tables Drop Down", "TSAUserdefinedtablesDropDown");
+            //TSA_Fields.Add("Sum Transaction Lines", "TSASumTransactionLines");
+
+
+            foreach (var item in TSA_Fields)
+            {
+                // Add Custom Field
+                SafeClick(backofficeDriver, "//div[@name='0']//span[contains(text(),'Add Custom Field')]");
+
+
+                // Select Type
+                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
+
+
+                // Name test
+                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key + " Transaction");
+
+
+                // Description test
+                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key + " Transaction");
+
+
+                // is no exist  Mapped Name Image/Attachment
+                if (item.Key != "Image" && item.Key != "Attachment")
+                {
+                    // Mapped test
+                    SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='mappedNameSection']/input[1]", item.Key + " Transaction");
+                }
+
+                if (item.Key == "Dropdown")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                if (item.Key == "Multi Choice")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                //   save 
+                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+
+                Thread.Sleep(2000);
+            }
+        }
+
+
+        public static void backoffice_Custom_Fields_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+
+            FullWebappAutomation.Backoffice.SalesActivities.Activity_Types(backofficeDriver);
+
+            // Edit Photo
+            SafeClick(backofficeDriver, "//div[@style='top:0px']/div[contains(@class,'slick-cell')]//div[@title='Edit']");
+
+
+            // Fields
+            SafeClick(backofficeDriver, "//li//a[contains(text(),'Fields')]");
+
+
+            Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
+
+
+
+            TSA_Fields.Add("Single Line Text", "TSASingleLineText");
+            TSA_Fields.Add("Limited Line Text", "TSALimitedLineText");
+            TSA_Fields.Add("Paragraph Text", "TSAParagraphText");
+            TSA_Fields.Add("Date", "TSADate");
+            TSA_Fields.Add("Date + Time", "TSADateTime");
+            TSA_Fields.Add("Limited Date", "TSADateTime");
+            TSA_Fields.Add("Duration", "TSADuration");
+            TSA_Fields.Add("Number", "TSANumber");
+            TSA_Fields.Add("Decimal Number", "TSADecimalNumber");
+            TSA_Fields.Add("Currency", "TSACurrency");
+            TSA_Fields.Add("Checkbox", "TSACheckbox");
+            TSA_Fields.Add("Dropdown", "TSADropdown");
+            TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
+            TSA_Fields.Add("Image", "TSAImage");
+            TSA_Fields.Add("Signature Drawing", "TSASignatureDrawing");
+            TSA_Fields.Add("Phone number", "TSAPhonenumber");
+            TSA_Fields.Add("Link", "TSALink");
+            //TSA_Fields.Add("Button", "TSAButton");
+            //TSA_Fields.Add("Reference Type", "TSAReferenceType");
+            //TSA_Fields.Add("User defined tables Drop Down", "TSAUserdefinedtablesDropDown");
+            //TSA_Fields.Add("Sum Transaction Lines", "TSASumTransactionLines");
+
+
+            foreach (var item in TSA_Fields)
+            {
+                // Add Custom Field
+                SafeClick(backofficeDriver, "//div[@name='0']//span[contains(text(),'Add Custom Field')]");
+
+
+                // Select Type
+                SafeClick(backofficeDriver, string.Format("//div[@id='mainCustomFieldLayout']/div/ul/li/h3[@title='{0}']", item.Key));
+
+
+                // Name test
+                SafeSendKeys(backofficeDriver, "//div[3]/div[@class='section']/input[1]", item.Key + "Activities");
+
+
+                // Description test
+                SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='descriptionSection']/input[1]", item.Key + "Activities");
+
+                // is no exist  Mapped Name Image/Attachment
+                if (item.Key != "Image" && item.Key != "Attachment")
+                {
+                    // Mapped test
+                    SafeSendKeys(backofficeDriver, "//div[1]/div[3]/div[@name='mappedNameSection']/input[1]", item.Key);
+                }
+
+                if (item.Key == "Dropdown")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='ComboBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                if (item.Key == "Multi Choice")
+                {
+                    SafeSendKeys(backofficeDriver, "//div[@class='MultiTickBox specialSection']/div/div/textarea[@name='textArea']", "first line \n second line");
+                }
+
+                //   save 
+                SafeClick(backofficeDriver, "//div[1]/div[1]/div[2]/div[2]/div[1]/div[4]/div[@name='save']");
+
+                Thread.Sleep(2000);
+            }
+        }
 
         public static void Sandbox_Create_Lists_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
@@ -2308,6 +2552,201 @@ namespace FullWebappAutomation
 
             Backoffice_Sandbox_Create_Lists_Activities(backofficeDriver, allList);
 
+
+        }
+
+
+        public static void Sandbox_Order_By_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            // Order By Table_Basic_List
+            Webapp_Sandbox_Order_By_Table_Basic_List(webappDriver);
+
+
+            // Order By Details_Basic_List
+            Webapp_Sandbox_Order_By_Details_Basic_List(webappDriver);
+        }
+
+
+        public static void Sandbox_Table_Fields_Header_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            
+            #region Table_Basic_Fields
+            Dictionary<string, string> Table_Basic_Fields = new Dictionary<string, string>();
+            Table_Basic_Fields.Add("Action Time", "ActionDateTime");
+            Table_Basic_Fields.Add("Activity Type Name", "ActivityTypeID");
+            Table_Basic_Fields.Add("Creation Date", "CreationDateTime");
+            Table_Basic_Fields.Add("Activity Creation Latitude", "CreationGeoCodeLAT");
+            Table_Basic_Fields.Add("Activity Creation Longitude", "CreationGeoCodeLNG");
+            Table_Basic_Fields.Add("CreatorID", "CreatorExternalID");
+            Table_Basic_Fields.Add("Creator", "Creator");
+            //Table_Basic_Fields.Add("Deleted", "Deleted");
+
+            Webapp_Sandbox_New_List_Table(webappDriver, "Table_Basic_List", Table_Basic_Fields, "Activities");
+
+            #endregion
+           
+
+            /*
+            #region Card_Basic_List 
+
+            Dictionary<string, string> Card_Basic_Fields = new Dictionary<string, string>();
+
+
+            Card_Basic_Fields.Add("External ID", "ExternalID");
+            Card_Basic_Fields.Add("Hidden", "Hidden");
+            Card_Basic_Fields.Add("Modification Date", "ModificationDateTime");
+            Card_Basic_Fields.Add("Planned Duration", "PlannedDuration");
+            Card_Basic_Fields.Add("Planned End Time", "PlannedEndTime");
+            Card_Basic_Fields.Add("Planned Start Time", "PlannedStartTime");
+            Card_Basic_Fields.Add("Status", "Status");
+            Card_Basic_Fields.Add("Submission Latitude", "SubmissionGeoCodeLAT");
+            Card_Basic_Fields.Add("Submission Longitude", "SubmissionGeoCodeLNG");
+
+
+
+            // Activities
+            webapp_Sandbox_Home_Button(webappDriver, "Activities");
+
+            bool isContains = true;
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", "Card_Basic_List"), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != "Card_Basic_List")
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", "Card_Basic_List"));
+                    }
+                }
+                catch
+                {
+                    isContains = false;
+                }
+            }
+
+
+            Thread.Sleep(5000);
+
+
+            foreach (var item in Card_Basic_Fields)
+            {
+                try
+                {
+                    string value = SafeGetValue(backofficeDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/div[1]/app-custom-form/fieldset/mat-grid-list/div/mat-grid-tile/figure/app-custom-field-generator//label[contains(@title,'{0}')]/span[1] ", item.Key), "innerHTML");
+                    if (value.ToLower() != item.Key.ToLower())
+                    {
+                        isContains = false;
+                    }
+                }
+                catch 
+                {
+                    isContains = false;
+                }
+              
+            }
+            Assert(isContains, "No all fields come to webapp");
+            #endregion
+            */
+            
+            #region Details_Basic_List end
+
+            Dictionary<string, string> Details_Basic_Fields = new Dictionary<string, string>();
+
+            Details_Basic_Fields.Add("Title", "Title");
+            Details_Basic_Fields.Add("Activity Type", "Type");
+            Details_Basic_Fields.Add("Sales Rep email", "Agent.Email");
+            Details_Basic_Fields.Add("Sales Rep First Name", "Agent.FirstName");
+            Details_Basic_Fields.Add("Order Remark", "Remark");
+            Details_Basic_Fields.Add("Quantities Total", "QuantitiesTotal");
+            Details_Basic_Fields.Add("Branch", "Branch");
+            Details_Basic_Fields.Add("Ship to Name", "ShipToName");
+
+
+            Webapp_Sandbox_New_List_Table(webappDriver, "Details_Basic_List", Details_Basic_Fields, "Activities");
+
+            #endregion
+
+            /*
+            #region Line_Basic_List
+
+            Dictionary<string, string> Line_Basic_List = new Dictionary<string, string>();
+
+            Line_Basic_List.Add("Account Address", "Account.Address");
+            Line_Basic_List.Add("Account sale", "Account.Agents");
+            Line_Basic_List.Add("Account Buyers", "Account.Buyers");
+            Line_Basic_List.Add("Account City", "Account.City");
+            Line_Basic_List.Add("Account Contact Persons", "Account.ContactPersons");
+            Line_Basic_List.Add("Account Country", "Account.Country");
+            Line_Basic_List.Add("Account Creation Date", "Account.CreationDate");
+            Line_Basic_List.Add("Account Deleted", "Account.Deleted");
+
+            #endregion
+
+            */
+        }
+
+
+
+        public static void Backoffice_Sandbox_Smart_Search_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+
+            Fields.Add("Action Time", "ActionDateTime");
+            Fields.Add("Activity Type Name", "ActivityTypeID");
+            Fields.Add("Creation Date", "CreationDateTime");
+            Fields.Add("Activity Creation Latitude", "CreationGeoCodeLAT");
+            Fields.Add("Activity Creation Longitude", "CreationGeoCodeLNG");
+            Fields.Add("Creator", "Creator");
+            Fields.Add("External ID", "ExternalID");
+            
+
+            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+
+            Sreach_Available_Fields_Per_List(backofficeDriver, Fields, "Smart Search", "Table_Basic_List");
+
+
+            //Fields = new Dictionary<string, string>();
+
+            //Fields.Add("Action Time", "ActionDateTime");
+            //Fields.Add("Activity Type Name", "ActivityTypeID");
+            //Fields.Add("Creation Date", "CreationDateTime");
+            //Fields.Add("Activity Creation Latitude", "CreationGeoCodeLAT");
+            //Fields.Add("Activity Creation Longitude", "CreationGeoCodeLNG");
+            //Fields.Add("Creator", "Creator");
+            //Fields.Add("External ID", "ExternalID");
+
+
+            //FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+
+            //Sreach_Available_Fields_Per_List(backofficeDriver, Fields, "Smart Search", "Card_Basic_List");
+
+
+        }
+
+
+
+        public static void Backoffice_Sandbox_Search_Activities(RemoteWebDriver webappDriver,RemoteWebDriver backofficeDriver)
+        {
+
+            // Menu
+            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+
+
+            // Configuration 
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+
+
+            Fields.Add("Order Remark", "Remark");
+            Fields.Add("Account Multi Choice", "AccountTSAMultiChoice");
+
+
+            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+
+            Sreach_Available_Fields(backofficeDriver, Fields, "Configure the fields the list may be searched by");
 
         }
 

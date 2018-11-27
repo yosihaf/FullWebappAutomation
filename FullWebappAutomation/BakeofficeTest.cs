@@ -51,6 +51,7 @@ namespace FullWebappAutomation
 
             // Edit_Rep_Permission(backofficeDriver,"Smart_Search_List");
 
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields(backofficeDriver, Fields, "Smart Search");
 
@@ -83,6 +84,7 @@ namespace FullWebappAutomation
 
             Edit_Rep_Permission(backofficeDriver, "Search_List");
 
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields(backofficeDriver, Fields, "Search");
 
@@ -130,7 +132,7 @@ namespace FullWebappAutomation
         {
 
             // Creat_New_List name TSA_Fields
-          //  Creat_New_List(backofficeDriver, "TSA_List");
+            //  Creat_New_List(backofficeDriver, "TSA_List");
 
 
 
@@ -148,11 +150,15 @@ namespace FullWebappAutomation
 
 
 
-          //  backoffice_Sandbox_Add_Available_Fields(backofficeDriver, TSA_Fields, "TSA_List");
+            //  backoffice_Sandbox_Add_Available_Fields(backofficeDriver, TSA_Fields, "TSA_List");
 
-        //    FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            //    FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
-         //   Edit_Rep_Permission(backofficeDriver, "TSA_List");
+            //   Edit_Rep_Permission(backofficeDriver, "TSA_List");
+
+
+            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+
 
             Sreach_Available_Fields(backofficeDriver, TSA_Fields, "Smart Search");
 
@@ -242,7 +248,7 @@ namespace FullWebappAutomation
             Table_Basic_Fields.Add("Creation", "CreationGeoCodeLNG");
             Table_Basic_Fields.Add("CreatorID", "CreatorExternalID");
             Table_Basic_Fields.Add("Creator", "Creator");
-            Table_Basic_Fields.Add("Deleted", "Deleted");
+            //Table_Basic_Fields.Add("Deleted", "Deleted");
 
 
             Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
@@ -295,7 +301,6 @@ namespace FullWebappAutomation
 
 
             Card_Basic_Fields.Add("External ID", "ExternalID");
-            Card_Basic_Fields.Add("Hidden", "Hidden");
             Card_Basic_Fields.Add("Modification Date", "ModificationDateTime");
             Card_Basic_Fields.Add("Planned Duration", "PlannedDuration");
             Card_Basic_Fields.Add("Planned End Time", "PlannedEndTime");

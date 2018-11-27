@@ -23,7 +23,7 @@ namespace FullWebappAutomation
             Thread.Sleep(bufferTime);
         }
 
-        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, string nameNewList, Dictionary<string, string> Fields, bool isHeader = true)
+        public static void Webapp_Sandbox_New_List_Table(RemoteWebDriver webappDriver, string nameNewList, Dictionary<string, string> Fields,string typeList, bool isHeader = true)
         {
             int index = 1;
             string valueH = "";
@@ -33,7 +33,7 @@ namespace FullWebappAutomation
 
 
             // Accounts
-            webapp_Sandbox_Home_Button(webappDriver, "Accounts");
+            webapp_Sandbox_Home_Button(webappDriver, typeList);
            
 
             try
@@ -44,7 +44,7 @@ namespace FullWebappAutomation
             {
                 try
                 {
-                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML").ToLower() != nameNewList.ToLower())
                     {
                         SafeClick(webappDriver, "//div[@class='ellipsis']");
                         SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
@@ -87,7 +87,6 @@ namespace FullWebappAutomation
             {
 
             }
-            SafeClick(webappDriver, "//div[@class='ellipsis']");
         }
 
 
@@ -654,7 +653,7 @@ namespace FullWebappAutomation
             Thread.Sleep(4000);
 
 
-          //  check_Field_Button_Search(webappDriver, uniqName, 1, 1);
+            check_Field_Button_Search(webappDriver, uniqName, 1, 1);
         }
 
 
@@ -666,29 +665,9 @@ namespace FullWebappAutomation
             // Accounts
             webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
-            // Select list TSA_List
-            try
-            {
-                SafeClick(webappDriver, string.Format("//div[@title='{0}']", "Basic_List"), safeWait: 300, maxRetry: 20);
-            }
-            catch
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != "Basic_List")
-                    {
-                        SafeClick(webappDriver, "//div[@class='ellipsis']");
-                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", "Basic_List"));
-                    }
-                }
-                catch
-                {
-                    //Assert of checking if exists list
-                    Assert(false, "The list not exists");
-                }
-            }
-
-            Thread.Sleep(4000);
+            // Select list Basic_List
+            select_list(webappDriver, "Basic_List");
+            
 
             Dictionary<string, KeyValuePair<int, string>> Fields = new Dictionary<string, KeyValuePair<int, string>>();
 
@@ -803,30 +782,8 @@ namespace FullWebappAutomation
 
             webapp_Sandbox_Home_Button(webappDriver, "Accounts");
 
-
-            // Select list TSA_List
-            try
-            {
-                SafeClick(webappDriver, string.Format("//div[@title='{0}']", "TSA_List"), safeWait: 300, maxRetry: 20);
-            }
-            catch
-            {
-                try
-                {
-                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != "TSA_List")
-                    {
-                        SafeClick(webappDriver, "//div[@class='ellipsis']");
-                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", "TSA_List"));
-                    }
-                }
-                catch
-                {
-                    //Assert of checking if exists list
-                    Assert(false, "The list not exists");
-                }
-            }
-
-            Thread.Sleep(4000);
+            select_list(webappDriver,"TSA_List");
+           
 
             Dictionary<string, KeyValuePair<int, string>> TSA_Fields = new Dictionary<string, KeyValuePair<int, string>>();
 
@@ -933,7 +890,32 @@ namespace FullWebappAutomation
             Assert(!flag, string.Format("The list not Descending by {0}", itemTemp));
         }
 
+        public static void select_list(RemoteWebDriver webappDriver, string v)
+        {
+            // Select list TSA_List
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", v), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != v)
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", v));
+                    }
+                }
+                catch
+                {
+                    //Assert of checking if exists list
+                    Assert(false, "The list not exists");
+                }
+            }
 
+            Thread.Sleep(4000);
+        }
 
         public static void webapp_Sandbox_Home_Button(RemoteWebDriver webappDriver,string nameButton)
         {
@@ -975,5 +957,204 @@ namespace FullWebappAutomation
 
         }
 
+
+
+        /// <summary>
+        /// return Xpath for plus or minus to qty
+        /// </summary>
+        /// <param name="indexItem">indexItem</param>
+        /// <param name="indexPlusOrMinus">1 to minus 2 to plus</param>
+        /// <returns></returns>
+        public static string Xpath_item_qty_plus_or_minus(int indexItem, int indexPlusOrMinus)
+        {
+            return string.Format("//div/div[{0}]/app-custom-form[1]//mat-grid-list[1]//mat-grid-tile/figure[1]/app-custom-field-generator[1]//div[1]/span[{1}]/i", indexItem, indexPlusOrMinus);
+        }
+
+
+
+        /// <summary>
+        /// return Xpath for input qty
+        /// </summary>
+        /// <param name="indexItem"></param>
+        /// <returns></returns>
+        public static string item_qty_input(int indexItem)
+        {
+            return string.Format("//div/div[{0}]/app-custom-form[1]//mat-grid-list[1]//mat-grid-tile/figure[1]/app-custom-field-generator[1]//div[1]/input[@id='UnitsQuantity']", indexItem);
+        }
+
+
+        /// <summary>
+        /// click on cart
+        /// </summary>
+        /// <returns></returns>
+        public static string cart()
+        {
+            return string.Format("//button[@id='goToCartBtn']/span");
+        }
+
+
+        public static string selectAnyValueFromMnue(string value)
+        {
+            return string.Format("//ul[1]/li[1]/ul[1]/li[1]//span[contains(text(),'{0}')]", value);
+        }
+
+
+        /// <summary>
+        /// return Xpath for Transaction Menu
+        /// </summary>
+        /// <returns></returns>
+        public static string Transaction_Menu()
+        {
+            return string.Format("//div[@id='containerActions']/ul/li/a/i");
+        }
+
+
+        public static void Webapp_Sandbox_Order_By_Table_Basic_List(RemoteWebDriver webappDriver)
+        {
+            bool flag = false;
+
+            webapp_Sandbox_Home_Button(webappDriver, "Activities");
+
+
+            // Select list Table_Basic_List
+            select_list(webappDriver, "Table_Basic_List");
+
+
+            Dictionary<string, KeyValuePair<int, string>> Table_Basic_Fields = new Dictionary<string, KeyValuePair<int, string>>();
+
+
+            Table_Basic_Fields.Add("Action Time", new KeyValuePair<int, string>(1, "/app-custom-form[1]/fieldset[1]//a[1]/span[1]"));
+            Table_Basic_Fields.Add("Activity Type Name", new KeyValuePair<int, string>(2, "/app-custom-form[1]/fieldset[1]/div[2]/label[1]"));
+            Table_Basic_Fields.Add("Creation Date", new KeyValuePair<int, string>(3, "/app-custom-form[1]/fieldset[1]/div[3]/label[1]"));
+            Table_Basic_Fields.Add("Activity Creation Latitude", new KeyValuePair<int, string>(4, "/app-custom-form[1]/fieldset[1]/div[4]/label[1]"));
+            Table_Basic_Fields.Add("Activity Creation Longitude", new KeyValuePair<int, string>(5, "/app-custom-form[1]/fieldset[1]/div[5]/label[1]"));
+
+
+            string itemTemp = "", itemNew = "";
+
+
+            // Check if oreder by Descending all field
+            flag = Check_order_by(webappDriver, Table_Basic_Fields, flag, ref itemTemp, ref itemNew);
+
+
+            //Assert of checking 
+            Assert(!flag, string.Format("The list not Descending by {0}", itemTemp));
+        }
+
+
+        public static bool Check_order_by(RemoteWebDriver webappDriver, Dictionary<string, KeyValuePair<int, string>> table_Basic_Fields, bool flag, ref string itemTemp, ref string itemNew)
+        {
+            foreach (var Field in table_Basic_Fields)
+            {
+                if (flag)
+                {
+                    break;
+                }
+
+                // Order by Field
+                SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div[1]/fieldset/div[{0}]/label", Field.Value.Key));
+                SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[@title='Descending']", Field.Value.Key));
+
+
+                // Send Data from innerHTML
+                string typeSendValue = "innerHTML";
+
+
+                // type of order by string
+                string type = "str";
+
+
+                // Send Data from title 
+                if (Field.Key == "Checkbox")
+                    typeSendValue = "title";
+
+
+                // type of order by number
+                if (Field.Key == "Currency" || Field.Key == "Number" || Field.Key == "Checkbox")
+                    type = "curr";
+
+
+                if (Field.Key == "Date")
+                    type = "Date";
+
+
+                Thread.Sleep(4000);
+
+
+                // Firts accunt 
+                itemTemp = SafeGetValue(webappDriver, string.Format("//div[{0}]{1}", 1, Field.Value.Value), typeSendValue);
+
+
+                // Check if 6 row is order by the field 
+                for (int i = 2; i <= 6; i++)
+                {
+                    itemNew = SafeGetValue(webappDriver, string.Format("//div[{0}]{1}", i, Field.Value.Value), typeSendValue);
+                    if (type == "str")
+                    {
+                        if (itemTemp.CompareTo(itemNew) < 0)
+                        {
+                            flag = true;
+                            itemTemp = Field.Key;
+                            break;
+                        }
+                    }
+                    else if (type == "curr")
+                    {
+                        itemTemp = itemTemp.Replace('$', ' ');
+                        itemNew = itemNew.Replace('$', ' ');
+                        if (float.Parse(itemTemp) < float.Parse(itemNew))
+                        {
+                            flag = true;
+                            itemTemp = Field.Key;
+                            break;
+                        }
+                    }
+                    else if (type == "Date")
+                    {
+                        if (DateTime.Parse(itemTemp) < DateTime.Parse(itemNew))
+                        {
+                            flag = true;
+                            itemTemp = Field.Key;
+                            break;
+                        }
+                    }
+                    itemTemp = itemNew;
+                }
+            }
+            return flag;
+        }
+
+
+        public static void Webapp_Sandbox_Order_By_Details_Basic_List(RemoteWebDriver webappDriver)
+        {
+            bool flag = false;
+
+            webapp_Sandbox_Home_Button(webappDriver, "Activities");
+
+
+            // Select list Table_Basic_List
+            select_list(webappDriver, "Details_Basic_List");
+
+
+            Dictionary<string, KeyValuePair<int, string>> Table_Basic_Fields = new Dictionary<string, KeyValuePair<int, string>>();
+
+
+            Table_Basic_Fields.Add("Title", new KeyValuePair<int, string>(1, "/app-custom-form[1]/fieldset[1]//a[1]/span[1]"));
+            Table_Basic_Fields.Add("Activity Type", new KeyValuePair<int, string>(2, "/app-custom-form[1]/fieldset[1]/div[2]/label[1]"));
+            Table_Basic_Fields.Add("Sales Rep email", new KeyValuePair<int, string>(3, "/app-custom-form[1]/fieldset[1]/div[3]/label[1]"));
+            Table_Basic_Fields.Add("Sales Rep First Name", new KeyValuePair<int, string>(4, "/app-custom-form[1]/fieldset[1]/div[4]/label[1]"));
+            Table_Basic_Fields.Add("Order Remark", new KeyValuePair<int, string>(5, "/app-custom-form[1]/fieldset[1]/div[5]/label[1]"));
+
+
+            string itemTemp = "", itemNew = "";
+
+
+            // Check if oreder by Descending all field
+            flag = Check_order_by(webappDriver, Table_Basic_Fields, flag, ref itemTemp, ref itemNew);
+
+
+            //Assert of checking 
+            Assert(!flag, string.Format("The list not Descending by {0}", itemTemp));
+        }
     }
 }
