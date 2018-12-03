@@ -10,7 +10,7 @@ using static FullWebappAutomation.GlobalSettings;
 
 namespace FullWebappAutomation
 {
-    namespace Backoffice
+    namespace BackofficeNavigation
     {
 
         internal class GeneralActions
@@ -669,6 +669,82 @@ namespace FullWebappAutomation
                 Configuration_Files_(backofficeDriver);
                 SafeClick(backofficeDriver, "//div[@id='ConfigurationFiles']/p[@id='MapData']");
             }
+        }
+        
+        internal class ActivityNavigation {
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void General_Info(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='General Info']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Views_and_Forms(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Views and Form']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Action(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Action']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Workflows(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Workflows']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Programs(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Programs']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Accounts(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Accounts']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void ePayment(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='ePayment']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Settings(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Settings']//a");
+            }
+            /// <summary>
+            /// use this navigation function only after you edit activity in the BO
+            /// </summary>
+            /// <param name="backofficeDriver"></param>
+            public static void Fields(RemoteWebDriver backofficeDriver)
+            {
+                SafeClick(backofficeDriver, "//ul[@id='actTypesTabsMenu']//li[@title='Fields']//a");
+            }
+
         }
     }
 }

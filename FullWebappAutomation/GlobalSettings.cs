@@ -4,6 +4,19 @@ using static FullWebappAutomation.HelperFunctions;
 
 namespace FullWebappAutomation
 {
+    public enum TransactionAccountSettingsSelection
+    {
+        NoAssignment,
+        OrigenAndDestination,
+        Destination
+    }
+
+    public enum ListViewTypeForOldList
+    {
+        tableView,
+        cardsView,
+        detailedView
+    }
     class GlobalSettings
     {
         public static string successLogFilePath;
@@ -33,7 +46,7 @@ namespace FullWebappAutomation
             successLogFilePath = CreateNewLog("success", "chrome", dateTime);
             performanceLogFilePath = CreateNewLog("performance", "chrome", dateTime);
             finalizedPerformanceLogFilePath = CreateNewLog("finalizedPerformance", "chrome", dateTime);
-            UserCredentialsFilePath = @"C:\Users\yosef.h\Desktop\automation_documents\automation_users\admins.json";
+            UserCredentialsFilePath = @"C:\Users\daniel.b.PEPPERI\Desktop\automation_documents\automation_documents\automation_users\admins.json";
             newCredentialsFilePath = @"C:\Users\yosef.h\Desktop\automation_documents\automation_users\Number of New Log.json";
         }
     }

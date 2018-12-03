@@ -67,6 +67,7 @@
     </ApplicationDefinition>
     <Compile Include="Backoffice.cs" />
     <Compile Include="BakeofficeTest.cs" />
+    <Compile Include="DanielTest.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="TestOnChrome.cs" />
     <Compile Include="Tests.cs" />
