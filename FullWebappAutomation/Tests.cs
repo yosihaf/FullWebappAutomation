@@ -14,11 +14,35 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium.Interactions;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace FullWebappAutomation
 {
     class Tests
     {
+        public static dynamic connectDB(string sql)
+        {
+            string connectionString = GetUserPassword("1");
+            SqlDataReader reader;
+            DataTable dt = new DataTable();
+
+           
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+             
+                
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(sql,con);
+                    reader = cmd.ExecuteReader();
+                    dt.Load(reader);
+                    con.Close();
+               
+
+            }
+            return dt;
+        }
+
         public static void All_Backoffice_Menus(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password);
@@ -207,7 +231,7 @@ namespace FullWebappAutomation
             //catch { }
 
             Webapp_Sandbox_Check_Sales_Order(webappDriver, orderInfo);
-            // Backoffice_Sandbox_Check_Sales_Order(backofficeDriver, orderInfo);
+            Backoffice_Sandbox_Check_Sales_Order(backofficeDriver, orderInfo);
         }
 
 
@@ -223,7 +247,7 @@ namespace FullWebappAutomation
             Thread.Sleep(3000);
 
 
-            //"Details_Basic_List"
+            //"ALL"
             select_list_general(webappDriver, "ALL");
             Thread.Sleep(3000);
 
@@ -249,7 +273,7 @@ namespace FullWebappAutomation
             // Click order by Remark
             SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/label", index));
             SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[2]", index));
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
 
             // Get remark and assert correctly - first 10 activities
@@ -1163,32 +1187,96 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, first_account(webappDriver,1));
 
 
+            // ALL 
+            select_list(webappDriver,"ALL");
 
-            string remark = "";
-            string type = "";
-            string id = "";
-            int i = 0;
+            int indexOrder = 1;
 
-            // Get activity IDs and remarks until you find one with a remark 
-            while (remark == "" || (type != "Sales Order" && type != "Sales Order  2"))
+            string value = "";
+
+            while (value != "Order Remark")
             {
                 try
                 {
-                    i++;
-                    remark = SafeGetValue(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[{0}]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", i), "title").ToString();
-                    id = SafeGetValue(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[{0}]/app-custom-form/fieldset/div[2]/app-custom-field-generator/app-custom-textbox/label", i), "title").ToString();
-                    type = SafeGetValue(webappDriver, string.Format("(//label[@id='Type'])[{0}]", i), "title");
+                    value = SafeGetValue(webappDriver, string.Format("//app-custom-list//div[{0}][@class='lc pull-left flip ng-star-inserted']/label", indexOrder), "innerHTML", maxRetry: 3);
+                    if (value == "Order Remark")
+                    {
+
+                        break;
+                    }
+
+                    indexOrder++;
                 }
-                catch { break; }
+                catch
+                {
+                    break;
+                }
             }
 
-            // Drill down to the chosen activity
-            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[{0}]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", i));
 
+            // Click order by Remark
+            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/label", indexOrder));
+            SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/div/fieldset/div[{0}]/div/i[2]", indexOrder));
+            Thread.Sleep(5000);
+
+
+            string remark = "";
+            string type = "";
+            int i = 1;
+
+
+            for ( i = 1; ; i++)
+            {
+                //actualRemark = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/label[1]", i, index), "innerHTML").ToString();
+
+                remark = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/label[1]", i, indexOrder), "innerHTML").ToString();
+
+                if (remark != "")
+                {
+                    SafeClick(webappDriver, first_account(webappDriver, 1));
+                    break;
+                }
+            }
+
+            // Transaction Menu
+            SafeClick(webappDriver, Transaction_Menu());
+
+            // Order details
+            SafeClick(webappDriver, "//div[@id='containerActions']/ul/li/ul/li/span");
             Thread.Sleep(bufferTime);
-            string continueOrderingButton = SafeGetValue(webappDriver, "(//button[@type='button'])[2]", "innerHTML");
 
-            Assert(continueOrderingButton == "Continue ordering", "Account activity drilldown failed (couldn't find continue ordering button)");
+
+
+            // Click remark field
+            SafeClick(webappDriver, "//div[@id='orderDetailsContainer']/app-custom-form/fieldset/div[15]/div/app-custom-field-generator/app-custom-textbox/div/input");
+            Thread.Sleep(bufferTime);
+
+            // Copy remark
+            string continueOrderingButton = SafeGetValue(webappDriver, "//div[@id='orderDetailsContainer']/app-custom-form/fieldset/div[15]/div/app-custom-field-generator/app-custom-textbox/div/input", "title");
+            Thread.Sleep(bufferTime);
+
+
+            Assert(continueOrderingButton == remark, "Account activity drilldown failed (couldn't find continue ordering button)");
+
+
+            //// Get activity IDs and remarks until you find one with a remark 
+            //while (remark == "" || (type != "Sales Order" && type != "Sales Order  2"))
+            //{
+            //    try
+            //    {
+            //        i++;
+            //        remark = SafeGetValue(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[{0}]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", i), "title").ToString();
+            //        type = SafeGetValue(webappDriver, string.Format("(//label[@id='Type'])[{0}]", i), "title");
+            //    }
+            //    catch { break; }
+            //}
+
+            //// Drill down to the chosen activity
+            //SafeClick(webappDriver, string.Format("//div[@id='viewsContainer']/app-custom-list/virtual-scroll/div[2]/div[{0}]/app-custom-form/fieldset/div/app-custom-field-generator/app-custom-button/a/span", i));
+
+            
+
+           // Assert(continueOrderingButton == "Continue ordering", "Account activity drilldown failed (couldn't find continue ordering button)");
         }
 
 
@@ -2728,27 +2816,79 @@ namespace FullWebappAutomation
         }
 
 
+        public static void Customize_Sandbox_Search_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Backoffice_Sandbox_Search_Activities(backofficeDriver);
+        }
 
-        public static void Backoffice_Sandbox_Search_Activities(RemoteWebDriver webappDriver,RemoteWebDriver backofficeDriver)
+
+        public static void Sandbox_Search_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            // Menu
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            string nameNewList = "ALL";
+
+            // Activities
+            webapp_Sandbox_Home_Button(webappDriver, "Activities");
 
 
-            // Configuration 
-            Dictionary<string, string> Fields = new Dictionary<string, string>();
+            try
+            {
+                SafeClick(webappDriver, string.Format("//div[@title='{0}']", nameNewList), safeWait: 300, maxRetry: 20);
+            }
+            catch
+            {
+                try
+                {
+                    if (SafeGetValue(webappDriver, "//div[@class='ellipsis']", "innerHTML") != nameNewList)
+                    {
+                        SafeClick(webappDriver, "//div[@class='ellipsis']");
+                        SafeClick(webappDriver, string.Format("//li[@title='{0}']", nameNewList));
+                    }
+                }
+                catch
+                {
+                    Assert(false, "no costome list");
+                }
+            }
+
+            Thread.Sleep(3000);
 
 
-            Fields.Add("Order Remark", "Remark");
-            Fields.Add("Account Multi Choice", "AccountTSAMultiChoice");
-
-
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
-
-            Sreach_Available_Fields(backofficeDriver, Fields, "Configure the fields the list may be searched by");
+            check_Field_Button_Search(webappDriver, "staples", 10, 1);
 
         }
+
+
+        public static void Sandbox_Ceate_Account_Types(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Backoffice.Accounts.Account_Types(backofficeDriver);
+            Ceate_Account_Types(backofficeDriver, "New Type Account1");
+
+            Backoffice.Accounts.Account_Types(backofficeDriver);
+            Ceate_Account_Types(backofficeDriver, "New Type Account2");
+        }
+
+        public static void Ceate_Account_Types(RemoteWebDriver backofficeDriver, string nameNewList)
+        {
+            // + Create Account Types
+            SafeClick(backofficeDriver, "//div[contains(@id,'btnAddNew')]");
+
+
+            //  Input New List Fildes
+            // input name
+            SafeSendKeys(backofficeDriver, "//input[@name='Name']", nameNewList);
+
+
+            // input description
+            SafeSendKeys(backofficeDriver, "//input[@name='Description']", "Automation " + nameNewList);
+
+
+            // Save
+            SafeClick(backofficeDriver, "//div[contains(@id,'btnSave')]");
+        }
+
+
+      
 
         #endregion
 

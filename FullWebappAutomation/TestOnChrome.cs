@@ -60,26 +60,34 @@ namespace FullWebappAutomation
                 // Load file items / inventory / accounts
                 Delegator delegatedFunction = backoffice_Custom_Fields_Acccounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
-                Delegator delegatedFunction6 = backoffice_Custom_Fields_Transaction;
-                BasicTestWrapper(delegatedFunction6, webappDriver, backofficeDriver);
-                Delegator delegatedFunction7 = backoffice_Custom_Fields_Activities;
-                BasicTestWrapper(delegatedFunction7, webappDriver, backofficeDriver);
-                Delegator delegatedFunction1 = Backoffice_Sandbox_Load_File;
-                BasicTestWrapper(delegatedFunction1, webappDriver, backofficeDriver);
-                Delegator delegatedFunction2 = Backoffice_Sandbox_Create_Lists_Accounts;
-                BasicTestWrapper(delegatedFunction2, webappDriver, backofficeDriver);
-                Delegator delegatedFunction3 = Backoffice_Sandbox_Smart_Search_List_Accounts;
-                BasicTestWrapper(delegatedFunction3, webappDriver, backofficeDriver);
-                Delegator delegatedFunction4 = Backoffice_Sandbox_Search_List_Accounts;
-                BasicTestWrapper(delegatedFunction4, webappDriver, backofficeDriver);
-                Delegator delegatedFunction5 = Sandbox_Create_Lists_Activities;
-                BasicTestWrapper(delegatedFunction5, webappDriver, backofficeDriver);
-                
+                delegatedFunction = backoffice_Custom_Fields_Transaction;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = backoffice_Custom_Fields_Activities;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Backoffice_Sandbox_Load_File;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Backoffice_Sandbox_Create_Lists_Accounts;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Backoffice_Sandbox_Smart_Search_List_Accounts;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Backoffice_Sandbox_Search_List_Accounts;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Sandbox_Create_Lists_Activities;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                //Customize Search Activities list
+                delegatedFunction = Customize_Sandbox_Search_Activities;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                // Ceate Account Types
+                delegatedFunction = Sandbox_Ceate_Account_Types;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 
             if (testsToRun["Resync"])
             {
+                dynamic result= connectDB("select Name, IsMandatory, ERPReadOnly, ColumnType, DBColumnType from Wrnty.[ApiName] where ObjectTypeID = 105");
                 Delegator delegatedFunction = webapp_Sandbox_Resync;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Sandbox_Ceate_Account_Types;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
 

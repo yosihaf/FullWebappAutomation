@@ -778,14 +778,16 @@ namespace FullWebappAutomation
             SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
 
 
-
             // Input name
             SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input");
             SafeSendKeys(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/input", AccountId);
 
+
             // Click search button
             SafeClick(webappDriver, "//app-generic-list/div/div/div/top-bar/div/div/search/div/a/span");
             Thread.Sleep(bufferTime);
+
+
 
 
 
@@ -799,7 +801,7 @@ namespace FullWebappAutomation
                 try
                 {
                     //div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span
-                    foundName = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span", index,column), "innerHTML", safeWait: 100, maxRetry: 7).ToString();
+                    foundName = SafeGetValue(webappDriver, string.Format("//div[{0}]/app-custom-form[1]/fieldset[1]/div[{1}]/app-custom-field-generator[1]/app-custom-button[1]/a[1]/span", index, column), "innerHTML", safeWait: 100, maxRetry: 7).ToString();
                     index++;
                     if (!serach(AccountId, foundName))
                     {
@@ -891,7 +893,7 @@ namespace FullWebappAutomation
             {
                 while (true)
                 {
-                    if (nameList == SafeGetValue(backofficeDriver, "//md-tab-content[@class='_md ng-scope md-no-transition md-active md-no-scroll']//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l0 r0']", "innerHTML"))
+                    if (nameList == SafeGetValue(backofficeDriver, "//div[@style='top:" + top.ToString() + "px']/div[@class='slick-cell l0 r0']", "innerHTML"))
                     {
                         // Edit List
                         SafeClick(backofficeDriver, "//div[@style='top:"+ top.ToString() + "px']/div[@class='slick-cell l3 r3']/div[@title='Edit']");
@@ -972,7 +974,7 @@ namespace FullWebappAutomation
             FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
 
             // + Create New List
-            SafeClick(backofficeDriver, "//div[@id='btnAddNewAcc']");
+            SafeClick(backofficeDriver, "//div[contains(@id,'btnAddNew')]");
 
 
             //  Input New List Fildes
@@ -1006,8 +1008,6 @@ namespace FullWebappAutomation
         /// <param name="backofficeDriver"></param>
         /// <param name="nameNewList"></param>
         /// <param name="Fields"></param>
-
-
         public static void backoffice_Custom_Fields_Acccounts(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
             FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
@@ -1229,7 +1229,13 @@ namespace FullWebappAutomation
             }
         }
 
+
+       
     }
     #endregion
+
+   
+
+
 }
 

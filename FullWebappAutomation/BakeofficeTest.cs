@@ -126,6 +126,26 @@ namespace FullWebappAutomation
             Edit_Rep_Permission(backofficeDriver, "Basic_List");
         }
 
+        public static void Backoffice_Sandbox_Search_Activities(RemoteWebDriver backofficeDriver)
+        {
+
+            // Menu
+            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+
+
+            // Configuration 
+            Dictionary<string, string> Fields = new Dictionary<string, string>();
+
+
+            Fields.Add("Order Remark", "Remark");
+            Fields.Add("Account Multi Choice", "AccountTSAMultiChoice");
+
+
+            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+
+            Sreach_Available_Fields(backofficeDriver, Fields, "Configure the fields the list may be searched by");
+
+        }
 
 
         public static void backoffice_Sandbox_Smart_Search_(RemoteWebDriver backofficeDriver, Dictionary<string, string> TSA_Fields)

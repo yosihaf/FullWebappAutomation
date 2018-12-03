@@ -351,6 +351,13 @@ namespace FullWebappAutomation
                     SafeClick(backofficeDriver, "//h3[@title='Accounts']/label");
             }
 
+            public static void Account_Types(RemoteWebDriver backofficeDriver)
+            {
+                Account(backofficeDriver);
+                SafeClick(backofficeDriver, "//div[@id='Accounts']/p[@id='Settings_AccountTypes']");
+            }
+
+
             public static void Views_And_Forms(RemoteWebDriver backofficeDriver)
             {
                 Account(backofficeDriver);
