@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using static FullWebappAutomation.GlobalSettings;
 using static FullWebappAutomation.HelperFunctions;
 using static FullWebappAutomation.Tests;
+using static FullWebappAutomation.DanielTest;
 
 namespace FullWebappAutomation
 {
@@ -46,20 +47,21 @@ namespace FullWebappAutomation
 
             if (testsToRun["New Account ?"])
             {
-                Backoffice.GeneralActions.SandboxCreateLog(backofficeDriver2);
+                BackofficeNavigation.GeneralActions.SandboxCreateLog(backofficeDriver2);
                 backofficeDriver2.Quit();
             }
 
 
             // Login
             Webapp_Sandbox_Login(webappDriver, Username, Password);
-            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password, true);
+            BackofficeNavigation.GeneralActions.SandboxLogin(backofficeDriver, Username, Password, true);
 
             if (testsToRun["New Account ?"])
             {
                 // Load file items / inventory / accounts
                 Delegator delegatedFunction = backoffice_Custom_Fields_Acccounts;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+
                 delegatedFunction = backoffice_Custom_Fields_Transaction;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
                 delegatedFunction = backoffice_Custom_Fields_Activities;
@@ -80,6 +82,11 @@ namespace FullWebappAutomation
                 // Ceate Account Types
                 delegatedFunction = Sandbox_Ceate_Account_Types;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Sandbox_Create_Sync;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+                delegatedFunction = Transaction_Accounts_Settings_BO_Customization;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+
             }
 
             if (testsToRun["Resync"])
@@ -211,6 +218,11 @@ namespace FullWebappAutomation
             if (testsToRun["Creat Bayer"])
             {
                 Delegator delegatedFunction = Backoffice_Sandbox_Creat_Byer;
+                BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
+            }
+            if (testsToRun["Transaction Accounts Settings"])
+            {
+                Delegator delegatedFunction = Transaction_Accounts_Settings;
                 BasicTestWrapper(delegatedFunction, webappDriver, backofficeDriver);
             }
             #region  Home page test 

@@ -923,7 +923,7 @@ namespace FullWebappAutomation
             webappDriver.Navigate().GoToUrl(webappSandboxHomePageUrl);
 
             // Accounts
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 30; i++)
             {
                 try
                 {
@@ -1156,6 +1156,115 @@ namespace FullWebappAutomation
 
             //Assert of checking 
             Assert(!flag, string.Format("The list not Descending by {0}", itemTemp));
+        }
+
+        public static void ClickOnHomePage(RemoteWebDriver webappDriver)
+        {
+            SafeClick(webappDriver, "//a[@id='btnMenuHome']/span");
+        }
+
+        /// <summary>
+        /// webapp sync
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        public static void Sync(RemoteWebDriver webappDriver)
+        {
+            SafeClick(webappDriver, "//div[@title='Sync']");
+            Thread.Sleep(10000);
+            SafeClick(webappDriver, "//span[@class='fa fa-home']");
+        }
+
+
+        public static void WebApp_Transaction_Accounts_Settings(RemoteWebDriver webappDriver)
+        {
+            bool flag = true; //write errors to error file in case flag is false 
+            string massage = "";// error massage
+
+            // wait for transaction button will appear on webapp
+            Sync(webappDriver);
+            Sync(webappDriver);
+
+            // No account assigned case
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "test1");
+            //This check should not reach any accounts, meaning we are taken straight to the next screen where the home button is available
+            if (SafeIsElementExists(webappDriver, "//span[@class='fa fa-home']"))
+            {
+                ClickOnHomePage(webappDriver);
+            }
+            else
+            {
+                massage += "test1: 'No account assigment' isn't working \n";
+                flag = false;
+            }
+
+            //Account destination assigned case
+            //This test should have one type of account, meaning we're taken to the screen where our destination account is selected
+            //after that we are taken to the next screen where the home button is available
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "test2");
+            if (SafeIsElementExists(webappDriver, "//div[text()[contains(.,'Display 2 Lines')]]"))
+            {
+                SafeClick(webappDriver, "//label[@title='New Type Account1']");
+                SafeClick(webappDriver, "//div[@class='modal in']//button[contains(text(),'Done')]");
+                //check if the home page button is available
+                if (SafeIsElementExists(webappDriver, "//span[@class='fa fa-home']"))
+                {
+                    ClickOnHomePage(webappDriver);
+                }
+                else
+                {
+                    massage += massage += "test2: 'Destination' isn't working \n";
+                    flag = false;
+                }
+            }
+            else
+            {
+                massage += massage += "test2: 'Destination' isn't working \n";
+                flag = false;
+            }
+
+
+            //Account Origen And Destination assigned case
+            //This test should have one type of Destination account and one type of Origen account ,
+            //meaning we're taken to the screen where our destination account is selected ant then the origen.
+            //after that we are taken to the next screen where the home button is available
+            WebappTest.webapp_Sandbox_Home_Button(webappDriver, "test3");
+            //check if the first type is appear
+            if (SafeIsElementExists(webappDriver, "//div[text()[contains(.,'Display 32 Lines')]]"))
+            {
+                SafeClick(webappDriver, "//label[@title='Avner']");
+                SafeClick(webappDriver, "//div[@class='modal in']//button[contains(text(),'Done')]");
+                //check if the second type is appear
+                if (SafeIsElementExists(webappDriver, "//div[text()[contains(.,'Display 2 Lines')]]"))
+                {
+                    SafeClick(webappDriver, "//label[@title='New Type Account1']");
+                    SafeClick(webappDriver, "//div[@class='modal in']//button[contains(text(),'Done')]");
+                    //check if the home page button is available
+                    if (SafeIsElementExists(webappDriver, "//span[@class='fa fa-home']"))
+                    {
+                        ClickOnHomePage(webappDriver);
+                    }
+                    else
+                    {
+                        massage += massage += "test3: 'Origen And Destination' isn't working \n";
+                        flag = false;
+                    }
+
+                }
+                else
+                {
+                    massage += massage += "test3: 'Origen And Destination' isn't working \n";
+                    flag = false;
+                }
+            }
+            else
+            {
+                massage += massage += "test3: 'Origen And Destination' isn't working \n";
+                flag = false;
+            }
+
+
+            Assert(flag, massage);
+
         }
     }
 }

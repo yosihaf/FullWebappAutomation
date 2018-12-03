@@ -45,77 +45,77 @@ namespace FullWebappAutomation
 
         public static void All_Backoffice_Menus(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            Backoffice.GeneralActions.SandboxLogin(backofficeDriver, Username, Password);
+            BackofficeNavigation.GeneralActions.SandboxLogin(backofficeDriver, Username, Password);
 
-            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
-            Backoffice.CompanyProfile.Branding(backofficeDriver);
-            Backoffice.CompanyProfile.Company_Profile(backofficeDriver);
-            Backoffice.CompanyProfile.Email_Settings(backofficeDriver);
-            Backoffice.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
-            Backoffice.CompanyProfile.Security(backofficeDriver);
-            Backoffice.CompanyProfile.Sync_Settings(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.App_Home_Screen(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Branding(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Company_Profile(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Email_Settings(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Security(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Sync_Settings(backofficeDriver);
 
-            Backoffice.Catalogs.Manage_Catalogs(backofficeDriver);
-            Backoffice.Catalogs.Edit_Form(backofficeDriver);
-            Backoffice.Catalogs.Catalog_Views(backofficeDriver);
-            Backoffice.Catalogs.Fields(backofficeDriver);
+            BackofficeNavigation.Catalogs.Manage_Catalogs(backofficeDriver);
+            BackofficeNavigation.Catalogs.Edit_Form(backofficeDriver);
+            BackofficeNavigation.Catalogs.Catalog_Views(backofficeDriver);
+            BackofficeNavigation.Catalogs.Fields(backofficeDriver);
 
-            Backoffice.Items.Order_Center_Thumbnail_Views(backofficeDriver);
-            Backoffice.Items.Order_Center_Grid_View(backofficeDriver);
-            Backoffice.Items.Order_Center_Matrix_View(backofficeDriver);
-            Backoffice.Items.Order_Center_Flat_Matrix_View(backofficeDriver);
-            Backoffice.Items.Order_Center_Item_Details_View(backofficeDriver);
-            Backoffice.Items.Catalog_Item_View(backofficeDriver);
-            Backoffice.Items.Item_Share_Email_Info(backofficeDriver);
-            Backoffice.Items.Smart_Search(backofficeDriver);
-            Backoffice.Items.Filters(backofficeDriver);
-            Backoffice.Items.Automated_Image_Uploader(backofficeDriver);
-            Backoffice.Items.Fields(backofficeDriver);
+            BackofficeNavigation.Items.Order_Center_Thumbnail_Views(backofficeDriver);
+            BackofficeNavigation.Items.Order_Center_Grid_View(backofficeDriver);
+            BackofficeNavigation.Items.Order_Center_Matrix_View(backofficeDriver);
+            BackofficeNavigation.Items.Order_Center_Flat_Matrix_View(backofficeDriver);
+            BackofficeNavigation.Items.Order_Center_Item_Details_View(backofficeDriver);
+            BackofficeNavigation.Items.Catalog_Item_View(backofficeDriver);
+            BackofficeNavigation.Items.Item_Share_Email_Info(backofficeDriver);
+            BackofficeNavigation.Items.Smart_Search(backofficeDriver);
+            BackofficeNavigation.Items.Filters(backofficeDriver);
+            BackofficeNavigation.Items.Automated_Image_Uploader(backofficeDriver);
+            BackofficeNavigation.Items.Fields(backofficeDriver);
 
-            Backoffice.Accounts.Views_And_Forms(backofficeDriver);
-            Backoffice.Accounts.Accounts_Lists(backofficeDriver);
-            Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
-            Backoffice.Accounts.Map_View(backofficeDriver);
-            Backoffice.Accounts.Card_Layout(backofficeDriver);
-            Backoffice.Accounts.Account_Dashboard_Layout(backofficeDriver);
-            Backoffice.Accounts.Search(backofficeDriver);
-            Backoffice.Accounts.Smart_Search(backofficeDriver);
-            Backoffice.Accounts.Fields(backofficeDriver);
+            BackofficeNavigation.Accounts.Views_And_Forms(backofficeDriver);
+            BackofficeNavigation.Accounts.Accounts_Lists(backofficeDriver);
+            BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
+            BackofficeNavigation.Accounts.Map_View(backofficeDriver);
+            BackofficeNavigation.Accounts.Card_Layout(backofficeDriver);
+            BackofficeNavigation.Accounts.Account_Dashboard_Layout(backofficeDriver);
+            BackofficeNavigation.Accounts.Search(backofficeDriver);
+            BackofficeNavigation.Accounts.Smart_Search(backofficeDriver);
+            BackofficeNavigation.Accounts.Fields(backofficeDriver);
 
-            Backoffice.PricingPolicy.Pricing_Policy(backofficeDriver);
-            Backoffice.PricingPolicy.Price_Level(backofficeDriver);
-            Backoffice.PricingPolicy.Main_Category_Discount(backofficeDriver);
-            Backoffice.PricingPolicy.Account_Special_Price_List(backofficeDriver);
+            BackofficeNavigation.PricingPolicy.Pricing_Policy(backofficeDriver);
+            BackofficeNavigation.PricingPolicy.Price_Level(backofficeDriver);
+            BackofficeNavigation.PricingPolicy.Main_Category_Discount(backofficeDriver);
+            BackofficeNavigation.PricingPolicy.Account_Special_Price_List(backofficeDriver);
 
-            Backoffice.Users.Manage_Users(backofficeDriver);
-            Backoffice.Users.Role_Heirarchy(backofficeDriver);
-            Backoffice.Users.Profiles(backofficeDriver);
-            Backoffice.Users.User_Lists(backofficeDriver);
-            Backoffice.Users.Targets_Type(backofficeDriver);
-            Backoffice.Users.Manage_Targets(backofficeDriver);
-            Backoffice.Users.Rep_Dashboard_Add_Ons(backofficeDriver);
+            BackofficeNavigation.Users.Manage_Users(backofficeDriver);
+            BackofficeNavigation.Users.Role_Heirarchy(backofficeDriver);
+            BackofficeNavigation.Users.Profiles(backofficeDriver);
+            BackofficeNavigation.Users.User_Lists(backofficeDriver);
+            BackofficeNavigation.Users.Targets_Type(backofficeDriver);
+            BackofficeNavigation.Users.Manage_Targets(backofficeDriver);
+            BackofficeNavigation.Users.Rep_Dashboard_Add_Ons(backofficeDriver);
 
-            Backoffice.Contacts.Contact_Lists(backofficeDriver);
+            BackofficeNavigation.Contacts.Contact_Lists(backofficeDriver);
 
-            Backoffice.SalesActivities.Transaction_Types(backofficeDriver);
-            Backoffice.SalesActivities.Activity_Types(backofficeDriver);
-            Backoffice.SalesActivities.Sales_Activity_Lists(backofficeDriver);
-            Backoffice.SalesActivities.Activity_List_Display_Options(backofficeDriver);
-            Backoffice.SalesActivities.Activities_And_Menu_Setup(backofficeDriver);
-            Backoffice.SalesActivities.Sales_Dashboard_Settings(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Transaction_Types(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Activity_Types(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Sales_Activity_Lists(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Activity_List_Display_Options(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Activities_And_Menu_Setup(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Sales_Dashboard_Settings(backofficeDriver);
 
-            Backoffice.ActivityPlanning.Account_Lists(backofficeDriver);
-            Backoffice.ActivityPlanning.Activity_Planning_Display_Options(backofficeDriver);
+            BackofficeNavigation.ActivityPlanning.Account_Lists(backofficeDriver);
+            BackofficeNavigation.ActivityPlanning.Activity_Planning_Display_Options(backofficeDriver);
 
-            Backoffice.ERPIntegration.Plugin_Settings(backofficeDriver);
-            Backoffice.ERPIntegration.Configuration(backofficeDriver);
-            Backoffice.ERPIntegration.File_Uploads_And_Logs(backofficeDriver);
+            BackofficeNavigation.ERPIntegration.Plugin_Settings(backofficeDriver);
+            BackofficeNavigation.ERPIntegration.Configuration(backofficeDriver);
+            BackofficeNavigation.ERPIntegration.File_Uploads_And_Logs(backofficeDriver);
 
-            Backoffice.ConfigurationFiles.Automated_Reports(backofficeDriver);
-            Backoffice.ConfigurationFiles.Configuration_Files(backofficeDriver);
-            Backoffice.ConfigurationFiles.Translation_Files(backofficeDriver);
-            Backoffice.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
-            Backoffice.ConfigurationFiles.User_Defined_Tables(backofficeDriver);
+            BackofficeNavigation.ConfigurationFiles.Automated_Reports(backofficeDriver);
+            BackofficeNavigation.ConfigurationFiles.Configuration_Files(backofficeDriver);
+            BackofficeNavigation.ConfigurationFiles.Translation_Files(backofficeDriver);
+            BackofficeNavigation.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
+            BackofficeNavigation.ConfigurationFiles.User_Defined_Tables(backofficeDriver);
         }
 
 
@@ -391,7 +391,7 @@ namespace FullWebappAutomation
         {
             //backofficeDriver.Navigate().GoToUrl(backofficeSandboxHomePageUrl);
 
-            Backoffice.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
 
             // Edit Admin
             backoffice_Edit_Admin(backofficeDriver, "Admin");
@@ -481,7 +481,7 @@ namespace FullWebappAutomation
         {
             //backofficeDriver.Navigate().GoToUrl(backofficeSandboxHomePageUrl);
 
-            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.App_Home_Screen(backofficeDriver);
 
             // Edit Admin
             backoffice_Edit_Admin(backofficeDriver, "Admin");
@@ -545,7 +545,7 @@ namespace FullWebappAutomation
             string Value;
 
             //backofficeDriver.Navigate().GoToUrl(backofficeSandboxHomePageUrl);
-            Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.App_Home_Screen(backofficeDriver);
 
             // Edit Admin
             backoffice_Edit_Admin(backofficeDriver, "Admin");
@@ -1379,7 +1379,7 @@ namespace FullWebappAutomation
         public static void Backoffice_Sandbox_Load_File(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            FullWebappAutomation.Backoffice.ERPIntegration.Configuration(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.ERPIntegration.Configuration(backofficeDriver);
 
 
             // CSV Delimiter
@@ -1705,12 +1705,12 @@ namespace FullWebappAutomation
             foreach (var item in Fields)
             {
                 backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(item.Key);
-                SafeClick(backofficeDriver, string.Format("//li[@data-id='{0}']//div[@class='fr plusIcon plusIconDisable']", item.Value));
+                SafeClick(backofficeDriver, string.Format("//span[@class='fl' and contains(.,'{0}')]//following-sibling::div", item.Key));
                 backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
                 SafeClick(backofficeDriver, "//div[3]/div/div//span[@class='fa fa-search']");
                 Thread.Sleep(1000);
             }
-
+            
 
 
 
@@ -1731,7 +1731,7 @@ namespace FullWebappAutomation
         public static void Backoffice_Delete_Layout(RemoteWebDriver backofficeDriver, string Accounts = null, string Activity = null, bool defaultiv = false)
         {
 
-            FullWebappAutomation.Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.CompanyProfile.App_Home_Screen(backofficeDriver);
 
 
             // Edit Admin
@@ -1868,7 +1868,7 @@ namespace FullWebappAutomation
 
         public static void Bakeoffice_Sandbox_Online_action_Home_Page(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            FullWebappAutomation.Backoffice.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.ConfigurationFiles.Online_Add_Ons(backofficeDriver);
 
             // Add new
             SafeClick(backofficeDriver, "//div[6]/div[1]/div[4]/div[2]/div[1]/div[1]/div[1]/div[@id='btnAddNewOnlineAction']");
@@ -1889,7 +1889,7 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[5]/div[3]/div[1]/div[1]");
 
 
-            FullWebappAutomation.Backoffice.CompanyProfile.App_Home_Screen(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.CompanyProfile.App_Home_Screen(backofficeDriver);
 
             // Edit Admin
             backoffice_Edit_Admin(backofficeDriver, "Admin");
@@ -1934,7 +1934,7 @@ namespace FullWebappAutomation
         public static void Sandbox_Upload_Image(RemoteWebDriver backofficeDriver, string elementXPath, string filePath, bool isNew = true)
         {
             if (isNew)
-                FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+                FullWebappAutomation.BackofficeNavigation.CompanyProfile.Branding(backofficeDriver);
 
 
             //  Change Button 
@@ -2035,7 +2035,7 @@ namespace FullWebappAutomation
         public static void Sandbox_Branding_Color_Main(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.CompanyProfile.Branding(backofficeDriver);
 
             // Edit Main Color
             SafeClick(backofficeDriver, "//div[6]/div[1]/div[4]/div[2]/div[1]/div[5]/div[1]/div[1]/div[2]");
@@ -2066,7 +2066,7 @@ namespace FullWebappAutomation
 
         public static void Sandbox_Branding_Color_Secondary(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.CompanyProfile.Branding(backofficeDriver);
 
             // Edit Secondary Color
             SafeClick(backofficeDriver, "/html[1]/body[1]/form[1]/div[6]/div[1]/div[4]/div[2]/div[1]/div[5]/div[2]/div[2]");
@@ -2090,7 +2090,7 @@ namespace FullWebappAutomation
 
         public static void Sandbox_Branding_Logo(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            FullWebappAutomation.Backoffice.CompanyProfile.Branding(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.CompanyProfile.Branding(backofficeDriver);
 
             // Upload_Image logo
             Sandbox_Upload_Image(backofficeDriver, "//div[@id='content']/div[@id='compLogoCont']/div[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]", @"C:\Users\yosef.h\Desktop\automation_documents\automation_files_pictues\cow.jpg");
@@ -2160,7 +2160,7 @@ namespace FullWebappAutomation
             Fields.Add("Paragraph Text", "TSAParagraphText");
             Fields.Add("Number", "TSANumber");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields(backofficeDriver, Fields, "Search");
         }
@@ -2182,7 +2182,7 @@ namespace FullWebappAutomation
             Fields.Add("Email", "Email");
             Fields.Add("Special price list name", "SpecialPriceListName");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields_Per_List(backofficeDriver, Fields, "Smart Search", "Basic_List");
 
@@ -2200,7 +2200,7 @@ namespace FullWebappAutomation
             TSA_Fields.Add("Checkbox", "TSACheckbox");
             TSA_Fields.Add("Dropdown", "TSADropdown");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields_Per_List(backofficeDriver, TSA_Fields, "Smart Search", "TSA_List");
 
@@ -2236,12 +2236,12 @@ namespace FullWebappAutomation
             TSA_Fields.Add("Multi Choice", "TSAMultiChoice");
 
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             //  Add fields
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, TSA_Fields, "TSA_List");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
             Dictionary<string, string> Fields = new Dictionary<string, string>();
@@ -2263,14 +2263,14 @@ namespace FullWebappAutomation
 
 
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
             //  Add fields
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Basic_List");
 
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
             Edit_Rep_Permission(backofficeDriver, "Basic_List", true);
@@ -2473,7 +2473,7 @@ namespace FullWebappAutomation
 
         public static void backoffice_Custom_Fields_Transaction(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            FullWebappAutomation.Backoffice.SalesActivities.Transaction_Types(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Transaction_Types(backofficeDriver);
 
             // Edit Sales Order Transaction
             SafeClick(backofficeDriver, "//div[contains(@class,'slick-cell')]//div[@title='Edit']");
@@ -2555,7 +2555,7 @@ namespace FullWebappAutomation
         public static void backoffice_Custom_Fields_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Types(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Types(backofficeDriver);
 
             // Edit Photo
             SafeClick(backofficeDriver, "//div[@style='top:0px']/div[contains(@class,'slick-cell')]//div[@title='Edit']");
@@ -2792,7 +2792,7 @@ namespace FullWebappAutomation
             Fields.Add("External ID", "ExternalID");
             
 
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields_Per_List(backofficeDriver, Fields, "Smart Search", "Table_Basic_List");
 
@@ -2825,7 +2825,12 @@ namespace FullWebappAutomation
         public static void Sandbox_Search_Activities(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
 
+
             string nameNewList = "ALL";
+
+            // Menu
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
+
 
             // Activities
             webapp_Sandbox_Home_Button(webappDriver, "Activities");
@@ -2854,17 +2859,19 @@ namespace FullWebappAutomation
             Thread.Sleep(3000);
 
 
+
             check_Field_Button_Search(webappDriver, "staples", 10, 1);
 
         }
 
 
+
         public static void Sandbox_Ceate_Account_Types(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            Backoffice.Accounts.Account_Types(backofficeDriver);
+            BackofficeNavigation.Accounts.Account_Types(backofficeDriver);
             Ceate_Account_Types(backofficeDriver, "New Type Account1");
 
-            Backoffice.Accounts.Account_Types(backofficeDriver);
+            BackofficeNavigation.Accounts.Account_Types(backofficeDriver);
             Ceate_Account_Types(backofficeDriver, "New Type Account2");
         }
 
@@ -2893,5 +2900,35 @@ namespace FullWebappAutomation
         #endregion
 
 
+
+        #region Transactions
+
+
+        /// <summary>
+        /// This function runs all tests related to Transaction_Accounts_Setting
+        /// </summary>
+        /// <param name="webappDriver"></param>
+        /// <param name="backofficeDriver"></param>
+        public static void Transaction_Accounts_Settings(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            //BO customizations
+            CustomizeToForm(backofficeDriver, new string[] { "test1", "test2", "test3" }, BackofficeNavigation.CompanyProfile.App_Home_Screen);
+
+            //test on webapp
+            WebApp_Transaction_Accounts_Settings(webappDriver);
+        }
+
+
+        public static void Sandbox_Create_Sync(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Bakeoffice_Sandbox_Create_Sync(backofficeDriver);
+        }
+
+
+        public static void Transaction_Accounts_Settings_BO_Customization(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
+        {
+            Backoffice_Transaction_Accounts_Settings(backofficeDriver);
+        }
+        #endregion
     }
 }

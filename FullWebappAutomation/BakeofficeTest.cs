@@ -51,7 +51,7 @@ namespace FullWebappAutomation
 
             // Edit_Rep_Permission(backofficeDriver,"Smart_Search_List");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields(backofficeDriver, Fields, "Smart Search");
 
@@ -75,16 +75,16 @@ namespace FullWebappAutomation
             //Fields.Add("Price list name", "PriceLevelName");
             //Fields.Add("Country", "Country");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Search_List");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Edit_Rep_Permission(backofficeDriver, "Search_List");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields(backofficeDriver, Fields, "Search");
 
@@ -116,12 +116,12 @@ namespace FullWebappAutomation
 
             Creat_New_List_Lists_Accounts(backofficeDriver, "Basic_List");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             //  Add fields
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Fields, "Basic_List");
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             Edit_Rep_Permission(backofficeDriver, "Basic_List");
         }
@@ -130,7 +130,7 @@ namespace FullWebappAutomation
         {
 
             // Menu
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
 
 
             // Configuration 
@@ -141,7 +141,7 @@ namespace FullWebappAutomation
             Fields.Add("Account Multi Choice", "AccountTSAMultiChoice");
 
 
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
 
             Sreach_Available_Fields(backofficeDriver, Fields, "Configure the fields the list may be searched by");
 
@@ -177,7 +177,7 @@ namespace FullWebappAutomation
             //   Edit_Rep_Permission(backofficeDriver, "TSA_List");
 
 
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
 
             Sreach_Available_Fields(backofficeDriver, TSA_Fields, "Smart Search");
@@ -186,9 +186,11 @@ namespace FullWebappAutomation
             Thread.Sleep(3000);
         }
 
+
+
         public static void bakeoffice_Sandbox_Add_views(RemoteWebDriver backofficeDriver, Dictionary<string, string> Fields)
         {
-            FullWebappAutomation.Backoffice.Accounts.Views_And_Forms(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Views_And_Forms(backofficeDriver);
 
             SafeClick(backofficeDriver, "//div[@class='fl-form-box']//div[@class='fl-box-title']//span[2]");
 
@@ -271,7 +273,7 @@ namespace FullWebappAutomation
             //Table_Basic_Fields.Add("Deleted", "Deleted");
 
 
-            Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Table_Basic_Fields, "Table_Basic_List");
             #endregion
 
@@ -330,7 +332,7 @@ namespace FullWebappAutomation
             Card_Basic_Fields.Add("Submission", "SubmissionGeoCodeLNG");
 
 
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Card_Basic_Fields, "Card_Basic_List");
 
 
@@ -392,7 +394,7 @@ namespace FullWebappAutomation
             Details_Basic_Fields.Add("Ship To Name", "ShipToName");
 
 
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Details_Basic_Fields, "Details_Basic_List");
 
             #endregion
@@ -450,7 +452,7 @@ namespace FullWebappAutomation
             Line_Basic_List.Add("Account Deleted", "Account.Deleted");
 
 
-            FullWebappAutomation.Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
             backoffice_Sandbox_Add_Available_Fields(backofficeDriver, Line_Basic_List, "Line_Basic_List");
 
 
@@ -478,7 +480,7 @@ namespace FullWebappAutomation
 
             #region add to permission all list
 
-            Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
 
 
             // Permission
@@ -520,9 +522,44 @@ namespace FullWebappAutomation
         }
 
 
+
+        public static void Bakeoffice_Sandbox_Create_Sync(RemoteWebDriver backofficeDriver)
+        {
+            Dictionary<string, string> subDetails = new Dictionary<string, string>();
+            // table value =1
+            subDetails.Add("typeList", "1");
+            // Date Range "Creation Date" value =5
+            subDetails.Add("neme field 1", "5");
+            subDetails.Add("in the last", "In the Last");
+            // Input num 
+            subDetails.Add("sum", "7");
+            // date (Year , Months ,Weeks,Days)
+            subDetails.Add("date", "Months");
+            // Sort By Action Time value =1
+            subDetails.Add("neme field 2", "1");
+            // Filter 
+            subDetails.Add("neme field 3", "5");
+            // operator
+            subDetails.Add("operator", "=");
+            // Operator to
+            subDetails.Add("Operator to", "0");
+
+
+            KeyValuePair<string, Dictionary<string, string>> nameList = new KeyValuePair<string, Dictionary<string, string>>("Sync", subDetails);
+
+            // Creat_New_List name Sync
+            Creat_New_List_Activities(backofficeDriver, nameList);
+            BackofficeNavigation.CompanyProfile.App_Home_Screen(backofficeDriver);
+            EditBOForm(backofficeDriver);
+            //Add the list to App home page
+            CustomizeToForm(backofficeDriver, new string[] { "Sync" });
+        }
+
+
+
         public static void Creat_New_List_Activities(RemoteWebDriver backofficeDriver, KeyValuePair<string, Dictionary<string, string>> nameList)
         {
-            Backoffice.SalesActivities.Activity_Lists_New(backofficeDriver);
+            BackofficeNavigation.SalesActivities.Activity_Lists_New(backofficeDriver);
 
 
             // + Create New List
@@ -585,6 +622,134 @@ namespace FullWebappAutomation
             SafeClick(backofficeDriver, "//div[@class='general-info ng-scope']/input[1]");
         }
 
+
+
+        /// <summary>
+        /// Customize the fields you're interested, select the page you want to navigate to, the form will be edit automatically according to your profile      
+        /// /// TO DO ********* OPTION TO SEND PRO
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="Fields"></param>
+        /// <param name="pageToNavigate"></param>
+        public static void CustomizeToForm(RemoteWebDriver backofficeDriver, string[] Fields,Delegator1 pageToNavigate)
+        {
+            pageToNavigate(backofficeDriver:backofficeDriver);
+            EditBOForm(backofficeDriver);
+            foreach (var item in Fields)
+            {
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(item);
+                SafeClick(backofficeDriver, string.Format("//span[@class='fl' and contains(.,'{0}')]//following-sibling::div", item));
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+                SafeClick(backofficeDriver, "//div[3]/div/div//span[@class='fa fa-search']");
+                Thread.Sleep(1000);
+            }
+            SafeClick(backofficeDriver, "//div[contains(text(),'Save')]");
+        }
+
+
+
+
+        /// <summary>
+        /// Customize the fields you're interested in to the form you're in
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="Fields"></param>
+        public static void CustomizeToForm(RemoteWebDriver backofficeDriver, string[] Fields)
+        {
+            foreach (var item in Fields)
+            {
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).SendKeys(item);
+                SafeClick(backofficeDriver, string.Format("//span[@class='fl' and contains(.,'{0}')]//following-sibling::div", item));
+                backofficeDriver.FindElement(By.Id("txtSearchBankFields")).Clear();
+                SafeClick(backofficeDriver, "//div[3]/div/div//span[@class='fa fa-search']");
+                Thread.Sleep(1000);
+            }
+            SafeClick(backofficeDriver, "//div[contains(text(),'Save')]");
+        }
+
+
+        public static void EditActivity(RemoteWebDriver backofficeDriver, string activityName)
+        {
+            SafeClick(backofficeDriver, String.Format("//div[text()='{0}']//following-sibling::div[2]//div[@title='Edit']", activityName));
+        }
+
+
+
+        public static void DeleteActivity(RemoteWebDriver backofficeDriver, string activityName)
+        {
+            SafeClick(backofficeDriver, String.Format("//div[text()='{0}']//following-sibling::div[2]//div[@title='Delete']", activityName));
+        }
+
+
+
+        /// <summary>
+        /// config all option for the transaction accounts settings  
+        /// </summary>
+        /// <param name="backofficeDriver"></param>
+        /// <param name="config"></param>
+        public static void ConfigTransactionAccountSettings(RemoteWebDriver backofficeDriver, TransactionAccountSettingsSelection config)
+        {
+            switch (config)
+            {
+                case TransactionAccountSettingsSelection.NoAssignment:
+                    {
+                        SafeClick(backofficeDriver, "//div[@id='btnDestSetEdit']");
+                        SafeClick(backofficeDriver, "//label[@for='radioNoType']");
+                        SafeClick(backofficeDriver, "//div[@id='btnSaveAccTypes']");
+
+                        break;
+                    }
+                case TransactionAccountSettingsSelection.Destination:
+                    {
+                        SafeClick(backofficeDriver, "//div[@id='btnDestSetEdit']");
+                        SafeClick(backofficeDriver, "//input[@id='cb_All']");
+                        SafeClick(backofficeDriver, "//li[@id='destCBList']//ul//li//label[contains(text(),'New Type')]");
+                        SafeClick(backofficeDriver, "//div[@id='btnSaveAccTypes']");
+                        break;
+                    }
+                case TransactionAccountSettingsSelection.OrigenAndDestination:
+                    {
+                        //destination
+                        SafeClick(backofficeDriver, "//div[@id='btnDestSetEdit']");
+                        SafeClick(backofficeDriver, "//input[@id='cb_All']");
+                        SafeClick(backofficeDriver, "//li[@id='destCBList']//ul//li//label[contains(text(),'Customer')]");
+                        SafeClick(backofficeDriver, "//div[@id='btnSaveAccTypes']");
+
+                        //Origen
+                        SafeClick(backofficeDriver, "//div[@id='btnEditCatalogsConnection2']");
+                        SafeClick(backofficeDriver, "//div[@id='accTypesCBlistOrig']//label[contains(text(),'New Type')]//parent::li//input");
+                        SafeClick(backofficeDriver, "//div[@id='btnSaveAccTypes']");
+                        break;
+                    }
+            }
+        }
+
+
+
+        public static void Create_New_Transaction(RemoteWebDriver backofficeDriver, string name)
+        {
+            BackofficeNavigation.SalesActivities.Transaction_Types(backofficeDriver);
+            SafeClick(backofficeDriver, "//div[@class='btnAddNewOrderType allButtons grnbtn roundCorner fl']");
+            SafeSendKeys(backofficeDriver, "//input[@id='orderName']", name);
+            SafeSendKeys(backofficeDriver, "//input[@id='orderDescription']", name);
+            SafeClick(backofficeDriver, "//div[@id='icon2']");
+            SafeClick(backofficeDriver, "//div[@id='btnSaveOrderType']");
+            Thread.Sleep(10000);
+        }
+
+
+        public static void Backoffice_Transaction_Accounts_Settings(RemoteWebDriver backofficeDriver)
+        {
+            Create_New_Transaction(backofficeDriver, "test1");
+            BackofficeNavigation.ActivityNavigation.Accounts(backofficeDriver);
+            ConfigTransactionAccountSettings(backofficeDriver, TransactionAccountSettingsSelection.NoAssignment);
+            Create_New_Transaction(backofficeDriver, "test2");
+            BackofficeNavigation.ActivityNavigation.Accounts(backofficeDriver);
+            ConfigTransactionAccountSettings(backofficeDriver, TransactionAccountSettingsSelection.Destination);
+            Create_New_Transaction(backofficeDriver, "test3");
+            BackofficeNavigation.ActivityNavigation.Accounts(backofficeDriver);
+            ConfigTransactionAccountSettings(backofficeDriver, TransactionAccountSettingsSelection.OrigenAndDestination);
+        }
 
     }
 }

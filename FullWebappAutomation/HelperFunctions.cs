@@ -39,7 +39,8 @@ namespace FullWebappAutomation
         /// </summary>
         /// <param name="webappDriver">@Dan Zlotnikov</param>
         /// <param name="backofficeDriver"></param>
-        public delegate void Delegator(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver);
+        public delegate void Delegator(RemoteWebDriver webappDriver= null, RemoteWebDriver backofficeDriver= null);
+        public delegate void Delegator1( RemoteWebDriver backofficeDriver = null);
 
         /// <summary>
         /// Wraps tests with a try-catch-except logic that creates logs
@@ -202,6 +203,45 @@ namespace FullWebappAutomation
             }
         }
 
+        public static bool SafeIsElementExists(RemoteWebDriver driver, string elementXPath, int safeWait = 1000, int maxRetry = 30)
+        {
+            IWebElement element;
+
+            int retryCount = 1;
+            while (retryCount < maxRetry)
+            {
+                try
+                {
+                    element = driver.FindElementByXPath(elementXPath);
+                    Highlight(driver, element, safeWait / 2);
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(safeWait);
+                    retryCount++;
+                    continue;
+                }
+            }
+
+            // If succeeded, write to performance log
+            if (retryCount < maxRetry)
+            {
+                // Get caller test function name
+                StackTrace stackTrace = new StackTrace();
+                string testName = stackTrace.GetFrame(1).GetMethod().Name;
+
+                WriteToPerformanceLog(testName, "SafeIsElementExists", retryCount);
+                return true;
+            }
+
+            // Otherwise throw execption
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Sends keys to an element in the web page. Uses retry logic for a specified amount of tries. One second buffer between tries.
         /// </summary>
@@ -312,7 +352,7 @@ namespace FullWebappAutomation
             if (!erp)
             {
                 // ERP Integration
-                FullWebappAutomation.Backoffice.ERPIntegration.File_Uploads_And_Logs(driver);
+                FullWebappAutomation.BackofficeNavigation.ERPIntegration.File_Uploads_And_Logs(driver);
             }
 
             // Upload Button
@@ -395,7 +435,7 @@ namespace FullWebappAutomation
         public static string CreateNewLog(string logType, string browserName, DateTime dateTime)
         {
             string strDateTime = dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff").Replace('\\', '-').Replace(' ', '_').Replace(':', '-');
-            string path = string.Format("C:\\Users\\yosef.h\\Desktop\\automation_documents\\grid_logs\\CS\\{0}_{1}_{2}.json", logType, browserName, strDateTime);
+            string path = string.Format(@"C:\Users\daniel.b.PEPPERI\Desktop\automation_documents\automation_documents\grid_logs\CS\{0}_{1}_{2}.json", logType, browserName, strDateTime);
             using (StreamWriter streamWriter = File.AppendText(path))
             {
                 streamWriter.Write("");
@@ -598,35 +638,57 @@ namespace FullWebappAutomation
 
             // API request url, with inserted data from method params
             string url = string.Format(@"https://apint.sandbox.pepperi.com/restapi/PepperiAPInt.Data.svc/V1.0/{0}?where={1}'{2}'", objectType, property, value);
-
             // Create the request object
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
             // Create encoding (authorization) string
             String encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(AuthorizationUsername + ":" + AuthorizationPassword));
-
             // Add authorization to request header
-            request.Headers.Add("Authorization", encoded);
-            
-
+            request.Headers.Add("Authorization", encoded);          
             using (var response = (HttpWebResponse)request.GetResponse())
-
-
             //Data stream from request
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream))
             {
                 data = reader.ReadToEnd();
             }
-
-
-
-
             //Convert json API data to c# object
             dynamic DataObject = JsonConvert.DeserializeObject(data);
 
             return DataObject;
             
+        }
+        /// <summary>
+        /// Gets API data from the server. Returns an array of objects representing the query data fetched (every object is a db row).
+        /// </summary>
+        /// <param name="AuthorizationPassword"> API authorization </param>
+        /// <param name="AuthorizationUsername"> API authorization </param>
+        /// <param name="objectType"> Requested object type (transaction, user, item, etc.) </param>
+        /// <param name="property"> Object attribute to be evaluated in request (id, name, email) </param>
+        /// <param name="value"> Expected value of requested attribute </param>
+        /// <returns></returns>
+        public static dynamic GetApiData(string AuthorizationUsername, string AuthorizationPassword, string freeUrl)
+        {
+            var data = string.Empty;
+
+            
+            // Create the request object
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(freeUrl);
+            // Create encoding (authorization) string
+            String encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(AuthorizationUsername + ":" + AuthorizationPassword));
+            // Add authorization to request header
+            request.Headers.Add("Authorization", encoded);
+            using (var response = (HttpWebResponse)request.GetResponse())
+            //Data stream from request
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                data = reader.ReadToEnd();
+            }
+            //Convert json API data to c# object
+            dynamic DataObject = JsonConvert.DeserializeObject(data);
+
+            return DataObject;
+
         }
 
         /// <summary>
@@ -699,7 +761,7 @@ namespace FullWebappAutomation
         /// <param name="newTitle"></param>
         public static void Help_Sandbox_Change_Title_Home_Screen(RemoteWebDriver backofficeDriver, string newTitle)
         {
-            Backoffice.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
+            BackofficeNavigation.CompanyProfile.Home_Screen_Shortcut(backofficeDriver);
 
 
             // Edit Admin
@@ -838,7 +900,7 @@ namespace FullWebappAutomation
 
 
             // login to var
-            Backoffice.GeneralActions.SandboxLogin(varDriver, "var3@pepperi.com", Password);
+            BackofficeNavigation.GeneralActions.SandboxLogin(varDriver, "var3@pepperi.com", Password);
 
 
             // Search to user
@@ -868,6 +930,9 @@ namespace FullWebappAutomation
             SafeClick(varDriver, "//input[@id='chkEnableNewActivityList']");
             SafeClick(varDriver, "//div[@id='msgModalRightBtn']");
 
+
+            //  Enable Accounts type
+            SafeClick(varDriver, "//input[@id='chkEnableAccountTypes']");
 
             // Save
             SafeClick(varDriver, "//div[@id='ctl00_MainContent_dDistributorDetailsContainer_dSave']//a[@title='Save']");
@@ -971,7 +1036,7 @@ namespace FullWebappAutomation
         /// <param name="nameNewList">new the new list</param>
         public static void Creat_New_List_Lists_Accounts(RemoteWebDriver backofficeDriver, string nameNewList)
         {
-            FullWebappAutomation.Backoffice.Accounts.Accounts_Lists_New(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Accounts_Lists_New(backofficeDriver);
 
             // + Create New List
             SafeClick(backofficeDriver, "//div[contains(@id,'btnAddNew')]");
@@ -1010,7 +1075,7 @@ namespace FullWebappAutomation
         /// <param name="Fields"></param>
         public static void backoffice_Custom_Fields_Acccounts(RemoteWebDriver webappDriver, RemoteWebDriver backofficeDriver)
         {
-            FullWebappAutomation.Backoffice.Accounts.Fields(backofficeDriver);
+            FullWebappAutomation.BackofficeNavigation.Accounts.Fields(backofficeDriver);
 
             Dictionary<string, string> TSA_Fields = new Dictionary<string, string>();
 
@@ -1230,8 +1295,26 @@ namespace FullWebappAutomation
         }
 
 
+
        
+
+        public static string GetProfile()
+        {
+            var tempResualt = GetApiData(Username, Password, String.Format("https://apint.sandbox.pepperi.com/restapi/PepperiAPInt.Data.svc/V1.0/Users?where=Email Like '{0}'&fields=Profile.Name",Username));
+            return Convert.ToString(tempResualt[0]["Profile.Name"]);
+        }
+
+        public static void EditBOForm(RemoteWebDriver backofficeDriver)
+        {
+            if(SafeIsElementExists(backofficeDriver,String.Format("//div[@class='fl-box-title']//span[@title='{0}']//following-sibling::span", GetProfile())))
+               SafeClick(backofficeDriver, String.Format("//div[@class='fl-box-title']//span[@title='{0}']//following-sibling::span", GetProfile()));
+            else
+                SafeClick(backofficeDriver, String.Format("//div[@class='fl-box-title']//span[@title='{0}']//following-sibling::span", "Rep"));
+        }
+
+
     }
+
     #endregion
 
    
